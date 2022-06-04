@@ -19,9 +19,12 @@ cache:
       - target/node
       - frontend/node_modules
 
-# TODO: Code Quality (en attente du serveur)
-# include:
-#   - template: Code-Quality.gitlab-ci.yml
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
+code_quality:
+  tags:
+    - code_quality
 
 verify:
   stage: test
