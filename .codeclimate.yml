@@ -1,0 +1,15 @@
+version: "2"
+
+plugins:
+  csslint:
+    enabled: true
+  eslint:
+    enabled: true
+  sonar-java:
+    enabled: true
+
+exclude_patterns:
+  - .m2/
+  - "**/node_modules/"
+  - "**/build/"
+  - target/
