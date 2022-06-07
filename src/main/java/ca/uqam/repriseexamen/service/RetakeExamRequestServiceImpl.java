@@ -15,8 +15,7 @@ public class RetakeExamRequestServiceImpl implements RetakeExamRequestService{
 
     private RetakeExamRequestRepository retakeExamRequestRepository;
     @Override
-    public List<RetakeExamRequest> listRetakeExamRequest() {
-        List<RetakeExamRequest> listDRE = retakeExamRequestRepository.findAll();
-        return listDRE;
+    public List<RetakeExamRequest> getAllRetakeExamRequest() {
+        return retakeExamRequestRepository.findAll();
     }
 }

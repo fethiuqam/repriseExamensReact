@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RetakeExamRequestService {
 
-    List<RetakeExamRequest> listRetakeExamRequest();
+    List<RetakeExamRequest> getAllRetakeExamRequest();
 }

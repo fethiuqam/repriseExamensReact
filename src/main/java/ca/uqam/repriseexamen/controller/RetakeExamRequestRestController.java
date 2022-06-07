@@ -16,10 +16,9 @@ public class RetakeExamRequestRestController {
 
     private RetakeExamRequestService retakeExamRequestService;
 
-    @GetMapping("/")
-    public List<RetakeExamRequest> retakeExamRequests (){
-        return retakeExamRequestService.listRetakeExamRequest();
+    @GetMapping("")
+    public List<RetakeExamRequest> getAllRetakeExamRequest(){
+        return retakeExamRequestService.getAllRetakeExamRequest();
     }
-
 
 }
