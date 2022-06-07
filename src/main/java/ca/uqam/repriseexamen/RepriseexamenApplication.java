@@ -1,6 +1,6 @@
 package ca.uqam.repriseexamen;
 
-import ca.uqam.repriseexamen.dao.RetakeExamRequestRepository;
+import ca.uqam.repriseexamen.dao.ExamRetakeRequestRepository;
 import ca.uqam.repriseexamen.dao.StudentRepository;
 import ca.uqam.repriseexamen.model.*;
 import org.springframework.boot.CommandLineRunner;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -22,37 +22,39 @@ public class RepriseexamenApplication {
 	}
 
 	@Bean
-	CommandLineRunner generateDataForTest(RetakeExamRequestRepository retakeExamRequestRepository,
-							StudentRepository studentRepository) {
+	CommandLineRunner generateDataForTest(ExamRetakeRequestRepository examRetakeRequestRepository,
+										  StudentRepository studentRepository) {
 		return args -> {
 			Stream.of("Marc", "Richard", "Jean").forEach(name -> {
-				Student student = new Student();
-				student.setName(name);
-				student.setPermanentCode("ABCD12345678");
-				student.setEmail(name + "@courrier.uqam.ca");
-				student.setPhone("1111111111");
+				Student student = Student.builder()
+						.name(name)
+						.permanentCode("ABCD12345678")
+						.email(name + "@courrier.uqam.ca")
+						.phone("1111111111")
+						.build();
 				studentRepository.save(student);
 			});
 			studentRepository.findAll().forEach(student -> {
-				RetakeExamRequest dre = new RetakeExamRequest();
-				dre.setAbsenceStartDate(LocalDate.of(2022,02,02));
-				dre.setAbsenceEndDate(LocalDate.of(2022,02,10));
-				dre.setOwner(student);
-				Justificative justificative = new Justificative();
-				justificative.setDescription("justificatif 1");
-				justificative.setUrl("/files/file1");
-				List<Justificative> justificatives =  new ArrayList<>();
-				justificatives.add(justificative);
-				dre.setListJustificative(justificatives);
-				dre.setReason(Reason.MEDICAL);
-				Status status = new Status();
-				status.setTypeStatus(TypeStatus.SUBMITTED);
-				status.setDateTime(LocalDateTime.now());
-				List<Status> statusList = new ArrayList<>();
-				statusList.add(status);
-				dre.setStatusList(statusList);
-				dre.setAbsenceDetails("Intervention chirurgicale programmée");
-				retakeExamRequestRepository.save(dre);
+				Justificative justificative = Justificative.builder()
+						.description("justificatif 1")
+						.url("/files/file1")
+						.build();
+				List<Justificative> justificatives = Arrays.asList(justificative);
+				Status status = Status.builder()
+						.typeStatus(TypeStatus.SUBMITTED)
+						.dateTime(LocalDateTime.now())
+						.build();
+				List<Status> statusList = Arrays.asList(status);
+				ExamRetakeRequest dre = ExamRetakeRequest.builder()
+						.absenceStartDate(LocalDate.of(2022,2,2))
+						.absenceEndDate(LocalDate.of(2022,2,10))
+						.owner(student)
+						.listJustificative(justificatives)
+						.reason(Reason.MEDICAL)
+						.statusList(statusList)
+						.absenceDetails("Intervention chirurgicale programmée")
+						.build();
+				examRetakeRequestRepository.save(dre);
 			});
 		};
 	}
