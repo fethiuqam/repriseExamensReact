@@ -1,6 +1,6 @@
 package ca.uqam.repriseexamen;
 
-import ca.uqam.repriseexamen.dao.RetakeExamRequestRepository;
+import ca.uqam.repriseexamen.dao.ExamRetakeRequestRepository;
 import ca.uqam.repriseexamen.dao.StudentRepository;
 import ca.uqam.repriseexamen.model.*;
 import org.springframework.boot.CommandLineRunner;
@@ -22,8 +22,8 @@ public class RepriseexamenApplication {
 	}
 
 	@Bean
-	CommandLineRunner generateDataForTest(RetakeExamRequestRepository retakeExamRequestRepository,
-							StudentRepository studentRepository) {
+	CommandLineRunner generateDataForTest(ExamRetakeRequestRepository examRetakeRequestRepository,
+										  StudentRepository studentRepository) {
 		return args -> {
 			Stream.of("Marc", "Richard", "Jean").forEach(name -> {
 				Student student = Student.builder()
@@ -45,7 +45,7 @@ public class RepriseexamenApplication {
 						.dateTime(LocalDateTime.now())
 						.build();
 				List<Status> statusList = Arrays.asList(status);
-				RetakeExamRequest dre = RetakeExamRequest.builder()
+				ExamRetakeRequest dre = ExamRetakeRequest.builder()
 						.absenceStartDate(LocalDate.of(2022,2,2))
 						.absenceEndDate(LocalDate.of(2022,2,10))
 						.owner(student)
@@ -54,7 +54,7 @@ public class RepriseexamenApplication {
 						.statusList(statusList)
 						.absenceDetails("Intervention chirurgicale programmée")
 						.build();
-				retakeExamRequestRepository.save(dre);
+				examRetakeRequestRepository.save(dre);
 			});
 		};
 	}

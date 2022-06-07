@@ -1,7 +1,7 @@
 package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.model.*;
-import ca.uqam.repriseexamen.service.RetakeExamRequestService;
+import ca.uqam.repriseexamen.service.ExamRetakeRequestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +19,6 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -28,7 +26,7 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class RetakeExamRequestRestControllerUnitTest {
+public class ExamRetakeRequestRestControllerUnitTest {
 
     private MockMvc mockMvc;
 
@@ -36,57 +34,55 @@ public class RetakeExamRequestRestControllerUnitTest {
     protected WebApplicationContext context;
 
     @MockBean
-    private RetakeExamRequestService service;
+    private ExamRetakeRequestService service;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
     @Test
     public void shouldReturnRetakeExamRequestListWithStatusOk()
             throws Exception {
-        String name = "marc";
+        String name = "Marc";
         Student student = Student.builder()
-                    .name(name)
-                    .permanentCode("ABCD12345678")
-                    .email(name + "@courrier.uqam.ca")
-                    .phone("1111111111")
-                    .build();
+                .name(name)
+                .permanentCode("ABCD12345678")
+                .email(name + "@courrier.uqam.ca")
+                .phone("1111111111")
+                .build();
         Justificative justificative = Justificative.builder()
-                    .description("justificatif 1")
-                    .url("/files/file1")
-                    .build();
+                .description("justificatif 1")
+                .url("/files/file1")
+                .build();
         List<Justificative> justificatives = Arrays.asList(justificative);
         Status status = Status.builder()
                 .typeStatus(TypeStatus.SUBMITTED)
                 .dateTime(LocalDateTime.now())
                 .build();
         List<Status> statusList = Arrays.asList(status);
-        RetakeExamRequest dre = RetakeExamRequest.builder()
-                .absenceStartDate(LocalDate.of(2022,2,2))
-                .absenceEndDate(LocalDate.of(2022,2,10))
+        ExamRetakeRequest examRR = ExamRetakeRequest.builder()
+                .absenceStartDate(LocalDate.of(2022, 2, 2))
+                .absenceEndDate(LocalDate.of(2022, 2, 10))
                 .owner(student)
                 .listJustificative(justificatives)
                 .reason(Reason.MEDICAL)
                 .statusList(statusList)
                 .absenceDetails("Intervention chirurgicale programmée")
                 .build();
-        List<RetakeExamRequest> listDre = Arrays.asList(dre);
-        when(service.getAllRetakeExamRequest()).thenReturn(listDre);
-        this.mockMvc.perform(get("/api/demandes")
-                        .contentType(MediaType.APPLICATION_JSON))
+        List<ExamRetakeRequest> examRRList = Arrays.asList(examRR);
+        when(service.getAllExamRetakeRequest()).thenReturn(examRRList);
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].reason", is(dre.getReason().toString())))
-                .andExpect(jsonPath("$[0].owner.name", is(dre.getOwner().getName())));
+                .andExpect(jsonPath("$[0].reason", is(examRR.getReason().toString())))
+                .andExpect(jsonPath("$[0].owner.name", is(examRR.getOwner().getName())));
     }
 
     @Test
     public void shouldReturnStatusNotFound()
             throws Exception {
-        this.mockMvc.perform(get("/api/demande")
-                        .contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 

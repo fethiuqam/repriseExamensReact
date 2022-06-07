@@ -1,7 +1,7 @@
 package ca.uqam.repriseexamen.controller;
 
-import ca.uqam.repriseexamen.model.RetakeExamRequest;
-import ca.uqam.repriseexamen.service.RetakeExamRequestService;
+import ca.uqam.repriseexamen.model.ExamRetakeRequest;
+import ca.uqam.repriseexamen.service.ExamRetakeRequestService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +12,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/demandes")
 @AllArgsConstructor
-public class RetakeExamRequestRestController {
+public class ExamRetakeRequestRestController {
 
-    private RetakeExamRequestService retakeExamRequestService;
+    private ExamRetakeRequestService examRetakeRequestService;
 
     @GetMapping("")
-    public List<RetakeExamRequest> getAllRetakeExamRequest(){
-        return retakeExamRequestService.getAllRetakeExamRequest();
+    public List<ExamRetakeRequest> getAllRetakeExamRequest(){
+        return examRetakeRequestService.getAllExamRetakeRequest();
     }
 
 }

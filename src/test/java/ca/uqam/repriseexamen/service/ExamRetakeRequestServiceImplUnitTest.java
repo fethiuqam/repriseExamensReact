@@ -1,6 +1,6 @@
 package ca.uqam.repriseexamen.service;
 
-import ca.uqam.repriseexamen.dao.RetakeExamRequestRepository;
+import ca.uqam.repriseexamen.dao.ExamRetakeRequestRepository;
 import ca.uqam.repriseexamen.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,19 +22,19 @@ import java.util.stream.Stream;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RetakeExamRequestServiceImplUnitTest {
+public class ExamRetakeRequestServiceImplUnitTest {
 
     @Autowired
-    private RetakeExamRequestService service;
+    private ExamRetakeRequestService service;
 
     @MockBean
-    private RetakeExamRequestRepository repository;
+    private ExamRetakeRequestRepository repository;
 
-    private List<RetakeExamRequest> dreList;
+    private List<ExamRetakeRequest> errList;
 
     @Before
-    public void setUp(){
-        this.dreList = new ArrayList<>();
+    public void setUp() {
+        this.errList = new ArrayList<>();
         List<Student> students = new ArrayList<>();
         Stream.of("Marc", "Richard", "Jean").forEach(name -> {
             Student student = Student.builder()
@@ -54,7 +56,7 @@ public class RetakeExamRequestServiceImplUnitTest {
                     .dateTime(LocalDateTime.now())
                     .build();
             List<Status> statusList = Arrays.asList(status);
-            RetakeExamRequest dre = RetakeExamRequest.builder()
+            ExamRetakeRequest examRR = ExamRetakeRequest.builder()
                     .absenceStartDate(LocalDate.of(2022, 2, 2))
                     .absenceEndDate(LocalDate.of(2022, 2, 10))
                     .owner(student)
@@ -63,18 +65,18 @@ public class RetakeExamRequestServiceImplUnitTest {
                     .statusList(statusList)
                     .absenceDetails("Intervention chirurgicale programmée")
                     .build();
-            this.dreList.add(dre);
+            this.errList.add(examRR);
         });
     }
 
     @Test
-    public void testGetMangasByTitle() {
-        when(repository.findAll()).thenReturn(this.dreList);
-        List<RetakeExamRequest> result = service.getAllRetakeExamRequest();
+    public void shouldReturnExamRetakeRequestList() {
+        when(repository.findAll()).thenReturn(this.errList);
+        List<ExamRetakeRequest> result = service.getAllExamRetakeRequest();
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()
-                .allMatch(dre -> dre.getReason().equals(Reason.MEDICAL));
+                .allMatch(exanRR -> exanRR.getReason().equals(Reason.MEDICAL));
     }
 
 }

@@ -1,9 +1,9 @@
 package ca.uqam.repriseexamen.controller;
 
-import ca.uqam.repriseexamen.dao.RetakeExamRequestRepository;
+import ca.uqam.repriseexamen.dao.ExamRetakeRequestRepository;
 import ca.uqam.repriseexamen.dao.StudentRepository;
 import ca.uqam.repriseexamen.model.*;
-import ca.uqam.repriseexamen.service.RetakeExamRequestService;
+import ca.uqam.repriseexamen.service.ExamRetakeRequestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class RetakeExamRequestRestControllerIntegrationTest {
+public class ExamRetakeRequestRestControllerIntegrationTest {
 
     private MockMvc mockMvc;
 
@@ -38,13 +38,13 @@ public class RetakeExamRequestRestControllerIntegrationTest {
     private StudentRepository studentRepository;
 
     @Autowired
-    private RetakeExamRequestRepository retakeExamRequestRepository;
+    private ExamRetakeRequestRepository examRetakeRequestRepository;
 
     @Autowired
-    private RetakeExamRequestService service;
+    private ExamRetakeRequestService service;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
         Stream.of("Marc", "Richard", "Jean").forEach(name -> {
             Student student = Student.builder()
@@ -66,7 +66,7 @@ public class RetakeExamRequestRestControllerIntegrationTest {
                     .dateTime(LocalDateTime.now())
                     .build();
             List<Status> statusList = Arrays.asList(status);
-            RetakeExamRequest dre = RetakeExamRequest.builder()
+            ExamRetakeRequest examRR = ExamRetakeRequest.builder()
                     .absenceStartDate(LocalDate.of(2022, 2, 2))
                     .absenceEndDate(LocalDate.of(2022, 2, 10))
                     .owner(student)
@@ -75,7 +75,7 @@ public class RetakeExamRequestRestControllerIntegrationTest {
                     .statusList(statusList)
                     .absenceDetails("Intervention chirurgicale programmée")
                     .build();
-            retakeExamRequestRepository.save(dre);
+            examRetakeRequestRepository.save(examRR);
         });
     }
 
@@ -83,23 +83,21 @@ public class RetakeExamRequestRestControllerIntegrationTest {
     public void shouldReturnRetakeExamRequestListWithStatusOk()
             throws Exception {
 
-        this.mockMvc.perform(get("/api/demandes")
-                        .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", hasSize(9)))
-                        .andExpect(jsonPath("$[0].reason", is("MEDICAL")))
-                        .andExpect(jsonPath("$[0].owner.name", is("Marc")))
-                        .andExpect(jsonPath("$[1].owner.name", is("Richard")))
-                        .andExpect(jsonPath("$[2].owner.name", is("Jean")));
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(9)))
+                .andExpect(jsonPath("$[0].reason", is("MEDICAL")))
+                .andExpect(jsonPath("$[0].owner.name", is("Marc")))
+                .andExpect(jsonPath("$[1].owner.name", is("Richard")))
+                .andExpect(jsonPath("$[2].owner.name", is("Jean")));
     }
 
     @Test
     public void shouldReturnStatusNotFound()
             throws Exception {
 
-        this.mockMvc.perform(get("/api/demande")
-                        .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isNotFound());
+        this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 }

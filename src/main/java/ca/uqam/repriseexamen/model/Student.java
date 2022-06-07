@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,6 +20,6 @@ public class Student {
     private String phone;
     @OneToMany(mappedBy = "owner")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<RetakeExamRequest> listRetakeExamRequest;
+    private List<ExamRetakeRequest> listExamRetakeRequest;
 
 }
