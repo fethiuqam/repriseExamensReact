@@ -40,3 +40,6 @@ node
 node_modules
 junit.xml
 .npm
+
+### Docker Compose ###
+.env
