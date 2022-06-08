@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  nginx:
+    build: .
+    image: $NGINX_IMAGE_TAG
+    networks:
+      - test_app_network
+      - prod_app_network
+    ports:
+      - 80:80
+    restart: unless-stopped
+
+networks:
+  test_app_network:
+    external: true
+  prod_app_network:
+    external: true
