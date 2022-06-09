@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class Justificative {
+public class Justification {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

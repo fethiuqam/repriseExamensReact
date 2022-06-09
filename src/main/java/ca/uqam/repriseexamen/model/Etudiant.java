@@ -10,16 +10,16 @@ import java.util.List;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class Student {
+public class Etudiant {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String permanentCode;
-    private String name;
+    private String codePermanent;
+    private String nom;
     private String email;
-    private String phone;
-    @OneToMany(mappedBy = "owner")
+    private String telephone;
+    @OneToMany(mappedBy = "detenteur")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExamRetakeRequest> listExamRetakeRequest;
+    private List<DemandeRepriseExamen> listeDemandeRepriseExamen;
 
 }

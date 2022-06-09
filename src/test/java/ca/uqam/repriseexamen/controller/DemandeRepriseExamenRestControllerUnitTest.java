@@ -1,7 +1,7 @@
 package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.model.*;
-import ca.uqam.repriseexamen.service.ExamRetakeRequestService;
+import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ExamRetakeRequestRestControllerUnitTest {
+public class DemandeRepriseExamenRestControllerUnitTest {
 
     private MockMvc mockMvc;
 
@@ -34,7 +34,7 @@ public class ExamRetakeRequestRestControllerUnitTest {
     protected WebApplicationContext context;
 
     @MockBean
-    private ExamRetakeRequestService service;
+    private DemandeRepriseExamenService service;
 
     @Before
     public void setUp() {
@@ -42,45 +42,45 @@ public class ExamRetakeRequestRestControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnRetakeExamRequestListWithStatusOk()
+    public void devraitRetournerListeDREavecStatutOk()
             throws Exception {
-        String name = "Marc";
-        Student student = Student.builder()
-                .name(name)
-                .permanentCode("ABCD12345678")
-                .email(name + "@courrier.uqam.ca")
-                .phone("1111111111")
+        String nom = "Marc";
+        Etudiant etudiant = Etudiant.builder()
+                .nom(nom)
+                .codePermanent("ABCD12345678")
+                .email(nom + "@courrier.uqam.ca")
+                .telephone("1111111111")
                 .build();
-        Justificative justificative = Justificative.builder()
+        Justification justification = Justification.builder()
                 .description("justificatif 1")
                 .url("/files/file1")
                 .build();
-        List<Justificative> justificatives = Arrays.asList(justificative);
-        Status status = Status.builder()
-                .typeStatus(TypeStatus.SUBMITTED)
-                .dateTime(LocalDateTime.now())
+        List<Justification> justifications = Arrays.asList(justification);
+        Statut statut = Statut.builder()
+                .typeStatut(TypeStatut.SOUMISE)
+                .dateHeure(LocalDateTime.now())
                 .build();
-        List<Status> statusList = Arrays.asList(status);
-        ExamRetakeRequest examRR = ExamRetakeRequest.builder()
-                .absenceStartDate(LocalDate.of(2022, 2, 2))
-                .absenceEndDate(LocalDate.of(2022, 2, 10))
-                .owner(student)
-                .listJustificative(justificatives)
-                .reason(Reason.MEDICAL)
-                .statusList(statusList)
+        List<Statut> listeStatute = Arrays.asList(statut);
+        DemandeRepriseExamen examRR = DemandeRepriseExamen.builder()
+                .absenceDateDebut(LocalDate.of(2022, 2, 2))
+                .absenceDateFin(LocalDate.of(2022, 2, 10))
+                .detenteur(etudiant)
+                .listeJustification(justifications)
+                .motifAbsence(MotifAbsence.MEDICAL)
+                .listeStatut(listeStatute)
                 .absenceDetails("Intervention chirurgicale programmée")
                 .build();
-        List<ExamRetakeRequest> examRRList = Arrays.asList(examRR);
-        when(service.getAllExamRetakeRequest()).thenReturn(examRRList);
+        List<DemandeRepriseExamen> examRRList = Arrays.asList(examRR);
+        when(service.getAllDemandeRepriseExamen()).thenReturn(examRRList);
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].reason", is(examRR.getReason().toString())))
-                .andExpect(jsonPath("$[0].owner.name", is(examRR.getOwner().getName())));
+                .andExpect(jsonPath("$[0].motifAbsence", is(examRR.getMotifAbsence().toString())))
+                .andExpect(jsonPath("$[0].detenteur.nom", is(examRR.getDetenteur().getNom())));
     }
 
     @Test
-    public void shouldReturnStatusNotFound()
+    public void devraitRetournerStatutNonTrouve()
             throws Exception {
         this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
