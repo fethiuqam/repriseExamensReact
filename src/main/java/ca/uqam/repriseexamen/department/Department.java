@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Department {
     private @Id @GeneratedValue Long id;
-    private String name;
+    private String nom;
 }

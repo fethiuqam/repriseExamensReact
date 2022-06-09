@@ -1,9 +1,8 @@
 package ca.uqam.repriseexamen.controller;
 
-import ca.uqam.repriseexamen.dao.ExamRetakeRequestRepository;
-import ca.uqam.repriseexamen.dao.StudentRepository;
+import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
+import ca.uqam.repriseexamen.dao.EtudiantRepository;
 import ca.uqam.repriseexamen.model.*;
-import ca.uqam.repriseexamen.service.ExamRetakeRequestService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ExamRetakeRequestRestControllerIntegrationTest {
+public class DemandeRepriseExamenControllerIntegrationTest {
 
     private MockMvc mockMvc;
 
@@ -35,65 +34,62 @@ public class ExamRetakeRequestRestControllerIntegrationTest {
     protected WebApplicationContext context;
 
     @Autowired
-    private StudentRepository studentRepository;
+    private EtudiantRepository etudiantRepository;
 
     @Autowired
-    private ExamRetakeRequestRepository examRetakeRequestRepository;
-
-    @Autowired
-    private ExamRetakeRequestService service;
+    private DemandeRepriseExamenRepository DemandeRepriseExamenRepository;
 
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
-        Stream.of("Marc", "Richard", "Jean").forEach(name -> {
-            Student student = Student.builder()
-                    .name(name)
-                    .permanentCode("ABCD12345678")
-                    .email(name + "@courrier.uqam.ca")
-                    .phone("1111111111")
+        Stream.of("Marc", "Richard", "Jean").forEach(nom -> {
+            Etudiant etudiant = Etudiant.builder()
+                    .nom(nom)
+                    .codePermanent("ABCD12345678")
+                    .email(nom + "@courrier.uqam.ca")
+                    .telephone("1111111111")
                     .build();
-            studentRepository.save(student);
+            etudiantRepository.save(etudiant);
         });
-        studentRepository.findAll().forEach(student -> {
-            Justificative justificative = Justificative.builder()
+        etudiantRepository.findAll().forEach(etudiant -> {
+            Justification justification = Justification.builder()
                     .description("justificatif 1")
                     .url("/files/file1")
                     .build();
-            List<Justificative> justificatives = Arrays.asList(justificative);
-            Status status = Status.builder()
-                    .typeStatus(TypeStatus.SUBMITTED)
-                    .dateTime(LocalDateTime.now())
+            List<Justification> justifications = Arrays.asList(justification);
+            Statut statut = Statut.builder()
+                    .typeStatut(TypeStatut.SOUMISE)
+                    .dateHeure(LocalDateTime.now())
                     .build();
-            List<Status> statusList = Arrays.asList(status);
-            ExamRetakeRequest examRR = ExamRetakeRequest.builder()
-                    .absenceStartDate(LocalDate.of(2022, 2, 2))
-                    .absenceEndDate(LocalDate.of(2022, 2, 10))
-                    .owner(student)
-                    .listJustificative(justificatives)
-                    .reason(Reason.MEDICAL)
-                    .statusList(statusList)
+            List<Statut> listeStatut = Arrays.asList(statut);
+            DemandeRepriseExamen examRR = DemandeRepriseExamen.builder()
+                    .absenceDateDebut(LocalDate.of(2022, 2, 2))
+                    .absenceDateFin(LocalDate.of(2022, 2, 10))
+                    .detenteur(etudiant)
+                    .listeJustification(justifications)
+                    .motifAbsence(MotifAbsence.MEDICAL)
+                    .listeStatut(listeStatut)
                     .absenceDetails("Intervention chirurgicale programmée")
                     .build();
-            examRetakeRequestRepository.save(examRR);
+            DemandeRepriseExamenRepository.save(examRR);
         });
     }
 
     @Test
-    public void shouldReturnRetakeExamRequestListWithStatusOk()
+    public void devraitRetournerListeDREavecStatutOk()
             throws Exception {
 
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(9)))
-                .andExpect(jsonPath("$[0].reason", is("MEDICAL")))
-                .andExpect(jsonPath("$[0].owner.name", is("Marc")))
-                .andExpect(jsonPath("$[1].owner.name", is("Richard")))
-                .andExpect(jsonPath("$[2].owner.name", is("Jean")));
+                .andExpect(jsonPath("$[0].motifAbsence", is("MEDICAL")))
+                .andExpect(jsonPath("$[0].detenteur.nom", is("Marc")))
+                .andExpect(jsonPath("$[1].detenteur.nom", is("Richard")))
+                .andExpect(jsonPath("$[2].detenteur.nom", is("Jean")));
     }
 
     @Test
-    public void shouldReturnStatusNotFound()
+    public void devraitRetournerStatutNonTrouve()
             throws Exception {
 
         this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))

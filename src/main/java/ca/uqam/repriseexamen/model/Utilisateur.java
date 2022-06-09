@@ -20,10 +20,10 @@ import java.util.List;
 
 public class Utilisateur {
     private @Id @GeneratedValue Long id;
-    private String name;
-    private String firstName;
+    private String nom;
+    private String prenom;
     private String codeMs;
-    private String password;
+    private String motDePasse;
 
     @ElementCollection(targetClass=Role.class)
     private List<Role> roles;

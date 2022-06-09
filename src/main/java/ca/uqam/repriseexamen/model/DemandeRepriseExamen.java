@@ -11,20 +11,20 @@ import java.util.List;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class ExamRetakeRequest {
+public class DemandeRepriseExamen {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate absenceStartDate;
-    private LocalDate absenceEndDate;
-    private Reason reason;
+    private LocalDate absenceDateDebut;
+    private LocalDate absenceDateFin;
+    private MotifAbsence motifAbsence;
     private String absenceDetails;
     @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Status> statusList;
+    private List<Statut> listeStatut;
     @ManyToOne
-    private Student owner;
+    private Etudiant detenteur;
     @OneToMany(cascade = CascadeType.PERSIST)
-    private List<Justificative> listJustificative;
+    private List<Justification> listeJustification;
 
 
 

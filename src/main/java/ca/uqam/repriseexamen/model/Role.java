@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Role {
     private @Id @GeneratedValue Long id;
-    private String name;
+    private String nom;
 
     @ElementCollection(targetClass = Permission.class)
     private List<Permission> permissions;

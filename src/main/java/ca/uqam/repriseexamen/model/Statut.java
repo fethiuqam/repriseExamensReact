@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class Status {
+public class Statut {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private LocalDateTime dateTime;
-    private TypeStatus typeStatus;
+    private LocalDateTime dateHeure;
+    private TypeStatut typeStatut;
 
 }

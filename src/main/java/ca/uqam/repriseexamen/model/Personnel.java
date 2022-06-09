@@ -7,11 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Staff extends Utilisateur {
-    private int employeeId;
+public class Personnel extends Utilisateur {
+    private int employeId;
 }
