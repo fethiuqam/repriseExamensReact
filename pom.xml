@@ -63,6 +63,34 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.8</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.17.0</version>
+        <configuration>
+          <verbose>true</verbose>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
@@ -113,6 +141,15 @@
             </goals>
             <configuration>
               <arguments>run test:ci</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>npm run lint</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run lint</arguments>
             </configuration>
           </execution>
           <execution>
@@ -171,14 +208,14 @@
           </execution>
         </executions>
       </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-                <source>17</source>
-                <target>17</target>
-            </configuration>
-        </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>17</source>
+          <target>17</target>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
