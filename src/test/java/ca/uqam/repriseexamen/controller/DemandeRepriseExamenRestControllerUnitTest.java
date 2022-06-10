@@ -64,7 +64,7 @@ public class DemandeRepriseExamenRestControllerUnitTest {
         DemandeRepriseExamen examRR = DemandeRepriseExamen.builder()
                 .absenceDateDebut(LocalDate.of(2022, 2, 2))
                 .absenceDateFin(LocalDate.of(2022, 2, 10))
-                .detenteur(etudiant)
+                .etudiant(etudiant)
                 .listeJustification(justifications)
                 .motifAbsence(MotifAbsence.MEDICAL)
                 .listeStatut(listeStatute)
@@ -76,7 +76,7 @@ public class DemandeRepriseExamenRestControllerUnitTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].motifAbsence", is(examRR.getMotifAbsence().toString())))
-                .andExpect(jsonPath("$[0].detenteur.nom", is(examRR.getDetenteur().getNom())));
+                .andExpect(jsonPath("$[0].detenteur.nom", is(examRR.getEtudiant().getNom())));
     }
 
     @Test

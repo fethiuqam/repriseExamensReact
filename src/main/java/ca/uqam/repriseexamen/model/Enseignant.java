@@ -10,17 +10,16 @@ import java.util.List;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class Etudiant {
+public class Enseignant {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String codePermanent;
+    private String matricule;
     private String nom;
     private String prenom;
     private String email;
-    private String telephone;
-    @OneToMany(mappedBy = "etudiant")
+    @OneToMany(mappedBy = "enseignant")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<DemandeRepriseExamen> listeDemandeRepriseExamen;
+    private List<CoursGroupe> coursGroupeList;
 
 }

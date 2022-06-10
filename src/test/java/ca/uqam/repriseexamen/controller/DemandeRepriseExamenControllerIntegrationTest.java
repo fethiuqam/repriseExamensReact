@@ -65,7 +65,7 @@ public class DemandeRepriseExamenControllerIntegrationTest {
             DemandeRepriseExamen examRR = DemandeRepriseExamen.builder()
                     .absenceDateDebut(LocalDate.of(2022, 2, 2))
                     .absenceDateFin(LocalDate.of(2022, 2, 10))
-                    .detenteur(etudiant)
+                    .etudiant(etudiant)
                     .listeJustification(justifications)
                     .motifAbsence(MotifAbsence.MEDICAL)
                     .listeStatut(listeStatut)
