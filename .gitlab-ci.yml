@@ -29,19 +29,9 @@ verify:
         - frontend/junit.xml
 
 .deploy: &deploy
-  before_script:
-    - eval $(ssh-agent -s)
-    - echo "$SERVER_SSH_PRIVATE_KEY" | ssh-add -
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan $SERVER_IP_ADDRESS >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-  image: docker:20.10.16
-  services:
-    - docker:20.10.16-dind
   stage: deploy
   tags:
-    - dind
+    - deployment
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
@@ -52,10 +42,9 @@ verify:
     - echo "APP_IMAGE_TAG=$CI_REGISTRY_IMAGE/app:$ENV_TAG"  >> .env
     - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
     - echo "HOST_PORT=$HOST_PORT" >> .env
-    - docker-compose build
-    - docker-compose push
-    - docker-compose --host "ssh://$SERVER_GITLAB_USER@$SERVER_IP_ADDRESS" --project-name $ENV_TAG pull
-    - docker-compose --host "ssh://$SERVER_GITLAB_USER@$SERVER_IP_ADDRESS" --project-name $ENV_TAG up --detach
+    - docker compose build
+    - docker compose push
+    - docker compose --project-name $ENV_TAG up --detach
 
 deploy_test:
   <<: *deploy_app
@@ -83,7 +72,6 @@ deploy_proxy:
     - docker login --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - cd ./nginx
     - echo "NGINX_IMAGE_TAG=$CI_REGISTRY_IMAGE/nginx" >> .env
-    - docker-compose build
-    - docker-compose push
-    - docker-compose --host "ssh://$SERVER_GITLAB_USER@$SERVER_IP_ADDRESS" pull
-    - docker-compose --host "ssh://$SERVER_GITLAB_USER@$SERVER_IP_ADDRESS" up --detach
+    - docker compose build
+    - docker compose push
+    - docker compose up --detach
