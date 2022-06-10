@@ -23,7 +23,7 @@ public class ReprisesExamensApplication {
         SpringApplication.run(ReprisesExamensApplication.class, args);
     }
 
-    @Bean
+    //@Bean
     CommandLineRunner generateDataForTest(DemandeRepriseExamenRepository DemandeRepriseExamenRepository,
                                           EtudiantRepository etudiantRepository,
                                           EnseignantRepository enseignantRepository,
