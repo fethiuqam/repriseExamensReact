@@ -14,15 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +32,6 @@ public class DemandeRepriseExamenRestControllerUnitTest {
     protected WebApplicationContext context;
     @MockBean
     private DemandeRepriseExamenService service;
-
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -92,7 +88,5 @@ public class DemandeRepriseExamenRestControllerUnitTest {
                         .session(Session.AUTOMNE)
                         .build()
         );
-
     }
-
 }

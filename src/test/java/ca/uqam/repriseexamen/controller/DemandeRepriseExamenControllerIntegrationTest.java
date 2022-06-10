@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class DemandeRepriseExamenControllerIntegrationTest {
 
     private MockMvc mockMvc;
-
     @Autowired
     protected WebApplicationContext context;
     @Autowired
