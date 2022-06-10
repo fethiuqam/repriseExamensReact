@@ -1,6 +1,6 @@
 package ca.uqam.repriseexamen.controller;
 
-import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ public class DemandeRepriseExamenController {
     private DemandeRepriseExamenService demandeRepriseExamenService;
 
     @GetMapping("")
-    public List<DemandeRepriseExamen> getAllDemandeRepriseExamen(){
+    public List<LigneDRECommisDTO> getAllDemandeRepriseExamen(){
         return demandeRepriseExamenService.getAllDemandeRepriseExamen();
     }
 
