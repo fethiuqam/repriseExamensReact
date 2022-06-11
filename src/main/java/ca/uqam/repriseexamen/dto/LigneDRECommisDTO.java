@@ -14,8 +14,8 @@ public class LigneDRECommisDTO {
     private TypeStatut statutCourant;
     private String nomEtudiant;
     private String codePermanentEtudiant;
-    private String nomEnseignat;
-    private String matriculeEnseignat;
+    private String nomEnseignant;
+    private String matriculeEnseignant;
     private String sigleCours;
     private String groupe;
     private Session session;
