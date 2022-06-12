@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,14 +18,14 @@ public class DemandeRepriseExamen {
     private LocalDate absenceDateFin;
     private MotifAbsence motifAbsence;
     private String absenceDetails;
+    private String descriptionExamen;
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<Statut> listeStatut;
     @ManyToOne
-    private Etudiant detenteur;
+    private Etudiant etudiant;
     @OneToMany(cascade = CascadeType.PERSIST)
     private List<Justification> listeJustification;
-
-
-
+    @ManyToOne
+    private CoursGroupe coursGroupe;
 
 }
