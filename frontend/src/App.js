@@ -1,35 +1,19 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React from 'react';
+import './App.css';
+import NavBar from './components/Navbar';
+import AppRouter from "./components/RouterComponent";
+import {Container} from "@material-ui/core";
 
 function App() {
-  const [greeting, setGreeting] = useState();
-
-  React.useEffect(() => {
-    fetch("/helloworld")
-      .then((response) => response.text())
-      .then((text) => setGreeting(text));
-  }, [greeting]);
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{greeting}</p>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <NavBar/>
+            <Container>
+                <AppRouter/>
+            </Container>
+        </div>
+    );
 }
 
 export default App;
+
