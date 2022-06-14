@@ -2,6 +2,7 @@ package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
 import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
+import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
 import ca.uqam.repriseexamen.dtomapper.DemandeRepriseExamenMapper;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.TypeStatut;
@@ -18,12 +19,24 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
 
     private DemandeRepriseExamenRepository DemandeRepriseExamenRepository;
     private DemandeRepriseExamenMapper demandeRepriseExamenMapper;
+
     @Override
     public List<LigneDRECommisDTO> getAllDemandeRepriseExamen() {
         List<DemandeRepriseExamen> listeDRE = DemandeRepriseExamenRepository.findAll();
+
         return listeDRE.stream()
                 .map(dre -> demandeRepriseExamenMapper.ligneDRECommisMapper(dre))
                 .filter(dreDTO -> !dreDTO.getStatutCourant().equals(TypeStatut.ENREGISTREE))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LigneDREEtudiantDTO> getAllDemandeRepriseExamenEtudiant(long id) {
+        List<DemandeRepriseExamen> listeDRE = DemandeRepriseExamenRepository.findAll().stream()
+                .filter(dre -> dre.getEtudiant().getId() == id).collect(Collectors.toList());
+
+        return listeDRE.stream()
+                .map(dre -> demandeRepriseExamenMapper.ligneDREEtudiantMapper(dre))
                 .collect(Collectors.toList());
     }
 }
