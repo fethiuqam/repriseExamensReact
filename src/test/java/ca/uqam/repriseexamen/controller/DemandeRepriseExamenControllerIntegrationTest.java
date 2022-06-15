@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDate;
@@ -162,9 +163,9 @@ public class DemandeRepriseExamenControllerIntegrationTest {
 
 	@Test
 	public void devraitRetournerListeDRECommisDTOavecStatutOk() throws Exception {
-
-		this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
+		this.mockMvc.perform(get("/api/demandes?projection=demandeCommis").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
+				.andDo(MockMvcResultHandlers.print())
 				.andExpect(jsonPath("$", hasSize(1)))
 				.andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
 				.andExpect(jsonPath("$[0].sigleCours", is("INF1120")));
@@ -172,7 +173,6 @@ public class DemandeRepriseExamenControllerIntegrationTest {
 
 	@Test
 	public void devraitRetournerListeDREEtudiantDTOavecStatutOk() throws Exception {
-
 		this.mockMvc.perform(get("/api/etudiants/1/demandes").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$", hasSize(1)))
@@ -182,7 +182,6 @@ public class DemandeRepriseExamenControllerIntegrationTest {
 
 	@Test
 	public void devraitRetournerStatutNonTrouve() throws Exception {
-
 		this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 	}

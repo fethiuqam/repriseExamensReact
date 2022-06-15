@@ -19,6 +19,6 @@ public class Etudiant {
     private String email;
     private String telephone;
     @OneToMany(mappedBy = "etudiant")
-    private List<DemandeRepriseExamen> listeDemandeRepriseExamen;
+    private List<DemandeRepriseExamen> demandes;
 
 }
