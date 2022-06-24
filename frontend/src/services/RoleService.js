@@ -1,29 +1,28 @@
-import axios from 'axios'
+import axios from 'axios';
 
-const ROLES_REST_API_URL = 'http://localhost:8080/api/roles';
+const ROLE_API_BASE_URL = "http://localhost:8080/api/roles";
 
 class RoleService {
 
-    // lISTER LES ROLES
-    getRoles(){
-        return axios.get(ROLES_REST_API_URL);
+    obtenirRoles(){
+        return axios.get("http://localhost:8080/roles");
     }
 
-    // SUPPRIMER LES ROLES
-    deleteRoLE(roleId) {
-        return axios.delete(ROLES_REST_API_URL + '/' + roleId);
+    creerRole(role){
+        return axios.post(ROLE_API_BASE_URL, role);
     }
 
-    // CREER UN ROLES
-    addRole(role) {
-        return axios.post(""+ROLES_REST_API_URL, role);
+    obtenirRoleParId(roleId){
+        return axios.get(ROLE_API_BASE_URL + '/' + roleId);
     }
 
-    // MODIFIER ROLE
-    editRole(role) {
-        return axios.put(ROLES_REST_API_URL + '/' + role.id, role);
+    modifierRole(roleId,role){
+        return axios.put(ROLE_API_BASE_URL + '/' + roleId, role);
+    }
+
+    supprimerRole(roleId){
+        return axios.delete(ROLE_API_BASE_URL + '/' + roleId);
     }
 }
 
-export default new RoleService();
-
+export default new RoleService()

@@ -10,7 +10,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {
-    private @Id @GeneratedValue Long id;
+
+    @Id
+    @GeneratedValue
+    private Long id;
 
     private String nom;
 
