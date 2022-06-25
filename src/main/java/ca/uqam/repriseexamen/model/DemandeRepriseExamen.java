@@ -26,11 +26,11 @@ public class DemandeRepriseExamen {
     private MotifAbsence motifAbsence;
     private String absenceDetails;
     private String descriptionExamen;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
     private List<Statut> listeStatut;
     @ManyToOne
     private Etudiant etudiant;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
     private List<Justification> listeJustification;
     @ManyToOne
     private CoursGroupe coursGroupe;
@@ -55,7 +55,7 @@ public class DemandeRepriseExamen {
         @Value("#{target.getEtudiant().getCodePermanent()}")
         String getCodePermanentEtudiant();
 
-        @Value("#{target.getCoursGroupe().getEnseignant().getPrenom() + ' ' target.getCoursGroupe().getEnseignant().getNom()}")
+        @Value("#{target.getCoursGroupe().getEnseignant().getPrenom() + ' ' + target.getCoursGroupe().getEnseignant().getNom()}")
         String getNomEnseignant();
 
         @Value("#{target.getCoursGroupe().getEnseignant().getMatricule()}")
