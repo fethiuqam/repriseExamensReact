@@ -1,8 +1,9 @@
 package ca.uqam.repriseexamen.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Value;
 
-public interface LigneDRECommisDTO extends LigneDREDTO {
+public interface LigneDREEnseignantDTO extends LigneDREDTO {
 
     @Value("#{target.getEtudiant().getPrenom() + ' ' + target.getEtudiant().getNom()}")
     String getNomEtudiant();
@@ -10,7 +11,8 @@ public interface LigneDRECommisDTO extends LigneDREDTO {
     @Value("#{target.getEtudiant().getCodePermanent()}")
     String getCodePermanentEtudiant();
 
-    @Value("#{target.getCoursGroupe().getEnseignant().getMatricule()}")
-    String getMatriculeEnseignant();
+    @JsonIgnore
+    @Value("#{target.getCoursGroupe().getEnseignant().getId()}")
+    Long getEnseignantId();
 
 }

@@ -45,4 +45,12 @@ public class DemandeRepriseExamen {
         return statutCourant.map(Statut::getTypeStatut).orElse(null);
     }
 
+    public Long getEnseignantId(){
+        return coursGroupe.getEnseignant().getId();
+    }
+
+    public Long getEtudiantId(){
+        return etudiant.getId();
+    }
+
 }

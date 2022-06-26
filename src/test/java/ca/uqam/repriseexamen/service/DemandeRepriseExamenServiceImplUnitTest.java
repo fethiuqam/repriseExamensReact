@@ -2,6 +2,7 @@ package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
 import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
+import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
 import ca.uqam.repriseexamen.model.*;
 import org.junit.Before;
@@ -11,8 +12,6 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.projection.ProjectionFactory;
-import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -135,32 +134,6 @@ public class DemandeRepriseExamenServiceImplUnitTest {
                 .build();
 
         this.listeDRE = Arrays.asList(dre1, dre2);
-
-//        LigneDRECommisDTO ligneDRE = this.factory.(LigneDRECommisDTO.class);
-//        ligneDRE.setId(1L);
-//        ligneDRE.setDateHeureSoumission(LocalDateTime.of(2022, 2, 1, 8, 22, 23));
-//        ligneDRE.setStatutCourant(TypeStatut.SOUMISE);
-//        ligneDRE.setNomEtudiant("Marc Marshall");
-//        ligneDRE.setCodePermanentEtudiant("AAAA12345678");
-//        ligneDRE.setNomEnseignant("Lord Melanie");
-//        ligneDRE.setMatriculeEnseignant("CCCC12345678");
-//        ligneDRE.setSigleCours("INF1120");
-//        ligneDRE.setGroupe("030");
-//        ligneDRE.setSession(Session.HIVER);
-//
-//        LigneDRECommisDTO ligneDRE2 = this.factory.createProjection(LigneDRECommisDTO.class);
-//        ligneDRE2.setId(1L);
-//        ligneDRE2.setDateHeureSoumission(LocalDateTime.of(2021, 1, 31, 8, 22, 23));
-//        ligneDRE2.setStatutCourant(TypeStatut.ACCEPTEE);
-//        ligneDRE2.setNomEtudiant("Jack Morisson");
-//        ligneDRE2.setCodePermanentEtudiant("BBBB12345678");
-//        ligneDRE2.setNomEnseignant("Lord Melanie");
-//        ligneDRE2.setMatriculeEnseignant("CCCC12345678");
-//        ligneDRE2.setSigleCours("INF2120");
-//        ligneDRE2.setGroupe("030");
-//        ligneDRE2.setSession(Session.AUTOMNE);
-//
-//        this.listeLigneDTO = Arrays.asList(ligneDRE, ligneDRE2);
     }
 
     @Test
@@ -169,7 +142,7 @@ public class DemandeRepriseExamenServiceImplUnitTest {
         when(ligneDRE2.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
 
         when(repository.findLigneDRECommisDTOBy()).thenReturn(Arrays.asList(ligneDRE1, ligneDRE2));
-        List<LigneDRECommisDTO> result = service.getAllDemandeRepriseExamen();
+        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenCommis();
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()

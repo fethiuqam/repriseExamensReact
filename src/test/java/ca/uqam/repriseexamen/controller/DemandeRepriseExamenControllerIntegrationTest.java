@@ -35,7 +35,7 @@ public class DemandeRepriseExamenControllerIntegrationTest {
     public void devraitRetournerListeDRECommisDTOavecStatutOk()
             throws Exception {
 
-        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes?role=commis").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
@@ -48,6 +48,14 @@ public class DemandeRepriseExamenControllerIntegrationTest {
 
         this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void devraitRetournerStatutMauvaiseRequete()
+            throws Exception {
+
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
 }
