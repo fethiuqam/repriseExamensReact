@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import RoleService from '../services/RoleService'
-import {Table} from "@material-ui/core";
+import {Button, Table} from "@material-ui/core";
 
 class VoirUnRoleComponent extends Component {
     constructor(props) {
@@ -8,44 +7,48 @@ class VoirUnRoleComponent extends Component {
 
         this.state = {
             id: this.props.match.params.id,
-            roles: {}
+            nom: '',
+            permissions: []
         }
+
     }
 
-    componentDidMount() {
-        RoleService.obtenirRoleParId(this.state.id).then(res => {
-            this.setState({roles: res.data});
-        })
+    async componentDidMount() {
+        fetch(`/roles/${this.state.id}`)
+            .then(response => response.json())
+            .then(data => this.setState({nom: data.nom, permissions: data.permissions}));
+    }
+
+    cancel() {
+        this.props.history.push('/roles');
     }
 
     render() {
-
-        const clientList = this.state.permissions.map(permission => {
-            return <tr>
-                <td style={{whiteSpace: 'nowrap'}}>{permission}</td>
-            </tr>
-        });
-
         return (
             <div>
+                <h2 className="text-center">Roles num : {this.state.id}</h2>
                 <br></br>
-                <div className="card col-md-6 offset-md-3">
-                    <h3 className="text-center"> Role Details </h3>
-                    <div className="card-body">
-                        <div className="row">
-                            <label> Nom: </label>
-                            <div> {this.state.roles.nom}</div>
-                        </div>
-                        <Table className="mt-4">
-                            <thead>
-                            Permissions
-                            </thead>
-                            <tbody>
-                            {clientList}
-                            </tbody>
-                        </Table>
-                    </div>
+                <div className="row">
+                    <h3>{this.state.nom}</h3>
+                    <table className="table table-striped table-bordered">
+
+                        <thead>
+                        <tr>
+                            <th> Permissiosn</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {this.state.permissions.map(perm =>
+                                <td>{perm}</td>
+                            )}
+                        </tr>
+                        </tbody>
+                    </table>
+                    <Button color="secondary" onClick={this.cancel.bind(this)}>Retour</Button>
+
                 </div>
+
             </div>
         )
     }

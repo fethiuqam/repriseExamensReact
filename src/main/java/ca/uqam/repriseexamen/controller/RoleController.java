@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/roles")
 public class RoleController {
 
     private final RoleRepository roleRepository;
@@ -20,19 +19,10 @@ public class RoleController {
         this.roleRepository = roleRepository;
     }
 
-    @GetMapping
+
+    @GetMapping("/roles")
     public List<Role> getRoles() {
         return roleRepository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public Role getRole(@PathVariable Long id) {
-        return roleRepository.findById(id).orElseThrow(RuntimeException::new);
-    }
-
-    @PostMapping("/roles")
-    public Role createRole(@RequestBody Role role) {
-        return roleRepository.save(role);
     }
 
     // obtenir role by id rest api
@@ -41,6 +31,12 @@ public class RoleController {
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Le role n'existe pas avec cet :" + id));
         return ResponseEntity.ok(role);
+    }
+
+
+    @PostMapping("/roles")
+    public Role createRole(@RequestBody Role role) {
+        return roleRepository.save(role);
     }
 
     // modifier role rest api

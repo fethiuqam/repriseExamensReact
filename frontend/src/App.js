@@ -5,8 +5,7 @@ import ListRoleComponent from './components/ListRoleComponent';
 import EnTeteComponent from './components/EnTeteComponent';
 import PiedDePageComponent from './components/PiedDePageComponent';
 import CreerRoleComponent from './components/CreerRoleComponent';
-import ModifierRoleComponent from './components/ModifierRoleComponent';
-//import VoirUnRoleComponent from './components/VoirUnRoleComponent';
+import VoirUnRoleComponent from './components/VoirUnRoleComponent';
 
 function App() {
     return (
@@ -16,10 +15,9 @@ function App() {
                 <div className="container">
                     <Switch>
                         <Route path = "/" exact component = {ListRoleComponent}></Route>
-                        <Route path = "/roles" component = {ListRoleComponent}></Route>
-                        <Route path = "/add-roles/:id" component = {CreerRoleComponent}></Route>
-                        {/*<Route path = "/view-roles/:id" component = {VoirUnRoleComponent}></Route>*/}
-                        <Route path = "/update-roles/:id" component = {ModifierRoleComponent}></Route>
+                        <Route path = "/roles" exact component = {ListRoleComponent}></Route>
+                        <Route path = "/roles/:id" component = {CreerRoleComponent}></Route>
+                        <Route path = "/voir-roles/:id" component = {VoirUnRoleComponent}></Route>
                     </Switch>
                 </div>
                 <PiedDePageComponent />
