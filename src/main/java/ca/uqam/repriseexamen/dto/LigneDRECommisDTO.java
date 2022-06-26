@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
 import org.springframework.beans.factory.annotation.Value;
 import java.time.LocalDateTime;
 
-@JsonSerializableSchema
 public interface LigneDRECommisDTO {
 
     @Value("#{target.getId()}")
