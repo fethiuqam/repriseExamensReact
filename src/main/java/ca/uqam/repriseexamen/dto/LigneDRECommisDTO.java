@@ -2,7 +2,6 @@ package ca.uqam.repriseexamen.dto;
 
 import ca.uqam.repriseexamen.model.Session;
 import ca.uqam.repriseexamen.model.TypeStatut;
-import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema;
 import org.springframework.beans.factory.annotation.Value;
 import java.time.LocalDateTime;
 
