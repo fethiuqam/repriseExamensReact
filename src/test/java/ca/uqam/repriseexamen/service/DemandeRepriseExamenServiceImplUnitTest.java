@@ -3,14 +3,16 @@ package ca.uqam.repriseexamen.service;
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
 import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
-import ca.uqam.repriseexamen.dtomapper.DemandeRepriseExamenMapper;
 import ca.uqam.repriseexamen.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,11 +27,15 @@ public class DemandeRepriseExamenServiceImplUnitTest {
 
     @Autowired
     private DemandeRepriseExamenService service;
-    @Autowired
-    private DemandeRepriseExamenMapper mapper;
     @MockBean
     private DemandeRepriseExamenRepository repository;
     private List<DemandeRepriseExamen> listeDRE;
+    private List<LigneDRECommisDTO> listeLigneDTO;
+
+    @Mock
+    private LigneDRECommisDTO ligneDRE1;
+    @Mock
+    private LigneDRECommisDTO ligneDRE2;
 
     @Before
     public void setUp() {
@@ -111,7 +117,7 @@ public class DemandeRepriseExamenServiceImplUnitTest {
                         .url("/files/file2.2")
                         .build());
 
-        List<Statut> listeStatut2 = Arrays.asList(Statut.builder()
+        List<Statut> listeStatut2 = List.of(Statut.builder()
                 .typeStatut(TypeStatut.ENREGISTREE)
                 .dateHeure(LocalDateTime.of(2021, 10, 15, 23, 14, 3))
                 .build());
@@ -129,11 +135,40 @@ public class DemandeRepriseExamenServiceImplUnitTest {
                 .build();
 
         this.listeDRE = Arrays.asList(dre1, dre2);
+
+//        LigneDRECommisDTO ligneDRE = this.factory.(LigneDRECommisDTO.class);
+//        ligneDRE.setId(1L);
+//        ligneDRE.setDateHeureSoumission(LocalDateTime.of(2022, 2, 1, 8, 22, 23));
+//        ligneDRE.setStatutCourant(TypeStatut.SOUMISE);
+//        ligneDRE.setNomEtudiant("Marc Marshall");
+//        ligneDRE.setCodePermanentEtudiant("AAAA12345678");
+//        ligneDRE.setNomEnseignant("Lord Melanie");
+//        ligneDRE.setMatriculeEnseignant("CCCC12345678");
+//        ligneDRE.setSigleCours("INF1120");
+//        ligneDRE.setGroupe("030");
+//        ligneDRE.setSession(Session.HIVER);
+//
+//        LigneDRECommisDTO ligneDRE2 = this.factory.createProjection(LigneDRECommisDTO.class);
+//        ligneDRE2.setId(1L);
+//        ligneDRE2.setDateHeureSoumission(LocalDateTime.of(2021, 1, 31, 8, 22, 23));
+//        ligneDRE2.setStatutCourant(TypeStatut.ACCEPTEE);
+//        ligneDRE2.setNomEtudiant("Jack Morisson");
+//        ligneDRE2.setCodePermanentEtudiant("BBBB12345678");
+//        ligneDRE2.setNomEnseignant("Lord Melanie");
+//        ligneDRE2.setMatriculeEnseignant("CCCC12345678");
+//        ligneDRE2.setSigleCours("INF2120");
+//        ligneDRE2.setGroupe("030");
+//        ligneDRE2.setSession(Session.AUTOMNE);
+//
+//        this.listeLigneDTO = Arrays.asList(ligneDRE, ligneDRE2);
     }
 
     @Test
     public void devraitRetournerListeDRECommisDTO() {
-        when(repository.findAll()).thenReturn(this.listeDRE);
+        when(ligneDRE1.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDRE2.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+
+        when(repository.findLigneDRECommisDTOBy()).thenReturn(Arrays.asList(ligneDRE1, ligneDRE2));
         List<LigneDRECommisDTO> result = service.getAllDemandeRepriseExamen();
         assertThat(result)
                 .isNotNull()
@@ -143,7 +178,7 @@ public class DemandeRepriseExamenServiceImplUnitTest {
 
     @Test
     public void devraitRetournerListeDREEtudiantDTO() {
-        when(repository.findAll()).thenReturn(this.listeDRE);
+        when(repository.findDemandeRepriseExamenBy()).thenReturn(this.listeDRE);
         List<LigneDREEtudiantDTO> result = service.getAllDemandeRepriseExamenEtudiant(1L);
         assertThat(result)
                 .isNotNull()

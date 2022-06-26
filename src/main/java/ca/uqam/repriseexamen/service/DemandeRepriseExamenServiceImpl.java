@@ -17,26 +17,26 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenService {
 
-    private DemandeRepriseExamenRepository DemandeRepriseExamenRepository;
+    private DemandeRepriseExamenRepository demandeRepriseExamenRepository;
     private DemandeRepriseExamenMapper demandeRepriseExamenMapper;
 
     @Override
     public List<LigneDRECommisDTO> getAllDemandeRepriseExamen() {
-        List<DemandeRepriseExamen> listeDRE = DemandeRepriseExamenRepository.findAll();
+        List<LigneDRECommisDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDRECommisDTOBy();
 
-        return listeDRE.stream()
-                .map(dre -> demandeRepriseExamenMapper.ligneDRECommisMapper(dre))
+        return listeLigneDRE.stream()
                 .filter(dreDTO -> !dreDTO.getStatutCourant().equals(TypeStatut.ENREGISTREE))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<LigneDREEtudiantDTO> getAllDemandeRepriseExamenEtudiant(long id) {
-        List<DemandeRepriseExamen> listeDRE = DemandeRepriseExamenRepository.findAll().stream()
-                .filter(dre -> dre.getEtudiant().getId() == id).collect(Collectors.toList());
+        List<DemandeRepriseExamen> listeDRE = demandeRepriseExamenRepository.findDemandeRepriseExamenBy().stream()
+                .filter(dre -> dre.getEtudiant().getId() == id).toList();
 
         return listeDRE.stream()
                 .map(dre -> demandeRepriseExamenMapper.ligneDREEtudiantMapper(dre))
                 .collect(Collectors.toList());
     }
+
 }

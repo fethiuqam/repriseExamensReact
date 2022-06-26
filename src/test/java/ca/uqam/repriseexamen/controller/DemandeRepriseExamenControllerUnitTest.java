@@ -7,6 +7,7 @@ import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,35 +28,23 @@ import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class DemandeRepriseExamenRestControllerUnitTest {
+public class DemandeRepriseExamenControllerUnitTest {
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext context;
     @MockBean
     private DemandeRepriseExamenService service;
 
+    @Mock
+    private LigneDRECommisDTO ligneDRECommis1;
+    @Mock
+    private LigneDRECommisDTO ligneDRECommis2;
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
-    @Test
-    public void devraitRetournerListeDRECommisAvecStatutOk()
-            throws Exception {
-        List<LigneDRECommisDTO> listeDRECommisDTO = genererListeDRECommisDTOPourTest();
-
-        when(service.getAllDemandeRepriseExamen()).thenReturn(listeDRECommisDTO);
-
-        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].dateHeureSoumission", is(listeDRECommisDTO.get(0)
-                        .getDateHeureSoumission().toString())))
-                .andExpect(jsonPath("$[0].sigleCours", is(listeDRECommisDTO.get(0).getSigleCours())))
-                .andExpect(jsonPath("$[1].dateHeureSoumission", is(listeDRECommisDTO.get(1)
-                        .getDateHeureSoumission().toString())))
-                .andExpect(jsonPath("$[1].sigleCours", is(listeDRECommisDTO.get(1).getSigleCours())));
-    }
 
     @Test
     public void devraitRetournerListeDREEtudiantAvecStatutOk()
@@ -80,34 +69,6 @@ public class DemandeRepriseExamenRestControllerUnitTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-    }
-
-    private List<LigneDRECommisDTO> genererListeDRECommisDTOPourTest() {
-        return Arrays.asList(
-                LigneDRECommisDTO.builder()
-                        .id(1L)
-                        .dateHeureSoumission(LocalDateTime.of(2022, 2, 1, 8, 22, 23))
-                        .statutCourant(TypeStatut.SOUMISE)
-                        .nomEtudiant("Marc Marshall")
-                        .codePermanentEtudiant("AAAA12345678")
-                        .nomEnseignant("Lord Melanie")
-                        .matriculeEnseignant("CCCC12345678")
-                        .sigleCours("INF1120")
-                        .groupe("030")
-                        .session(Session.HIVER)
-                        .build(),
-                LigneDRECommisDTO.builder()
-                        .id(2L)
-                        .dateHeureSoumission(LocalDateTime.of(2021, 1, 31, 8, 22, 23))
-                        .statutCourant(TypeStatut.ACCEPTEE)
-                        .nomEtudiant("Jack Morisson")
-                        .codePermanentEtudiant("BBBB12345678")
-                        .nomEnseignant("Lord Melanie")
-                        .matriculeEnseignant("CCCC12345678")
-                        .sigleCours("INF2120")
-                        .groupe("030")
-                        .session(Session.AUTOMNE)
-                        .build());
     }
 
     private List<LigneDREEtudiantDTO> genererListeDREEtudiantDTOPourTest() {
