@@ -10,6 +10,10 @@ public interface LigneDRECommisDTO extends LigneDREDTO {
     @Value("#{target.getEtudiant().getCodePermanent()}")
     String getCodePermanentEtudiant();
 
+    @Value("#{target.getCoursGroupe().getEnseignant().getPrenom() " +
+            "+ ' ' + target.getCoursGroupe().getEnseignant().getNom()}")
+    String getNomEnseignant();
+
     @Value("#{target.getCoursGroupe().getEnseignant().getMatricule()}")
     String getMatriculeEnseignant();
 
