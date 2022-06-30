@@ -26,10 +26,11 @@ public class DemandeRepriseExamenController {
 
             case "enseignant":
                 if (id != null)
-                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEnseignat(id);
+                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEnseignant(id);
 
-            case "etudiants":
-                // todo
+            case "etudiant":
+                if(id != null)
+                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEtudiant(id);
 
             default:
                 throw new IllegalArgumentException();

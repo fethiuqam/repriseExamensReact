@@ -29,12 +29,16 @@ public class DemandeRepriseExamenServiceImplUnitTest {
     @MockBean
     private DemandeRepriseExamenRepository repository;
     private List<DemandeRepriseExamen> listeDRE;
-    private List<LigneDRECommisDTO> listeLigneDTO;
 
     @Mock
-    private LigneDRECommisDTO ligneDRE1;
+    private LigneDRECommisDTO ligneDRECommis1;
     @Mock
-    private LigneDRECommisDTO ligneDRE2;
+    private LigneDRECommisDTO ligneDRECommis2;
+
+    @Mock
+    private LigneDREEtudiantDTO ligneDREEtudiant1;
+    @Mock
+    private LigneDREEtudiantDTO ligneDREEtudiant2;
 
     @Before
     public void setUp() {
@@ -138,10 +142,10 @@ public class DemandeRepriseExamenServiceImplUnitTest {
 
     @Test
     public void devraitRetournerListeDRECommisDTO() {
-        when(ligneDRE1.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDRE2.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDRECommis1.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDRECommis2.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
 
-        when(repository.findLigneDRECommisDTOBy()).thenReturn(Arrays.asList(ligneDRE1, ligneDRE2));
+        when(repository.findLigneDRECommisDTOBy()).thenReturn(Arrays.asList(ligneDRECommis1, ligneDRECommis2));
         List<LigneDREDTO> result = service.getAllDemandeRepriseExamenCommis();
         assertThat(result)
                 .isNotNull()
@@ -151,8 +155,11 @@ public class DemandeRepriseExamenServiceImplUnitTest {
 
     @Test
     public void devraitRetournerListeDREEtudiantDTO() {
-        when(repository.findDemandeRepriseExamenBy()).thenReturn(this.listeDRE);
-        List<LigneDREEtudiantDTO> result = service.getAllDemandeRepriseExamenEtudiant(1L);
+        when(ligneDREEtudiant1.getId()).thenReturn(1L);
+        when(ligneDREEtudiant2.getId()).thenReturn(2L);
+
+        when(repository.findLigneDREEtudiantDTOBy()).thenReturn(Arrays.asList(ligneDREEtudiant1, ligneDREEtudiant2));
+        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenEtudiant(1L);
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()

@@ -1,21 +1,13 @@
 package ca.uqam.repriseexamen.dto;
 
-import ca.uqam.repriseexamen.model.Session;
-import ca.uqam.repriseexamen.model.TypeStatut;
-import lombok.Builder;
-import lombok.Data;
-import java.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Value;
 
-@Data @Builder
-public class LigneDREEtudiantDTO {
+public interface LigneDREEtudiantDTO extends LigneDREDTO {
 
-    private Long id;
-    private LocalDateTime dateHeureSoumission;
-    private TypeStatut statutCourant;
-    private String nomEnseignant;
-    private String matriculeEnseignant;
-    private String sigleCours;
-    private String groupe;
-    private Session session;
+    @Value("#{target.getCoursGroupe().getEnseignant().getPrenom() + ' ' + target.getCoursGroupe().getEnseignant().getNom()}")
+    String getNomEnseignant();
+
+    @Value("#{target.getCoursGroupe().getEnseignant().getMatricule()")
+    String getMatriculeEnseignant();
 
 }
