@@ -2,6 +2,7 @@ package ca.uqam.repriseexamen.model;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Role {
-
 
     @Id
     @GeneratedValue
