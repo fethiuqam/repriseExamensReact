@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface DemandeRepriseExamenRepository extends JpaRepository<DemandeRepriseExamen, Long> {
 
-    List<DemandeRepriseExamen> findDemandeRepriseExamenBy();
     List<LigneDRECommisDTO> findLigneDRECommisDTOBy();
     List<LigneDREEnseignantDTO> findLigneDREEnseignantDTOBy();
     List<LigneDREEtudiantDTO> findLigneDREEtudiantDTOBy();

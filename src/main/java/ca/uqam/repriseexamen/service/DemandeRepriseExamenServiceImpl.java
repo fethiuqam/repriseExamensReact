@@ -43,7 +43,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         List<LigneDREEtudiantDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREEtudiantDTOBy();
 
         return listeLigneDRE.stream()
-                .filter(dre -> dre.getId() == id)
+                .filter(dre -> dre.getEtudiantId() == id)
                 .collect(Collectors.toList());
     }
 
