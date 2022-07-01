@@ -14,5 +14,7 @@ public class Justification {
     private long id;
     private String description;
     private String url;
+    @ManyToOne
+    private DemandeRepriseExamen demandeRepriseExamen;
 
 }
