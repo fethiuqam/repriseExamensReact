@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class DemandeRepriseExamen {
     private Long id;
     private LocalDate absenceDateDebut;
     private LocalDate absenceDateFin;
+    private LocalDate dateSoumission;
     private MotifAbsence motifAbsence;
     private String absenceDetails;
     private String descriptionExamen;
@@ -42,15 +44,28 @@ public class DemandeRepriseExamen {
     public TypeStatut getStatutCourant(){
         Optional<Statut> statutCourant = listeStatut.stream()
                 .max(Comparator.comparing(Statut::getDateHeure));
+                
         return statutCourant.map(Statut::getTypeStatut).orElse(null);
     }
 
     public Long getEnseignantId(){
-        return coursGroupe.getEnseignant().getId();
+        Long id = 0L;
+        
+        if(coursGroupe != null){
+            id = coursGroupe.getEnseignant().getId();
+        }
+
+        return id;
     }
 
     public Long getEtudiantId(){
-        return etudiant.getId();
+        Long id = 0L;
+        
+        if(etudiant != null){
+            id = etudiant.getId();
+        }
+
+        return id;
     }
 
 }

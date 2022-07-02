@@ -5,10 +5,16 @@ import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
+import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.Statut;
 import ca.uqam.repriseexamen.model.TypeStatut;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,4 +53,16 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {
+        Statut statutSoumission = Statut.builder().dateHeure(LocalDateTime.now()).typeStatut(TypeStatut.SOUMISE).build();
+
+        ArrayList<Statut> statuts = new ArrayList<>();
+        statuts.add(statutSoumission);
+
+        dre.setListeStatut(statuts);
+        dre.setDateSoumission(LocalDate.now());
+
+        return demandeRepriseExamenRepository.save(dre);
+    }
 }

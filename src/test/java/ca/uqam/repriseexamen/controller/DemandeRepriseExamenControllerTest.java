@@ -11,9 +11,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.time.LocalDate;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 public class DemandeRepriseExamenControllerTest {
+
 
     private MockMvc mockMvc;
     @Autowired
@@ -108,4 +113,22 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()
+            throws Exception {
+
+        // Requete simplifiee d'une nouvelle demande en format JSON
+        String requeteDemande =
+                "{\"absenceDateDebut\": \"2022-06-06\"," +
+                "\"absenceDateFin\": \"2022-06-08\"," +
+                "\"dateSoumission\": \"2022-06-12\"," +
+                "\"motifAbsence\": 1," +
+                "\"absenceDetails\": \"Décès de ma grand-mère.\"}";
+
+        this.mockMvc.perform(post("/api/demandes").contentType(MediaType.APPLICATION_JSON)
+                .content(requeteDemande))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.dateSoumission", is(LocalDate.now().toString())))
+                .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
+    }
 }
