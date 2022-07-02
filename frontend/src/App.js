@@ -1,35 +1,37 @@
-import React, { useState } from "react";
-import logo from "./logo.svg";
+// import React, { useState } from "react";
+// import logo from "./logo.svg";
 import "./App.css";
+import Formulaire from "./components/Formulaire/Formulaire";
 
 function App() {
-  const [greeting, setGreeting] = useState();
+    // const [greeting, setGreeting] = useState();
 
-  React.useEffect(() => {
-    fetch("/helloworld")
-      .then((response) => response.text())
-      .then((text) => setGreeting(text));
-  }, [greeting]);
+    // React.useEffect(() => {
+    //     fetch("/helloworld")
+    //         .then((response) => response.text())
+    //         .then((text) => setGreeting(text));
+    // }, [greeting]);
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{greeting}</p>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Formulaire/>
+            {/* <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <p>{greeting}</p>
+                <p>
+                    Edit <code>src/App.js</code> and save to reload.
+                </p>
+                <a
+                    className="App-link"
+                    href="https://reactjs.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Learn React
+                </a>
+            </header> */}
+        </div>
+    );
 }
 
 export default App;

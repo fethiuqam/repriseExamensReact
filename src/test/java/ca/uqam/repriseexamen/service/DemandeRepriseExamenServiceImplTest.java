@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
@@ -45,6 +46,8 @@ public class DemandeRepriseExamenServiceImplTest {
     private LigneDREEtudiantDTO ligneDREEtudiant1Soumise;
     @Mock
     private LigneDREEtudiantDTO ligneDREEtudiant2Soumise;
+    @Mock
+    private DemandeRepriseExamen nouvelleDemandeRepriseExamen;
 
     @Before
     public void setUp() {
@@ -84,6 +87,7 @@ public class DemandeRepriseExamenServiceImplTest {
                         ligneDREEtudiant1Soumise,
                         ligneDREEtudiant2Soumise));
 
+        when(repository.save(any(DemandeRepriseExamen.class))).thenReturn(nouvelleDemandeRepriseExamen);
     }
 
     @Test
@@ -128,5 +132,14 @@ public class DemandeRepriseExamenServiceImplTest {
                 .isNotNull()
                 .isNotEmpty()
                 .hasSize(1);
+    }
+
+    @Test
+    public void devraitSoumettreNouvelleDRE() {
+        DemandeRepriseExamen demandeCreee = service.soumettreDemandeRepriseExamen(nouvelleDemandeRepriseExamen);
+        assertThat(demandeCreee)
+                .isNotNull()
+                .isEqualTo(nouvelleDemandeRepriseExamen);
+
     }
 }
