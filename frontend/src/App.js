@@ -1,36 +1,45 @@
-// import React, { useState } from "react";
-// import logo from "./logo.svg";
+import React from "react";
+import Grid from '@mui/material/Grid';
 import "./App.css";
+import {BrowserRouter, Route} from 'react-router-dom';
+import ListeDRE from "./components/listeDRE/ListeDRE";
+import Entete from "./components/Entete/Entete";
+import PiedPage from "./components/PiedPage/PiedPage";
+import Connexion from "./components/Connexion/Connexion";
+import {Routes} from "react-router";
+import AuthRequise from "./components/AuthRequise/AuthRequise";
+import NonAutorise from "./components/NonAutorise/NonAutorise";
+import NonTrouve from "./components/NonTrouve/NonTrouve";
 import Formulaire from "./components/Formulaire/Formulaire";
 
 function App() {
-    // const [greeting, setGreeting] = useState();
-
-    // React.useEffect(() => {
-    //     fetch("/helloworld")
-    //         .then((response) => response.text())
-    //         .then((text) => setGreeting(text));
-    // }, [greeting]);
 
     return (
-        <div className="App">
-            <Formulaire/>
-            {/* <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>{greeting}</p>
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header> */}
-        </div>
+        <BrowserRouter>
+            <Grid style={{minHeight: "100vh"}} container direction='column' alignItems="stretch"
+                  justifyContent="space-between">
+                <Entete/>
+                <Routes>
+
+                    <Route exact path="/connexion" element={<Connexion/>} />
+
+                    <Route element={<AuthRequise rolesPermis={['directeur', 'commis', 'enseignant', 'etudiant']} />}>
+                        <Route exact path="/" element={<ListeDRE/>} />
+                    </Route>
+
+                    <Route element={<AuthRequise rolesPermis={['etudiant']} />}>
+                        <Route exact path="/faire-demande" element={<Formulaire/>} />
+                    </Route>
+
+                    <Route path="/non-autorise" element={<NonAutorise/>} />
+
+                    <Route path="*" element={<NonTrouve/>} />
+
+
+                </Routes>
+                <PiedPage/>
+            </Grid>
+        </BrowserRouter>
     );
 }
 
