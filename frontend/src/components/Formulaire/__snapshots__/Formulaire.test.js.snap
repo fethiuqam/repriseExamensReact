@@ -4,42 +4,6 @@ exports[`renders correctly 1`] = `
 <div
   className="miseEnPage"
 >
-  <header
-    className="MuiPaper-root MuiPaper-elevation MuiPaper-elevation4 MuiAppBar-root MuiAppBar-colorPrimary MuiAppBar-positionStatic css-hip9hq-MuiPaper-root-MuiAppBar-root"
-  >
-    <div
-      className="MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular entete css-hyum1k-MuiToolbar-root"
-    >
-      <div
-        className="MuiTypography-root MuiTypography-h5 enteteTitre css-ag7rrr-MuiTypography-root"
-      >
-        UQÀM | Demandes de reprises d'examens
-      </div>
-      <button
-        className="MuiButton-root MuiButton-text MuiButton-textInherit MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorInherit MuiButtonBase-root  css-1y942vo-MuiButtonBase-root-MuiButton-root"
-        disabled={false}
-        onBlur={[Function]}
-        onContextMenu={[Function]}
-        onDragLeave={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseLeave={[Function]}
-        onMouseUp={[Function]}
-        onTouchEnd={[Function]}
-        onTouchMove={[Function]}
-        onTouchStart={[Function]}
-        tabIndex={0}
-        type="button"
-      >
-        Déconnexion
-        <span
-          className="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-        />
-      </button>
-    </div>
-  </header>
   <div
     className="corpsPage"
   >
@@ -331,10 +295,10 @@ exports[`renders correctly 1`] = `
                       aria-invalid={false}
                       autoFocus={false}
                       className="MuiInputBase-input MuiInput-input"
-                      defaultValue="2022-07-02"
+                      defaultValue="2022-07-04"
                       disabled={false}
                       id="dateDebut"
-                      min="2022-04-02"
+                      min="2022-04-04"
                       name="absenceDateDebut"
                       onAnimationStart={[Function]}
                       onBlur={[Function]}
@@ -371,7 +335,7 @@ exports[`renders correctly 1`] = `
                       defaultValue=""
                       disabled={false}
                       id="dateFin"
-                      max="2022-07-02"
+                      max="2022-07-04"
                       name="absenceDateFin"
                       onAnimationStart={[Function]}
                       onBlur={[Function]}
@@ -637,14 +601,5 @@ exports[`renders correctly 1`] = `
       </div>
     </form>
   </div>
-  <footer>
-    <p
-      className="MuiTypography-root MuiTypography-body1"
-    >
-      Université du Québec à Montréal 
-      |
-       BIGL
-    </p>
-  </footer>
 </div>
 `;
