@@ -28,7 +28,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:ci": "react-scripts test -u --watchAll=false --ci --reporters=default --reporters=jest-junit --coverage=true",
+    "test:ci": "react-scripts test --watchAll=false --ci --reporters=default --reporters=jest-junit --coverage=true",
     "eject": "react-scripts eject",
     "lint": "eslint --ignore-path .gitignore ."
   },

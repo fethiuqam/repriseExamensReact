@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`Formulaire affiché correctement 1`] = `
 <div
   className="miseEnPage"
 >
@@ -295,10 +295,10 @@ exports[`renders correctly 1`] = `
                       aria-invalid={false}
                       autoFocus={false}
                       className="MuiInputBase-input MuiInput-input"
-                      defaultValue="2022-07-04"
+                      defaultValue="2020-01-01"
                       disabled={false}
                       id="dateDebut"
-                      min="2022-04-04"
+                      min="2019-10-01"
                       name="absenceDateDebut"
                       onAnimationStart={[Function]}
                       onBlur={[Function]}
@@ -335,7 +335,7 @@ exports[`renders correctly 1`] = `
                       defaultValue=""
                       disabled={false}
                       id="dateFin"
-                      max="2022-07-04"
+                      max="2020-01-01"
                       name="absenceDateFin"
                       onAnimationStart={[Function]}
                       onBlur={[Function]}
@@ -585,7 +585,6 @@ exports[`renders correctly 1`] = `
             onMouseDown={[Function]}
             onMouseLeave={[Function]}
             onMouseUp={[Function]}
-            onSubmit={[Function]}
             onTouchEnd={[Function]}
             onTouchMove={[Function]}
             onTouchStart={[Function]}

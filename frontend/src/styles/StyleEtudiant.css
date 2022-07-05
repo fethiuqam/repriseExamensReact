@@ -104,4 +104,13 @@ footer {
   padding: 0 0.938rem;
 }
 
+.bandeauErreur {
+  background-color: "#ff0000";
+  height: "50px";
+  color: "#ffffff";
+  display: "flex";
+  justify-content: "center";
+  margin: 5px;
+}
+
 

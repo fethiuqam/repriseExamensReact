@@ -5,7 +5,9 @@ import {Grid, Typography} from "@mui/material";
 import {useForm, Controller} from "react-hook-form";
 import Button from '../BoutonFormulaire/BoutonFormulaire';
 import MiseEnPage from '../MiseEnPage/MiseEnPage';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import { useNavigate } from 'react-router-dom'; 
+import * as React from "react";
 
 // stocke les infos des etudiant TODO : connecter avec les identifiants
 const infosEtudiant = {
@@ -25,15 +27,28 @@ const Formulaire = () => {
         reset
     } = useForm();
 
-    const onSubmit = (data) => {
-        fetch("/api/demandes", {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const navigate = useNavigate();
+
+    async function handleFormSubmit(data) {
+        
+        try {
+          setIsSubmitting(true);
+          await fetch("/api/demandes", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data)
+          });
+        } catch (error) {
+          alert("ERREUR : Votre demande n'a pas pu être envoyée."); // TODO remplacer quand on aura React 16/react-js-banner
+        } finally {
+          setIsSubmitting(false);
+          navigate("/");
+        }
+      }
 
-        }).then(() => {
-            alert('La demande a été envoyées avec succès!');
-        })
+    const onSubmit = (data) => {
+        handleFormSubmit(data);
     };
 
     useEffect(() => {
@@ -51,6 +66,7 @@ const Formulaire = () => {
     }, [formState, reset]);
 
     return (
+        <>
         <MiseEnPage titre={'Demande de reprise d\'examen'}
                     children={
                         <form onSubmit={handleSubmit(onSubmit)}>
@@ -278,8 +294,8 @@ const Formulaire = () => {
                                     <Button
                                         variant="outlined"
                                         onClick={() => {
-                                            alert('Le bouton va être transformé en lien (propriété href) une fois la page pertinente fonctionnelle.');
-                                        }}
+                                            navigate("/");
+                                        }}                                       
                                     >
                                         Annuler
                                     </Button>
@@ -287,9 +303,7 @@ const Formulaire = () => {
                                         variant="contained"
                                         disableElevation
                                         type="submit"
-                                        onSubmit={() => {
-                                            alert('La demande a été envoyées avec succès!');
-                                        }}
+                                        disabled={isSubmitting}
                                     >
                                         Soumettre
                                     </Button>
@@ -298,6 +312,7 @@ const Formulaire = () => {
                         </form>
                     }
         />
+        </>
     );
 }
 
