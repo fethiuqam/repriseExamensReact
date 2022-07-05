@@ -1,6 +1,10 @@
-import React, {Component} from 'react'
+import React, {Component, useState} from 'react'
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 class ListRoleComponent extends Component {
+
     constructor(props) {
         super(props)
 
@@ -43,6 +47,27 @@ class ListRoleComponent extends Component {
         this.props.history.push(`/voir-roles/${id}`);
     }
 
+    cancel() {
+        this.props.history.push('/roles');
+    }
+
+    submit = (id) => {
+        confirmAlert({
+            title: 'Confirmation de suppression',
+            message: 'Êtes-vous sur de vouloir supprimer ce rôle ?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => this.remove(id)
+                },
+                {
+                    label: 'No',
+                    onClick: () => this.cancel()
+                }
+            ]
+        });
+    };
+
 
     render() {
         return (
@@ -71,8 +96,9 @@ class ListRoleComponent extends Component {
                                                 onClick={() => this.modifierRole(role.id)}>MODIFIER
                                         </button>
                                         <button style={{marginLeft: "10px"}} className="btn btn-danger"
-                                                onClick={() => this.remove(role.id)}>SUPPRIMER
+                                                onClick={() => this.submit(role.id)} >SUPPRIMER
                                         </button>
+
                                         <button style={{marginLeft: "10px"}} onClick={() => this.voirRole(role.id)}
                                                 className="btn btn-primary">VOIR
                                         </button>
