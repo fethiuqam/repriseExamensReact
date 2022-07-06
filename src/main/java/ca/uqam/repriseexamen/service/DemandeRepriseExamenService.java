@@ -4,6 +4,7 @@ import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DemandeRepriseExamenService {
 
@@ -13,4 +14,7 @@ public interface DemandeRepriseExamenService {
 
     DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre);
 
+    Optional<DemandeRepriseExamen> findDemandeRepriseExamen(Long id);
+
+    void updateDemandeRepriseExamen(DemandeRepriseExamen demandePatched);
 }

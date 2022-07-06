@@ -3,15 +3,19 @@ package ca.uqam.repriseexamen.controller;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,13 +30,13 @@ public class DemandeRepriseExamenController {
     /**
      * Route pour récupérer les demandes de reprises d'examen en fonction du role
      * de l'utilisateur
-     * 
+     *
      * @return LigneDREDTO
      */
     @GetMapping("")
-    public List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant
-            (@RequestParam(required = false) Long id, @RequestParam(required = true) String role) {
-        switch (role){
+    public List<LigneDREDTO> getAllDemandeRepriseExamen
+    (@RequestParam(required = false) Long id, @RequestParam(required = true) String role) {
+        switch (role) {
             case "commis":
                 return demandeRepriseExamenService.getAllDemandeRepriseExamenCommis();
 
@@ -41,7 +45,7 @@ public class DemandeRepriseExamenController {
                     return demandeRepriseExamenService.getAllDemandeRepriseExamenEnseignant(id);
 
             case "etudiant":
-                if(id != null)
+                if (id != null)
                     return demandeRepriseExamenService.getAllDemandeRepriseExamenEtudiant(id);
 
             default:
@@ -51,13 +55,40 @@ public class DemandeRepriseExamenController {
 
     /**
      * Route pour soumettre une demande de reprise d'examen
-     * 
+     *
      * @param nouvelleDemande body de la demande à soumettre
      * @return DemandeRepriseExamen la demande soumise
      */
     @PostMapping("")
     public DemandeRepriseExamen soumettreDemandeRepriseExamen(@RequestBody DemandeRepriseExamen nouvelleDemande) {
         return demandeRepriseExamenService.soumettreDemandeRepriseExamen(nouvelleDemande);
+    }
+
+    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
+    public ResponseEntity<DemandeRepriseExamen> updateDemandeRepriseExamen(@PathVariable Long id, @RequestBody JsonPatch patch) {
+        try {
+            DemandeRepriseExamen demande = demandeRepriseExamenService.findDemandeRepriseExamen(id).orElseThrow(RuntimeException::new);
+            DemandeRepriseExamen demandePatched = applyPatchToDemande(patch, demande);
+            System.out.println("LOG: avant save");
+            demandeRepriseExamenService.updateDemandeRepriseExamen(demandePatched);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();   //ok(demandePatched);
+        } catch (JsonPatchException | JsonProcessingException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    private DemandeRepriseExamen applyPatchToDemande(JsonPatch patch, DemandeRepriseExamen targetDemande)
+            throws JsonPatchException, JsonProcessingException {
+        ObjectMapper mapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
+        System.out.println("LOG: creation mapper");
+        System.out.println(patch.toString());
+        JsonNode patched = patch.apply(mapper.convertValue(targetDemande, JsonNode.class));
+        System.out.println("LOG: conversion patched");
+        return mapper.treeToValue(patched, DemandeRepriseExamen.class);
     }
 
 }

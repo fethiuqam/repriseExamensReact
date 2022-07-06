@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,5 +65,15 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         dre.setDateSoumission(LocalDate.now());
 
         return demandeRepriseExamenRepository.save(dre);
+    }
+
+    @Override
+    public Optional<DemandeRepriseExamen> findDemandeRepriseExamen(Long id) {
+        return demandeRepriseExamenRepository.findDemandeRepriseExamenById(id);
+    }
+
+    @Override
+    public void updateDemandeRepriseExamen(DemandeRepriseExamen demandePatched) {
+        demandeRepriseExamenRepository.save(demandePatched);
     }
 }
