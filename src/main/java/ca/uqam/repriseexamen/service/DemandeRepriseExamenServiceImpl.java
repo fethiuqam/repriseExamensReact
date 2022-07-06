@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,8 +55,12 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {
-        Statut statutSoumission = Statut.builder().dateHeure(LocalDateTime.now()).typeStatut(TypeStatut.SOUMISE).build();
+    public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {     
+        Statut statutSoumission = Statut.builder()
+                .dateHeure(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+                .typeStatut(TypeStatut.SOUMISE)
+                .demandeRepriseExamen(dre)
+                .build();
 
         ArrayList<Statut> statuts = new ArrayList<>();
         statuts.add(statutSoumission);
