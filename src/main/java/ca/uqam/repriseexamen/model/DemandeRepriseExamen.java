@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -16,36 +19,56 @@ import java.util.Optional;
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class DemandeRepriseExamen {
 
+    // Attributs
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
+    private List<Statut> listeStatut;
+
+    @ManyToOne
+    private Etudiant etudiant;
+
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
+    private List<Justification> listeJustification;
+    
+    @ManyToOne
+    private CoursGroupe coursGroupe;
+
     private LocalDate absenceDateDebut;
     private LocalDate absenceDateFin;
     private LocalDate dateSoumission;
     private MotifAbsence motifAbsence;
     private String absenceDetails;
     private String descriptionExamen;
-    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
-    private List<Statut> listeStatut;
-    @ManyToOne
-    private Etudiant etudiant;
-    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
-    private List<Justification> listeJustification;
-    @ManyToOne
-    private CoursGroupe coursGroupe;
 
+    // Méthodes publiques
+    
     public LocalDateTime getDateHeureSoumission(){
-        Optional<Statut> statutSoumission = listeStatut.stream()
-                .filter(o -> o.getTypeStatut().equals(TypeStatut.SOUMISE))
-                .findFirst();
+        LocalDateTime heureSoumission = null;
 
-        return statutSoumission.map(Statut::getDateHeure).orElse(null);
+        if(listeStatut != null){
+            Optional<Statut> statutSoumission = listeStatut.stream()
+                    .filter(o -> o.getTypeStatut().equals(TypeStatut.SOUMISE))
+                    .findFirst();
+                
+            heureSoumission = statutSoumission.map(Statut::getDateHeure).orElse(null);
+        }
+        return heureSoumission;
     }
 
     public TypeStatut getStatutCourant(){
-        Optional<Statut> statutCourant = listeStatut.stream()
-                .max(Comparator.comparing(Statut::getDateHeure));
-                
-        return statutCourant.map(Statut::getTypeStatut).orElse(null);
+        TypeStatut typeStatutCourant = null;
+
+        if(listeStatut != null){
+            Optional<Statut> statutCourant = listeStatut.stream()
+                    .max(Comparator.comparing(Statut::getDateHeure));
+
+            typeStatutCourant = statutCourant.map(Statut::getTypeStatut).orElse(null);
+        }
+        return typeStatutCourant;
     }
 
     public Long getEnseignantId(){
