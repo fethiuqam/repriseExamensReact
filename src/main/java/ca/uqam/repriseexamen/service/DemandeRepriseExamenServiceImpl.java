@@ -6,6 +6,7 @@ import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.Justification;
 import ca.uqam.repriseexamen.model.Statut;
 import ca.uqam.repriseexamen.model.TypeStatut;
 import lombok.AllArgsConstructor;
@@ -55,12 +56,15 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {     
+    public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {
         Statut statutSoumission = Statut.builder()
                 .dateHeure(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
                 .typeStatut(TypeStatut.SOUMISE)
                 .demandeRepriseExamen(dre)
                 .build();
+
+        List<Justification> listeJustifications = new ArrayList<>();
+        dre.setListeJustification(listeJustifications);
 
         ArrayList<Statut> statuts = new ArrayList<>();
         statuts.add(statutSoumission);
