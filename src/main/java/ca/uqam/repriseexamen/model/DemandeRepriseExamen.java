@@ -33,7 +33,7 @@ public class DemandeRepriseExamen {
 
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
     private List<Justification> listeJustification;
-    
+
     @ManyToOne
     private CoursGroupe coursGroupe;
 
@@ -45,7 +45,7 @@ public class DemandeRepriseExamen {
     private String descriptionExamen;
 
     // Méthodes publiques
-    
+
     public LocalDateTime getDateHeureSoumission(){
         LocalDateTime heureSoumission = null;
 
@@ -53,7 +53,7 @@ public class DemandeRepriseExamen {
             Optional<Statut> statutSoumission = listeStatut.stream()
                     .filter(o -> o.getTypeStatut().equals(TypeStatut.SOUMISE))
                     .findFirst();
-                
+
             heureSoumission = statutSoumission.map(Statut::getDateHeure).orElse(null);
         }
         return heureSoumission;

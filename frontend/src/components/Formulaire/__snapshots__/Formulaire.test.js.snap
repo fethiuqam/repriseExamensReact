@@ -505,6 +505,8 @@ exports[`Formulaire affiché correctement 1`] = `
               <div>
                 <input
                   id="justificatifs"
+                  multiple={true}
+                  onChange={[Function]}
                   style={
                     Object {
                       "display": "none",
