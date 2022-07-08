@@ -35,7 +35,7 @@ public class DemandeRepriseExamenController {
      */
     @GetMapping("")
     public List<LigneDREDTO> getAllDemandeRepriseExamen
-    (@RequestParam(required = false) Long id, @RequestParam(required = true) String role) {
+    (@RequestParam(required = false) Long id, @RequestParam String role) {
         switch (role) {
             case "commis":
                 return demandeRepriseExamenService.getAllDemandeRepriseExamenCommis();
@@ -64,31 +64,18 @@ public class DemandeRepriseExamenController {
         return demandeRepriseExamenService.soumettreDemandeRepriseExamen(nouvelleDemande);
     }
 
+
     @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<DemandeRepriseExamen> updateDemandeRepriseExamen(@PathVariable Long id, @RequestBody JsonPatch patch) {
+    public ResponseEntity<DemandeRepriseExamen> updateDemandeRepriseExamen(@PathVariable Long id,
+                                                                           @RequestBody JsonPatch patch) {
         try {
-            DemandeRepriseExamen demande = demandeRepriseExamenService.findDemandeRepriseExamen(id).orElseThrow(RuntimeException::new);
-            DemandeRepriseExamen demandePatched = applyPatchToDemande(patch, demande);
-            System.out.println("LOG: avant save");
-            demandeRepriseExamenService.updateDemandeRepriseExamen(demandePatched);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();   //ok(demandePatched);
+            demandeRepriseExamenService.patchDemandeRepriseExamen(id, patch);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (JsonPatchException | JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-    }
-
-    private DemandeRepriseExamen applyPatchToDemande(JsonPatch patch, DemandeRepriseExamen targetDemande)
-            throws JsonPatchException, JsonProcessingException {
-        ObjectMapper mapper = JsonMapper.builder()
-                .addModule(new JavaTimeModule())
-                .build();
-        System.out.println("LOG: creation mapper");
-        System.out.println(patch.toString());
-        JsonNode patched = patch.apply(mapper.convertValue(targetDemande, JsonNode.class));
-        System.out.println("LOG: conversion patched");
-        return mapper.treeToValue(patched, DemandeRepriseExamen.class);
     }
 
 }

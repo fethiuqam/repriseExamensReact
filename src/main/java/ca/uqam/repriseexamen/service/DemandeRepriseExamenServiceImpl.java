@@ -8,6 +8,13 @@ import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.Statut;
 import ca.uqam.repriseexamen.model.TypeStatut;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +80,20 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public void updateDemandeRepriseExamen(DemandeRepriseExamen demandePatched) {
+    public void patchDemandeRepriseExamen(Long id, JsonPatch patch) throws JsonPatchException, JsonProcessingException {
+        DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
+                .orElseThrow(RuntimeException::new);
+        DemandeRepriseExamen demandePatched = applyPatchToDemande(patch, demande);
         demandeRepriseExamenRepository.save(demandePatched);
     }
+
+    private DemandeRepriseExamen applyPatchToDemande(JsonPatch patch, DemandeRepriseExamen targetDemande)
+            throws JsonPatchException, JsonProcessingException {
+        ObjectMapper mapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
+        JsonNode patched = patch.apply(mapper.convertValue(targetDemande, JsonNode.class));
+        return mapper.treeToValue(patched, DemandeRepriseExamen.class);
+    }
+
 }
