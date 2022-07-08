@@ -1,8 +1,8 @@
 package ca.uqam.repriseexamen.service;
 
-import ca.uqam.repriseexamen.model.Etudiant;
-
 import java.util.Optional;
+
+import ca.uqam.repriseexamen.model.Etudiant;
 
 public interface EtudiantService {
     Optional<Etudiant> getEtudiant(Long idEtudiant);

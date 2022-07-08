@@ -5,6 +5,7 @@ import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
+import ca.uqam.repriseexamen.dto.LigneHistoriqueEtudiantDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.Justification;
 import ca.uqam.repriseexamen.model.Statut;
@@ -53,6 +54,15 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         return listeLigneDRE.stream()
                 .filter(dre -> dre.getEtudiantId() == id)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LigneHistoriqueEtudiantDTO> getHistoriqueEtudiant(long id) {
+        List<LigneHistoriqueEtudiantDTO> listeLigneHistorique = demandeRepriseExamenRepository.findLigneHistoriqueEtudiantDTOBy();
+
+        return listeLigneHistorique.stream()
+            .filter(dre -> dre.getEtudiantId() == id)
+            .collect(Collectors.toList());
     }
 
     @Override
