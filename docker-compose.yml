@@ -10,12 +10,14 @@ services:
       POSTGRES_URL: jdbc:postgresql://db:5432/postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-      SPRING_PROFILES_ACTIVE: postgres,test
+      SPRING_PROFILES_ACTIVE: postgres,deploy,$ENV_TAG
     networks:
       - app_network
     ports:
       - $HOST_PORT:8080
     restart: &restart unless-stopped
+    volumes:
+      - justifications:/var/lib/reprisesexamens/justifications
 
   db:
     image: postgres:14.3-alpine
@@ -29,6 +31,7 @@ services:
 
 volumes:
   postgres_data:
+  justifications:
 
 networks:
   app_network:

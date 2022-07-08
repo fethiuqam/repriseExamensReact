@@ -42,6 +42,7 @@ verify:
     - echo "APP_IMAGE_TAG=$CI_REGISTRY_IMAGE/app:$ENV_TAG"  >> .env
     - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
     - echo "HOST_PORT=$HOST_PORT" >> .env
+    - echo "ENV_TAG=$ENV_TAG" >> .env
     - docker compose build
     - docker compose push
     - docker compose --project-name $ENV_TAG up --detach
