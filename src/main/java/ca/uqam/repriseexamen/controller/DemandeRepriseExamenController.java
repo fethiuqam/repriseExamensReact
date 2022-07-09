@@ -1,6 +1,7 @@
 package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
+import ca.uqam.repriseexamen.exception.NotFoundException;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,9 +14,11 @@ import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -65,16 +68,18 @@ public class DemandeRepriseExamenController {
     }
 
 
-    @PatchMapping(path = "/{id}", consumes = "application/json-patch+json")
-    public ResponseEntity<DemandeRepriseExamen> updateDemandeRepriseExamen(@PathVariable Long id,
-                                                                           @RequestBody JsonPatch patch) {
+    @PatchMapping(path = "/{id}") // , consumes = "application/json-patch+json"
+    public ResponseEntity<?> updateDemandeRepriseExamen(@PathVariable Long id,
+                                                                           @RequestBody JsonNode patch) {
         try {
             demandeRepriseExamenService.patchDemandeRepriseExamen(id, patch);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (JsonPatchException | JsonProcessingException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (ChangeSetPersister.NotFoundException e) {
+            return new ResponseEntity<>("La deamnde n'existe pas.", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return new ResponseEntity<>("Erreur interne au serveur", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

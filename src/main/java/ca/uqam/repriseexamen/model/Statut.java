@@ -17,6 +17,7 @@ public class Statut {
     private long id;
     private LocalDateTime dateHeure;
     private TypeStatut typeStatut;
+    private String details;
     @ManyToOne
     @JsonBackReference(value="demande-statut")
     private DemandeRepriseExamen demandeRepriseExamen;
