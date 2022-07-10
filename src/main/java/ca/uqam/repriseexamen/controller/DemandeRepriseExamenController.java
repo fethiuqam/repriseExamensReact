@@ -1,24 +1,15 @@
 package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
-import ca.uqam.repriseexamen.exception.NotFoundException;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.TypeStatut;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
@@ -67,20 +58,64 @@ public class DemandeRepriseExamenController {
         return demandeRepriseExamenService.soumettreDemandeRepriseExamen(nouvelleDemande);
     }
 
-
-    @PatchMapping(path = "/{id}") // , consumes = "application/json-patch+json"
-    public ResponseEntity<?> updateDemandeRepriseExamen(@PathVariable Long id,
-                                                                           @RequestBody JsonNode patch) {
-        try {
-            demandeRepriseExamenService.patchDemandeRepriseExamen(id, patch);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (ChangeSetPersister.NotFoundException e) {
-            return new ResponseEntity<>("La deamnde n'existe pas.", HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erreur interne au serveur", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PatchMapping(path = "/{id}/accepter-commis")
+    public ResponseEntity<?> accepterDemandeParCommis(@PathVariable Long id,
+                                                      @RequestBody JsonNode patch) {
+        demandeRepriseExamenService.ajouterStatutADemande(id, patch, TypeStatut.EN_TRAITEMENT,
+                TypeStatut.ACCEPTEE_COMMIS);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PatchMapping(path = "/{id}/rejeter-commis")
+    public ResponseEntity<?> rejeterDemandeParCommis(@PathVariable Long id, @RequestBody JsonNode patch) {
+        demandeRepriseExamenService.ajouterStatutADemande(id, patch, TypeStatut.EN_TRAITEMENT,
+                TypeStatut.REJETEE_COMMIS);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping(path = "/{id}/accepter-directeur")
+    public ResponseEntity<?> accepterDemandeParDirecteur(@PathVariable Long id, @RequestBody JsonNode patch) {
+        demandeRepriseExamenService.ajouterStatutADemande(id, patch, TypeStatut.ACCEPTEE_COMMIS,
+                TypeStatut.ACCEPTEE_DIRECTEUR);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping(path = "/{id}/rejeter-directeur")
+    public ResponseEntity<?> rejeterDemandeParDirecteur(@PathVariable Long id, @RequestBody JsonNode patch) {
+        demandeRepriseExamenService.ajouterStatutADemande(id, patch, TypeStatut.REJETEE_COMMIS,
+                TypeStatut.REJETEE_DIRECTEUR);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping(path = "/{id}/accepter-enseignant")
+    public ResponseEntity<?> accepterDemandeParEnseignant(@PathVariable Long id, @RequestBody JsonNode patch) {
+        demandeRepriseExamenService.ajouterStatutADemande(id, patch, TypeStatut.ACCEPTEE_DIRECTEUR,
+                TypeStatut.ACCEPTEE_ENSEIGNANT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping(path = "/{id}/rejeter-enseignant")
+    public ResponseEntity<?> rejeterDemandeParEnseignant(@PathVariable Long id, @RequestBody JsonNode patch) {
+        demandeRepriseExamenService.ajouterStatutADemande(id, patch, TypeStatut.ACCEPTEE_DIRECTEUR,
+                TypeStatut.REJETEE_ENSEIGNANT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping(path = "/{id}/annuler-rejet-commis")
+    public ResponseEntity<?> annulerRejetDemandeParCommis(@PathVariable Long id) {
+        demandeRepriseExamenService.supprimerStatutDeDemande(id, TypeStatut.REJETEE_COMMIS);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping(path = "/{id}/annuler-rejet-directeur")
+    public ResponseEntity<?> annulerRejetDemandeParDirecteur(@PathVariable Long id) {
+        demandeRepriseExamenService.supprimerStatutDeDemande(id, TypeStatut.REJETEE_DIRECTEUR);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PatchMapping(path = "/{id}/annuler-rejet-enseignant")
+    public ResponseEntity<?> annulerRejetDemandeParEnseignant(@PathVariable Long id) {
+        demandeRepriseExamenService.supprimerStatutDeDemande(id, TypeStatut.REJETEE_ENSEIGNANT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

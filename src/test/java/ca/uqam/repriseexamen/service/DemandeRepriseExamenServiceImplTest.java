@@ -53,7 +53,7 @@ public class DemandeRepriseExamenServiceImplTest {
     public void setUp() {
         when(ligneDRECommisEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
         when(ligneDRECommisSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDRECommisAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
+        when(ligneDRECommisAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE_COMMIS);
 
         when(repository.findLigneDRECommisDTOBy())
                 .thenReturn(Arrays.asList(
@@ -65,7 +65,7 @@ public class DemandeRepriseExamenServiceImplTest {
         when(ligneDREEnseignantEnregistree.getEnseignantId()).thenReturn(1L);
         when(ligneDREEnseignantSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
         when(ligneDREEnseignantSoumise.getEnseignantId()).thenReturn(2L);
-        when(ligneDREEnseignantAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
+        when(ligneDREEnseignantAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE_COMMIS);
         when(ligneDREEnseignantAcceptee.getEnseignantId()).thenReturn(1L);
 
         when(repository.findLigneDREEnseignantDTOBy())

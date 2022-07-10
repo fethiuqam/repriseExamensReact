@@ -2,12 +2,8 @@ package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import ca.uqam.repriseexamen.model.TypeStatut;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.fge.jsonpatch.JsonPatch;
-import com.github.fge.jsonpatch.JsonPatchException;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,5 +17,7 @@ public interface DemandeRepriseExamenService {
 
     Optional<DemandeRepriseExamen> findDemandeRepriseExamen(Long id);
 
-    void patchDemandeRepriseExamen(Long id, JsonNode patch) throws Exception;
+    void ajouterStatutADemande(Long id, JsonNode patch, TypeStatut typeStatutCourant, TypeStatut typeStatutAjoute);
+
+    void supprimerStatutDeDemande(Long id, TypeStatut typeStatutCourant);
 }
