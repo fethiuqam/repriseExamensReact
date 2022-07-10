@@ -5,9 +5,7 @@ import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
-import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
-import ca.uqam.repriseexamen.model.Statut;
-import ca.uqam.repriseexamen.model.TypeStatut;
+import ca.uqam.repriseexamen.model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -26,7 +24,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenService {
 
-    public static final String STATUT_COURANT_NON_COMPATIBLE = "Le statut courant ne correspond pas à l'action demandée.";
+    public static final String DECISION_COURANTE_NON_COMPATIBLE = "La décision courante ne correspond pas à l'action demandée.";
     private DemandeRepriseExamenRepository demandeRepriseExamenRepository;
 
     @Override
@@ -34,7 +32,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         List<LigneDRECommisDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDRECommisDTOBy();
 
         return listeLigneDRE.stream()
-                .filter(dre -> !dre.getStatutCourant().equals(TypeStatut.ENREGISTREE))
+                .filter(dre -> !dre.getStatut().equals(TypeStatut.ENREGISTREE))
                 .collect(Collectors.toList());
     }
 
@@ -44,11 +42,10 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
                 .findLigneDREEnseignantDTOByCoursGroupeEnseignantId(id);
 
         return listeLigneDRE.stream()
-                .filter(dre -> dre.getStatutCourant().equals(TypeStatut.ACCEPTEE_DIRECTEUR)
-                        || dre.getStatutCourant().equals(TypeStatut.ACCEPTEE_ENSEIGNANT)
-                        || dre.getStatutCourant().equals(TypeStatut.REJETEE_ENSEIGNANT)
-                        || dre.getStatutCourant().equals(TypeStatut.PLANIFIEE)
-                        || dre.getStatutCourant().equals(TypeStatut.COMPLETEE)
+                .filter(dre -> dre.getDecision() != null
+                        && (dre.getDecision().equals(TypeDecision.ACCEPTEE_DIRECTEUR)
+                        || dre.getDecision().equals(TypeDecision.ACCEPTEE_ENSEIGNANT)
+                        || dre.getDecision().equals(TypeDecision.REJETEE_ENSEIGNANT))
                 )
                 .collect(Collectors.toList());
     }
@@ -56,7 +53,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     @Override
     public List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long id) {
         List<LigneDREEtudiantDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREEtudiantDTOByEtudiantId(id);
-        return listeLigneDRE.stream().collect(Collectors.toList());
+        return new ArrayList<>(listeLigneDRE);
     }
 
     @Override
@@ -80,43 +77,68 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public void ajouterStatutADemande(Long id, JsonNode patch, TypeStatut typeStatutCourant, TypeStatut typeStatutAjoute) {
+    public void ajouterDemandeDecision(Long id, JsonNode patch, TypeDecision typeDecisionCourant, TypeDecision typeDecisionAjoute) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        if (demande.getStatutCourant() == typeStatutCourant) {
-            Statut statut = creerStatut(typeStatutAjoute, demande, patch);
-            demande.getListeStatut().add(statut);
+        if (demande.getDecisionCourante() == typeDecisionCourant) {
+            Decision decision = creerDecision(typeDecisionAjoute, demande, patch);
+            demande.getListeDecision().add(decision);
             demandeRepriseExamenRepository.save(demande);
         } else {
-            throw new IllegalTransactionStateException(STATUT_COURANT_NON_COMPATIBLE);
+            throw new IllegalTransactionStateException(DECISION_COURANTE_NON_COMPATIBLE);
         }
     }
 
     @Override
-    public void supprimerStatutDeDemande(Long id, TypeStatut typeStatutCourant) {
+    public void supprimerDemandeDecision(Long id, TypeDecision typeDecisionCourante) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        if (demande.getStatutCourant() == typeStatutCourant) {
-            Optional<Statut> statut = demande.getListeStatut().stream()
-                    .filter(s -> s.getTypeStatut() == typeStatutCourant)
+        if (demande.getDecisionCourante() == typeDecisionCourante) {
+            Optional<Decision> decision = demande.getListeDecision().stream()
+                    .filter(s -> s.getTypeDecision() == typeDecisionCourante)
                     .findFirst();
-            demande.getListeStatut().remove(statut.get());
+            demande.getListeDecision().remove(decision.orElse(null));
             demandeRepriseExamenRepository.save(demande);
         } else {
-            throw new IllegalTransactionStateException(STATUT_COURANT_NON_COMPATIBLE);
+            throw new IllegalTransactionStateException(DECISION_COURANTE_NON_COMPATIBLE);
         }
     }
 
-    private Statut creerStatut(TypeStatut typeStatut, DemandeRepriseExamen demande, JsonNode patch) {
+    private Decision creerDecision(TypeDecision typeDecision, DemandeRepriseExamen demande, JsonNode patch) {
+        Decision decision = Decision.builder()
+                .typeDecision(typeDecision)
+                .dateHeure(LocalDateTime.now())
+                .demandeRepriseExamen(demande)
+                .build();
+        if (patch.has("details")) {
+            decision.setDetails(patch.get("details").asText());
+        }
+        return decision;
+    }
+
+    @Override
+    public void updateStatutDemande(Long id, TypeStatut typeStatut) {
+        DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
+                .orElseThrow(ResourceNotFoundException::new);
         Statut statut = Statut.builder()
                 .typeStatut(typeStatut)
                 .dateHeure(LocalDateTime.now())
                 .demandeRepriseExamen(demande)
                 .build();
-        if (patch.has("details")) {
-            statut.setDetails(patch.get("details").asText());
-        }
-        return statut;
+        demande.getListeStatut().add(statut);
+        demandeRepriseExamenRepository.save(demande);
+    }
+
+    @Override
+    public void annulerRejetStatut(Long id) {
+        DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Optional<Statut> statutRejet = demande.getListeStatut().stream()
+                .filter(s -> s.getTypeStatut() == TypeStatut.REJETEE)
+                .findFirst();
+        demande.getListeStatut().remove(statutRejet.orElse(null));
+        demandeRepriseExamenRepository.save(demande);
     }
 
 }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,11 +13,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DemandeRepriseExamen {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate absenceDateDebut;
     private LocalDate absenceDateFin;
@@ -25,6 +31,8 @@ public class DemandeRepriseExamen {
     private String descriptionExamen;
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Statut> listeStatut;
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Decision> listeDecision;
     @ManyToOne
     private Etudiant etudiant;
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -33,7 +41,7 @@ public class DemandeRepriseExamen {
     private CoursGroupe coursGroupe;
 
     @JsonIgnore
-    public LocalDateTime getDateHeureSoumission(){
+    public LocalDateTime getDateHeureSoumission() {
         Optional<Statut> statutSoumission = listeStatut.stream()
                 .filter(o -> o.getTypeStatut().equals(TypeStatut.SOUMISE))
                 .findFirst();
@@ -42,11 +50,18 @@ public class DemandeRepriseExamen {
     }
 
     @JsonIgnore
-    public TypeStatut getStatutCourant(){
+    public TypeStatut getStatutCourant() {
         Optional<Statut> statutCourant = listeStatut.stream()
                 .max(Comparator.comparing(Statut::getDateHeure));
-                
+
         return statutCourant.map(Statut::getTypeStatut).orElse(null);
     }
 
+    @JsonIgnore
+    public TypeDecision getDecisionCourante() {
+        Optional<Decision> decisionCourante = listeDecision.stream()
+                .max(Comparator.comparing(Decision::getDateHeure));
+
+        return decisionCourante.map(Decision::getTypeDecision).orElse(null);
+    }
 }

@@ -2,6 +2,7 @@ package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.TypeDecision;
 import ca.uqam.repriseexamen.model.TypeStatut;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
@@ -17,7 +18,11 @@ public interface DemandeRepriseExamenService {
 
     Optional<DemandeRepriseExamen> findDemandeRepriseExamen(Long id);
 
-    void ajouterStatutADemande(Long id, JsonNode patch, TypeStatut typeStatutCourant, TypeStatut typeStatutAjoute);
+    void ajouterDemandeDecision(Long id, JsonNode patch, TypeDecision typeDecisionCourant, TypeDecision typeDecisionAjoute);
 
-    void supprimerStatutDeDemande(Long id, TypeStatut typeStatutCourant);
+    void supprimerDemandeDecision(Long id, TypeDecision typeDecisionCourante);
+
+    void updateStatutDemande(Long id, TypeStatut typeStatut);
+
+    void annulerRejetStatut(Long id);
 }
