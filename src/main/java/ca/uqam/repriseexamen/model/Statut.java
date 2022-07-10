@@ -1,6 +1,5 @@
 package ca.uqam.repriseexamen.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,6 @@ public class Statut {
     private TypeStatut typeStatut;
     private String details;
     @ManyToOne
-    @JsonBackReference(value="demande-statut")
     private DemandeRepriseExamen demandeRepriseExamen;
 
 }

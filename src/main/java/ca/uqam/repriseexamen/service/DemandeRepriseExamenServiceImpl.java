@@ -14,7 +14,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.IllegalTransactionStateException;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,32 +40,36 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
 
     @Override
     public List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long id) {
-        List<LigneDREEnseignantDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREEnseignantDTOBy();
+        List<LigneDREEnseignantDTO> listeLigneDRE = demandeRepriseExamenRepository
+                .findLigneDREEnseignantDTOByCoursGroupeEnseignantId(id);
 
         return listeLigneDRE.stream()
-                .filter(dre -> dre.getEnseignantId() == id)
-                .filter(dre -> dre.getStatutCourant().equals(TypeStatut.ACCEPTEE_DIRECTEUR))
+                .filter(dre -> dre.getStatutCourant().equals(TypeStatut.ACCEPTEE_DIRECTEUR)
+                        || dre.getStatutCourant().equals(TypeStatut.ACCEPTEE_ENSEIGNANT)
+                        || dre.getStatutCourant().equals(TypeStatut.REJETEE_ENSEIGNANT)
+                        || dre.getStatutCourant().equals(TypeStatut.PLANIFIEE)
+                        || dre.getStatutCourant().equals(TypeStatut.COMPLETEE)
+                )
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long id) {
-        List<LigneDREEtudiantDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREEtudiantDTOBy();
-
-        return listeLigneDRE.stream()
-                .filter(dre -> dre.getEtudiantId() == id)
-                .collect(Collectors.toList());
+        List<LigneDREEtudiantDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREEtudiantDTOByEtudiantId(id);
+        return listeLigneDRE.stream().collect(Collectors.toList());
     }
 
     @Override
     public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {
-        Statut statutSoumission = Statut.builder().dateHeure(LocalDateTime.now()).typeStatut(TypeStatut.SOUMISE).build();
+        Statut statutSoumission = Statut.builder()
+                .dateHeure(LocalDateTime.now())
+                .typeStatut(TypeStatut.SOUMISE)
+                .demandeRepriseExamen(dre)
+                .build();
 
-        ArrayList<Statut> statuts = new ArrayList<>();
+        List<Statut> statuts = new ArrayList<>();
         statuts.add(statutSoumission);
-
         dre.setListeStatut(statuts);
-        dre.setDateSoumission(LocalDate.now());
 
         return demandeRepriseExamenRepository.save(dre);
     }
@@ -79,7 +83,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     public void ajouterStatutADemande(Long id, JsonNode patch, TypeStatut typeStatutCourant, TypeStatut typeStatutAjoute) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        if (demande.getStatutCourant() == typeStatutCourant){
+        if (demande.getStatutCourant() == typeStatutCourant) {
             Statut statut = creerStatut(typeStatutAjoute, demande, patch);
             demande.getListeStatut().add(statut);
             demandeRepriseExamenRepository.save(demande);
@@ -92,10 +96,10 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     public void supprimerStatutDeDemande(Long id, TypeStatut typeStatutCourant) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        if (demande.getStatutCourant() == typeStatutCourant){
+        if (demande.getStatutCourant() == typeStatutCourant) {
             Optional<Statut> statut = demande.getListeStatut().stream()
-                .filter(s -> s.getTypeStatut() == typeStatutCourant)
-                .findFirst();
+                    .filter(s -> s.getTypeStatut() == typeStatutCourant)
+                    .findFirst();
             demande.getListeStatut().remove(statut.get());
             demandeRepriseExamenRepository.save(demande);
         } else {
@@ -103,13 +107,13 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         }
     }
 
-    private Statut creerStatut(TypeStatut typeStatut,DemandeRepriseExamen demande , JsonNode patch){
+    private Statut creerStatut(TypeStatut typeStatut, DemandeRepriseExamen demande, JsonNode patch) {
         Statut statut = Statut.builder()
                 .typeStatut(typeStatut)
                 .dateHeure(LocalDateTime.now())
                 .demandeRepriseExamen(demande)
                 .build();
-        if(patch.has("details")){
+        if (patch.has("details")) {
             statut.setDetails(patch.get("details").asText());
         }
         return statut;

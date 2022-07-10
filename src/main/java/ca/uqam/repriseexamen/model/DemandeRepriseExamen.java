@@ -1,6 +1,6 @@
 package ca.uqam.repriseexamen.model;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,28 +14,22 @@ import java.util.Optional;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class DemandeRepriseExamen {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate absenceDateDebut;
     private LocalDate absenceDateFin;
-    private LocalDate dateSoumission;
     private MotifAbsence motifAbsence;
     private String absenceDetails;
     private String descriptionExamen;
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value="demande-statut")
     private List<Statut> listeStatut;
     @ManyToOne
-    @JsonBackReference(value = "etudiant-demande")
     private Etudiant etudiant;
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value="demande-justification")
     private List<Justification> listeJustification;
     @ManyToOne
-    @JsonBackReference(value = "coursGroupe-demande")
     private CoursGroupe coursGroupe;
 
     @JsonIgnore
