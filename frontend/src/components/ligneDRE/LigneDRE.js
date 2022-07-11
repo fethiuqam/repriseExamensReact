@@ -33,8 +33,13 @@ export default function LigneDRE({item}) {
             <TableCell>{item.sigleCours} - {item.groupe}</TableCell>
             <TableCell>{item.session}</TableCell>
             <TableCell>
-                <Chip label={item.statutCourant}/>
+                <Chip label={item.statut}/>
             </TableCell>
+            {role === "commis" &&
+                <TableCell>
+                    <Chip label={item.decision ? item.decision : "Aucune"}/>
+                </TableCell>
+            }
             <TableCell>
                 <Button
                     size="small"
