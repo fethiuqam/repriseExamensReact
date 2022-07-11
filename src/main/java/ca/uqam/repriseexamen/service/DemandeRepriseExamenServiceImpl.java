@@ -56,14 +56,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         return new ArrayList<>(listeLigneDRE);
     }
 
-    @Override
-    public List<LigneHistoriqueEtudiantDTO> getHistoriqueEtudiant(long id) {
-        List<LigneHistoriqueEtudiantDTO> listeLigneHistorique = demandeRepriseExamenRepository.findLigneHistoriqueEtudiantDTOBy();
 
-        return listeLigneHistorique.stream()
-            .filter(dre -> dre.getEtudiantId() == id)
-            .collect(Collectors.toList());
-    }
 
     @Override
     public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {

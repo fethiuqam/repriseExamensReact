@@ -18,6 +18,6 @@ public interface DemandeRepriseExamenRepository extends JpaRepository<DemandeRep
     List<LigneDRECommisDTO> findLigneDRECommisDTOBy();
     List<LigneDREEnseignantDTO> findLigneDREEnseignantDTOByCoursGroupeEnseignantId( Long id);
     List<LigneDREEtudiantDTO> findLigneDREEtudiantDTOByEtudiantId(Long id);
-    List<LigneHistoriqueEtudiantDTO> findLigneHistoriqueEtudiantDTOBy();
+    List<LigneHistoriqueEtudiantDTO> findLigneHistoriqueEtudiantDTOByEtudiantId(Long id);
 
 }

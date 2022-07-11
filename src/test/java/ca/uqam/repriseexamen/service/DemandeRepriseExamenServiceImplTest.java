@@ -5,8 +5,9 @@ import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
-import ca.uqam.repriseexamen.dto.LigneHistoriqueEtudiantDTO;
-import ca.uqam.repriseexamen.model.*;
+import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.TypeDecision;
+import ca.uqam.repriseexamen.model.TypeStatut;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,22 +17,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNotNull;
-import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Arrays;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemandeRepriseExamenServiceImplTest {
 
     @Autowired
-    private DemandeRepriseExamenService service;
+    private DemandeRepriseExamenService demandeService;
     @MockBean
-    private DemandeRepriseExamenRepository repository;
+    private DemandeRepriseExamenRepository demandeRepository;
     @Mock
     private LigneDRECommisDTO ligneDRECommisEnregistree;
     @Mock
@@ -50,12 +50,7 @@ public class DemandeRepriseExamenServiceImplTest {
     private LigneDREEtudiantDTO ligneDREEtudiant1Soumise;
     @Mock
     private LigneDREEtudiantDTO ligneDREEtudiant2Soumise;
-    @Mock
-    private LigneHistoriqueEtudiantDTO ligneHistoriqueEtudiant1Enregistree;
-    @Mock
-    private LigneHistoriqueEtudiantDTO ligneHistoriqueEtudiant1Soumise;
-    @Mock
-    private LigneHistoriqueEtudiantDTO ligneHistoriqueEtudiant2Soumise;
+
     @Mock
     private DemandeRepriseExamen nouvelleDemandeRepriseExamen;
 
@@ -65,7 +60,7 @@ public class DemandeRepriseExamenServiceImplTest {
         when(ligneDRECommisSoumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
         when(ligneDRECommisAcceptee.getStatut()).thenReturn(TypeStatut.ACCEPTEE);
 
-        when(repository.findLigneDRECommisDTOBy())
+        when(demandeRepository.findLigneDRECommisDTOBy())
                 .thenReturn(Arrays.asList(ligneDRECommisEnregistree, ligneDRECommisSoumise, ligneDRECommisAcceptee));
 
         when(ligneDREEnseignantEnregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
@@ -74,42 +69,28 @@ public class DemandeRepriseExamenServiceImplTest {
         when(ligneDREEnseignantSoumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
 
 
-        when(repository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(1L))
+        when(demandeRepository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(1L))
                 .thenReturn(Arrays.asList(ligneDREEnseignantEnregistree, ligneDREEnseignantAcceptee));
 
-        when(repository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(2L))
+        when(demandeRepository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(2L))
                 .thenReturn(List.of(ligneDREEnseignantSoumise));
 
         when(ligneDREEtudiant1Enregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
         when(ligneDREEtudiant1Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
         when(ligneDREEtudiant2Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
 
-        when(repository.findLigneDREEtudiantDTOByEtudiantId(1L))
+        when(demandeRepository.findLigneDREEtudiantDTOByEtudiantId(1L))
                 .thenReturn(Arrays.asList(ligneDREEtudiant1Enregistree, ligneDREEtudiant1Soumise));
 
-        when(repository.findLigneDREEtudiantDTOByEtudiantId(2L))
+        when(demandeRepository.findLigneDREEtudiantDTOByEtudiantId(2L))
                 .thenReturn(List.of(ligneDREEtudiant2Soumise));
 
-        when(ligneHistoriqueEtudiant1Enregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneHistoriqueEtudiant1Enregistree.getEtudiantId()).thenReturn(1L);
-        when(ligneHistoriqueEtudiant1Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneHistoriqueEtudiant1Soumise.getEtudiantId()).thenReturn(1L);
-        when(ligneHistoriqueEtudiant2Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneHistoriqueEtudiant2Soumise.getEtudiantId()).thenReturn(2L);
-
-        when(repository.findLigneHistoriqueEtudiantDTOBy())
-                .thenReturn(Arrays.asList(
-                        ligneHistoriqueEtudiant1Enregistree,
-                        ligneHistoriqueEtudiant1Soumise,
-                        ligneHistoriqueEtudiant2Soumise
-                ));
-
-        when(repository.save(any(DemandeRepriseExamen.class))).thenReturn(nouvelleDemandeRepriseExamen);
+        when(demandeRepository.save(any(DemandeRepriseExamen.class))).thenReturn(nouvelleDemandeRepriseExamen);
     }
 
     @Test
     public void devraitRetournerListeDRECommisDTODeLongueurDeux() {
-        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenCommis();
+        List<LigneDREDTO> result = demandeService.getAllDemandeRepriseExamenCommis();
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()
@@ -118,7 +99,7 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Test
     public void devraitRetournerListeDREEnseignantDTODeLongueurUne() {
-        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenEnseignant(1L);
+        List<LigneDREDTO> result = demandeService.getAllDemandeRepriseExamenEnseignant(1L);
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()
@@ -127,7 +108,7 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Test
     public void devraitRetournerListeDREEnseignantDTOVide() {
-        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenEnseignant(2L);
+        List<LigneDREDTO> result = demandeService.getAllDemandeRepriseExamenEnseignant(2L);
         assertThat(result)
                 .isNotNull()
                 .isEmpty();
@@ -135,7 +116,7 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurDeux() {
-        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenEtudiant(1L);
+        List<LigneDREDTO> result = demandeService.getAllDemandeRepriseExamenEtudiant(1L);
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()
@@ -144,25 +125,7 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurUne() {
-        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenEtudiant(2L);
-        assertThat(result)
-                .isNotNull()
-                .isNotEmpty()
-                .hasSize(1);
-    }
-
-    @Test
-    public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurDeux() {
-        List<LigneHistoriqueEtudiantDTO> result = service.getHistoriqueEtudiant(1L);
-        assertThat(result)
-                .isNotNull()
-                .isNotEmpty()
-                .hasSize(2);
-    }
-
-    @Test
-    public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurUne() {
-        List<LigneHistoriqueEtudiantDTO> result = service.getHistoriqueEtudiant(2L);
+        List<LigneDREDTO> result = demandeService.getAllDemandeRepriseExamenEtudiant(2L);
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()
@@ -171,7 +134,7 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Test
     public void devraitSoumettreNouvelleDRE() {
-        DemandeRepriseExamen demandeCreee = service.soumettreDemandeRepriseExamen(nouvelleDemandeRepriseExamen);
+        DemandeRepriseExamen demandeCreee = demandeService.soumettreDemandeRepriseExamen(nouvelleDemandeRepriseExamen);
         assertThat(demandeCreee)
                 .isNotNull()
                 .isEqualTo(nouvelleDemandeRepriseExamen);

@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
@@ -40,22 +39,19 @@ public class EtudiantControllerTest {
         this.mockMvc.perform(get("/api/etudiants/1/historique?role=commis").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$[0].statut", is("SOUMISE")))
                 .andExpect(jsonPath("$[0].coursGroupe", is("INF1120-030")))
                 .andExpect(jsonPath("$[0].motifAbsence", is("MEDICAL")))
-                .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
+                .andExpect(jsonPath("$[1].statut", is("EN_TRAITEMENT")))
                 .andExpect(jsonPath("$[1].coursGroupe", is("INF3173-040")))
                 .andExpect(jsonPath("$[1].motifAbsence", is("AUTRE")));
     }
 
     @Test
-    public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurUneAvecStatutOk() throws Exception {
+    public void devraitRetournerListeLigneHistoriqueEtudiantDTOVideAvecStatutOk() throws Exception {
         this.mockMvc.perform(get("/api/etudiants/2/historique?role=commis").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].statutCourant", is("ENREGISTREE")))
-                .andExpect(jsonPath("$[0].coursGroupe", is("INF2120-020")))
-                .andExpect(jsonPath("$[0].motifAbsence", is("JUDICIAIRE")));
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
