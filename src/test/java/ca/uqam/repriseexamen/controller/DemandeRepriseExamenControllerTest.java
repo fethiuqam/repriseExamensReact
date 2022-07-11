@@ -1,5 +1,10 @@
 package ca.uqam.repriseexamen.controller;
 
+import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.MotifAbsence;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("datatest")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DemandeRepriseExamenControllerTest {
 
 
@@ -116,18 +123,20 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()
             throws Exception {
+        
+        DemandeRepriseExamen demande = DemandeRepriseExamen.builder()
+                .absenceDateDebut(LocalDate.of(2022, 6,6))
+                .absenceDateFin(LocalDate.of(2022, 6, 8))
+                .motifAbsence(MotifAbsence.DECES)
+                .absenceDetails("Deces de ma grande tante")
+                .build();
 
-        // Requete simplifiee d'une nouvelle demande en format JSON
-        String requeteDemande =
-                "{\"absenceDateDebut\": \"2022-06-06\"," +
-                        "\"absenceDateFin\": \"2022-06-08\"," +
-                        "\"dateSoumission\": \"2022-06-12\"," +
-                        "\"motifAbsence\": 1," +
-                        "\"absenceDetails\": \"Décès de ma grand-mère.\"}";
-
+        ObjectMapper objectMapper =
+                new ObjectMapper().registerModule(new JavaTimeModule())
+                        .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         MockMultipartFile dre = new MockMultipartFile("nouvelleDemande", null,
-                "application/json", requeteDemande.getBytes());
+                "application/json", objectMapper.writeValueAsBytes(demande));
 
         MockMultipartFile fichier = new MockMultipartFile("files",
                 "filename.pdf",
