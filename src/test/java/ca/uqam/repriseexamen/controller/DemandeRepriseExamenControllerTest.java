@@ -112,21 +112,20 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-//    @Test
-//    public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()
-//            throws Exception {
-//
-//        // Requete simplifiee d'une nouvelle demande en format JSON
-//        String requeteDemande =
-//                "{\"absenceDateDebut\": \"2022-06-06\"," +
-//                "\"absenceDateFin\": \"2022-06-08\"," +
-//                "\"motifAbsence\": 1," +
-//                "\"absenceDetails\": \"Décès de ma grand-mère.\"}";
-//
-//        this.mockMvc.perform(post("/api/demandes").contentType(MediaType.APPLICATION_JSON)
-//                .content(requeteDemande))
-//                .andExpect(status().isOk())
-//           //     .andExpect(jsonPath("$.dateSoumission", is(LocalDate.now().toString())))
-//                .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
-//    }
+    @Test
+    public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()
+            throws Exception {
+
+        // Requete simplifiee d'une nouvelle demande en format JSON
+        String requeteDemande =
+                "{\"absenceDateDebut\": \"2022-06-06\"," +
+                "\"absenceDateFin\": \"2022-06-08\"," +
+                "\"motifAbsence\": 1," +
+                "\"absenceDetails\": \"Décès de ma grand-mère.\"}";
+
+        this.mockMvc.perform(post("/api/demandes").contentType(MediaType.APPLICATION_JSON)
+                .content(requeteDemande))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
+    }
 }

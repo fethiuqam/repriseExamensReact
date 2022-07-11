@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import {Button, Chip, ListItemText} from "@mui/material";
+import {Badge, Button, Chip, ListItemText} from "@mui/material";
 import LoupeRoundedIcon from '@mui/icons-material/LoupeRounded';
 import AuthContext from "../../context/AuthProvider";
 import {format} from "date-fns";
@@ -41,14 +41,17 @@ export default function LigneDRE({item}) {
                 </TableCell>
             }
             <TableCell>
-                <Button
-                    size="small"
-                    variant="contained"
-                    endIcon={<LoupeRoundedIcon/>}
-                    href={`/demandes/${item.id}`}
-                >
-                    Consulter
-                </Button>
+                <Badge color="error" invisible={false} badgeContent={<h3>!</h3>} >
+                    <Button
+                        size="small"
+                        variant="contained"
+                        endIcon={<LoupeRoundedIcon/>}
+                        href={`/demandes/${item.id}`}
+                    >
+                        Consulter
+                    </Button>
+                </Badge>
+
             </TableCell>
         </TableRow>
     );

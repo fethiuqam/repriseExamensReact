@@ -61,7 +61,6 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         Statut statutSoumission = Statut.builder()
                 .dateHeure(LocalDateTime.now())
                 .typeStatut(TypeStatut.SOUMISE)
-                .demandeRepriseExamen(dre)
                 .build();
 
         List<Statut> statuts = new ArrayList<>();
