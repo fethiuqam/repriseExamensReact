@@ -14,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,41 +53,34 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Before
     public void setUp() {
-        when(ligneDRECommisEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDRECommisSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDRECommisAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE_COMMIS);
+        when(ligneDRECommisEnregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDRECommisSoumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDRECommisAcceptee.getStatut()).thenReturn(TypeStatut.ACCEPTEE);
 
         when(repository.findLigneDRECommisDTOBy())
-                .thenReturn(Arrays.asList(
-                        ligneDRECommisEnregistree,
-                        ligneDRECommisSoumise,
-                        ligneDRECommisAcceptee));
+                .thenReturn(Arrays.asList(ligneDRECommisEnregistree, ligneDRECommisSoumise, ligneDRECommisAcceptee));
 
-        when(ligneDREEnseignantEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDREEnseignantEnregistree.getEnseignantId()).thenReturn(1L);
-        when(ligneDREEnseignantSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDREEnseignantSoumise.getEnseignantId()).thenReturn(2L);
-        when(ligneDREEnseignantAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE_COMMIS);
-        when(ligneDREEnseignantAcceptee.getEnseignantId()).thenReturn(1L);
+        when(ligneDREEnseignantEnregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDREEnseignantAcceptee.getStatut()).thenReturn(TypeStatut.ACCEPTEE);
+        when(ligneDREEnseignantAcceptee.getDecision()).thenReturn(TypeDecision.ACCEPTEE_ENSEIGNANT);
+        when(ligneDREEnseignantSoumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
 
-        when(repository.findLigneDREEnseignantDTOBy())
-                .thenReturn(Arrays.asList(
-                        ligneDREEnseignantEnregistree,
-                        ligneDREEnseignantSoumise,
-                        ligneDREEnseignantAcceptee));
 
-        when(ligneDREEtudiant1Enregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDREEtudiant1Enregistree.getEtudiantId()).thenReturn(1L);
-        when(ligneDREEtudiant1Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDREEtudiant1Soumise.getEtudiantId()).thenReturn(1L);
-        when(ligneDREEtudiant2Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDREEtudiant2Soumise.getEtudiantId()).thenReturn(2L);
+        when(repository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(1L))
+                .thenReturn(Arrays.asList(ligneDREEnseignantEnregistree, ligneDREEnseignantAcceptee));
 
-        when(repository.findLigneDREEtudiantDTOBy())
-                .thenReturn(Arrays.asList(
-                        ligneDREEtudiant1Enregistree,
-                        ligneDREEtudiant1Soumise,
-                        ligneDREEtudiant2Soumise));
+        when(repository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(2L))
+                .thenReturn(List.of(ligneDREEnseignantSoumise));
+
+        when(ligneDREEtudiant1Enregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDREEtudiant1Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDREEtudiant2Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
+
+        when(repository.findLigneDREEtudiantDTOByEtudiantId(1L))
+                .thenReturn(Arrays.asList(ligneDREEtudiant1Enregistree, ligneDREEtudiant1Soumise));
+
+        when(repository.findLigneDREEtudiantDTOByEtudiantId(2L))
+                .thenReturn(List.of(ligneDREEtudiant2Soumise));
 
         when(repository.save(any(DemandeRepriseExamen.class))).thenReturn(nouvelleDemandeRepriseExamen);
     }

@@ -15,7 +15,7 @@ test("devrait retourner pour une ligne un element tr et 10 elements td", () => {
     );
     expect(screen.getAllByRole("row")).toHaveLength(1);
     const td = screen.getAllByRole("cell");
-    expect(td).toHaveLength(7);
+    expect(td).toHaveLength(8);
     unmount();
 });
 
@@ -24,12 +24,12 @@ test("devrait contenir les valeurs des proprietes de l'objet item a chaque eleme
         <AuthContext.Provider value={{role: "commis", id: null}}>
             <table>
                 <tbody>
-                <LigneDRE item={commisItems[0]}/>
+                <LigneDRE item={commisItems[2]}/>
                 </tbody>
             </table>
         </AuthContext.Provider>
     );
-    const {id, dateHeureSoumission, ...itemTest} = commisItems[0];
+    const {id, dateHeureSoumission, ...itemTest} = commisItems[2];
     for (const key in itemTest) {
         expect(screen.getByText(itemTest[key], {exact: false, insensitive: true})).toBeInTheDocument();
     }
