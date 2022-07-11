@@ -1,6 +1,5 @@
 package ca.uqam.repriseexamen.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +15,10 @@ public class Etudiant {
     private long id;
     private String codePermanent;
     private String nom;
+    private String prenom;
     private String email;
     private String telephone;
-    @OneToMany(mappedBy = "detenteur")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<DemandeRepriseExamen> listeDemandeRepriseExamen;
+    @OneToMany(mappedBy = "etudiant")
+    private List<DemandeRepriseExamen> demandes;
 
 }

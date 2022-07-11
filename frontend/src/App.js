@@ -1,29 +1,45 @@
-import React from 'react';
-import './App.css';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
-import ListRoleComponent from './components/ListRoleComponent';
-import EnTeteComponent from './components/EnTeteComponent';
-import PiedDePageComponent from './components/PiedDePageComponent';
-import CreerRoleComponent from './components/CreerRoleComponent';
-import VoirUnRoleComponent from './components/VoirUnRoleComponent';
+import React from "react";
+import Grid from '@mui/material/Grid';
+import "./App.css";
+import {BrowserRouter, Route} from 'react-router-dom';
+import ListeDRE from "./components/listeDRE/ListeDRE";
+import Entete from "./components/Entete/Entete";
+import PiedPage from "./components/PiedPage/PiedPage";
+import Connexion from "./components/Connexion/Connexion";
+import {Routes} from "react-router";
+import AuthRequise from "./components/AuthRequise/AuthRequise";
+import NonAutorise from "./components/NonAutorise/NonAutorise";
+import NonTrouve from "./components/NonTrouve/NonTrouve";
+import Formulaire from "./components/Formulaire/Formulaire";
 
 function App() {
-    return (
-        <div>
-            <Router>
-                <EnTeteComponent />
-                <div className="container">
-                    <Switch>
-                        <Route path = "/" exact component = {ListRoleComponent}></Route>
-                        <Route path = "/roles" exact component = {ListRoleComponent}></Route>
-                        <Route path = "/roles/:id" component = {CreerRoleComponent}></Route>
-                        <Route path = "/voir-roles/:id" component = {VoirUnRoleComponent}></Route>
-                    </Switch>
-                </div>
-                <PiedDePageComponent />
-            </Router>
-        </div>
 
+    return (
+        <BrowserRouter>
+            <Grid style={{minHeight: "100vh"}} container direction='column' alignItems="stretch"
+                  justifyContent="space-between">
+                <Entete/>
+                <Routes>
+
+                    <Route exact path="/connexion" element={<Connexion/>} />
+
+                    <Route element={<AuthRequise rolesPermis={['directeur', 'commis', 'enseignant', 'etudiant']} />}>
+                        <Route exact path="/" element={<ListeDRE/>} />
+                    </Route>
+
+                    <Route element={<AuthRequise rolesPermis={['etudiant']} />}>
+                        <Route exact path="/faire-demande" element={<Formulaire/>} />
+                    </Route>
+
+                    <Route path="/non-autorise" element={<NonAutorise/>} />
+
+                    <Route path="*" element={<NonTrouve/>} />
+
+
+                </Routes>
+                <PiedPage/>
+            </Grid>
+        </BrowserRouter>
     );
 }
 

@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,5 +19,8 @@ public class Statut {
     private long id;
     private LocalDateTime dateHeure;
     private TypeStatut typeStatut;
+    @JsonBackReference
+    @ManyToOne
+    private DemandeRepriseExamen demandeRepriseExamen;
 
 }

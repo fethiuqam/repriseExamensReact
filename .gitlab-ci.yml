@@ -42,6 +42,7 @@ verify:
     - echo "APP_IMAGE_TAG=$CI_REGISTRY_IMAGE/app:$ENV_TAG"  >> .env
     - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
     - echo "HOST_PORT=$HOST_PORT" >> .env
+    - echo "ENV_TAG=$ENV_TAG" >> .env
     - docker compose build
     - docker compose push
     - docker compose --project-name $ENV_TAG up --detach
@@ -50,7 +51,7 @@ deploy_test:
   <<: *deploy_app
   environment:
     name: test
-    url: https://test.repriseexamen.info.uqam.ca
+    url: http://test.repriseexamen.info.uqam.ca
   variables:
     ENV_TAG: test
     HOST_PORT: 8080
@@ -59,7 +60,7 @@ deploy_prod:
   <<: *deploy_app
   environment:
     name: prod
-    url: https://repriseexamen.info.uqam.ca
+    url: http://repriseexamen.info.uqam.ca
   rules:
     - if: $CI_COMMIT_TAG
   variables:
