@@ -1,11 +1,12 @@
 package ca.uqam.repriseexamen.service;
 
-import ca.uqam.repriseexamen.dao.EtudiantRepository;
-import ca.uqam.repriseexamen.model.Etudiant;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import ca.uqam.repriseexamen.dao.EtudiantRepository;
+import ca.uqam.repriseexamen.model.Etudiant;
 
 @Service
 public class EtudiantServiceImpl implements EtudiantService {

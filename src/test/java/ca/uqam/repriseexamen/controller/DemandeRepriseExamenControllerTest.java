@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,8 +17,7 @@ import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @ActiveProfiles("datatest")
 public class DemandeRepriseExamenControllerTest {
+
 
     private MockMvc mockMvc;
     @Autowired
@@ -123,9 +124,19 @@ public class DemandeRepriseExamenControllerTest {
                 "\"motifAbsence\": 1," +
                 "\"absenceDetails\": \"Décès de ma grand-mère.\"}";
 
-        this.mockMvc.perform(post("/api/demandes").contentType(MediaType.APPLICATION_JSON)
-                .content(requeteDemande))
+
+        MockMultipartFile dre = new MockMultipartFile("nouvelleDemande", null,
+                "application/json", requeteDemande.getBytes());
+
+        MockMultipartFile fichier = new MockMultipartFile("files",
+                "filename.pdf",
+                "application/pdf",
+                "test".getBytes());
+
+        this.mockMvc.perform(multipart("/api/demandes").file(dre).file(fichier))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.dateSoumission", is(LocalDate.now().toString())))
                 .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
+
     }
 }

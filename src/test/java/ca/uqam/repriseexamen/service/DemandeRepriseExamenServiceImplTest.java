@@ -5,6 +5,7 @@ import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
+import ca.uqam.repriseexamen.dto.LigneHistoriqueEtudiantDTO;
 import ca.uqam.repriseexamen.model.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,6 +51,12 @@ public class DemandeRepriseExamenServiceImplTest {
     @Mock
     private LigneDREEtudiantDTO ligneDREEtudiant2Soumise;
     @Mock
+    private LigneHistoriqueEtudiantDTO ligneHistoriqueEtudiant1Enregistree;
+    @Mock
+    private LigneHistoriqueEtudiantDTO ligneHistoriqueEtudiant1Soumise;
+    @Mock
+    private LigneHistoriqueEtudiantDTO ligneHistoriqueEtudiant2Soumise;
+    @Mock
     private DemandeRepriseExamen nouvelleDemandeRepriseExamen;
 
     @Before
@@ -81,6 +89,20 @@ public class DemandeRepriseExamenServiceImplTest {
 
         when(repository.findLigneDREEtudiantDTOByEtudiantId(2L))
                 .thenReturn(List.of(ligneDREEtudiant2Soumise));
+
+        when(ligneHistoriqueEtudiant1Enregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneHistoriqueEtudiant1Enregistree.getEtudiantId()).thenReturn(1L);
+        when(ligneHistoriqueEtudiant1Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneHistoriqueEtudiant1Soumise.getEtudiantId()).thenReturn(1L);
+        when(ligneHistoriqueEtudiant2Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneHistoriqueEtudiant2Soumise.getEtudiantId()).thenReturn(2L);
+
+        when(repository.findLigneHistoriqueEtudiantDTOBy())
+                .thenReturn(Arrays.asList(
+                        ligneHistoriqueEtudiant1Enregistree,
+                        ligneHistoriqueEtudiant1Soumise,
+                        ligneHistoriqueEtudiant2Soumise
+                ));
 
         when(repository.save(any(DemandeRepriseExamen.class))).thenReturn(nouvelleDemandeRepriseExamen);
     }
@@ -123,6 +145,24 @@ public class DemandeRepriseExamenServiceImplTest {
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurUne() {
         List<LigneDREDTO> result = service.getAllDemandeRepriseExamenEtudiant(2L);
+        assertThat(result)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(1);
+    }
+
+    @Test
+    public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurDeux() {
+        List<LigneHistoriqueEtudiantDTO> result = service.getHistoriqueEtudiant(1L);
+        assertThat(result)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(2);
+    }
+
+    @Test
+    public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurUne() {
+        List<LigneHistoriqueEtudiantDTO> result = service.getHistoriqueEtudiant(2L);
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()

@@ -1,6 +1,7 @@
 package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
+import ca.uqam.repriseexamen.dto.LigneHistoriqueEtudiantDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.TypeDecision;
 import ca.uqam.repriseexamen.model.TypeStatut;
@@ -13,6 +14,7 @@ public interface DemandeRepriseExamenService {
     List<LigneDREDTO> getAllDemandeRepriseExamenCommis();
     List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long id);
     List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long id);
+    List<LigneHistoriqueEtudiantDTO> getHistoriqueEtudiant(long id);
 
     DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre);
 

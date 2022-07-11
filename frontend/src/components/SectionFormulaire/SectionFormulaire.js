@@ -5,7 +5,7 @@ import '../../styles/StyleEtudiant.css'
 function SectionFormulaire(props) {
 
     return (
-        <Container>
+        <Container maxWidth={false}>
             <Paper variant="outlined" square className="sectionFormulaire">
                 <div className="sectionFormulaireDivTitre">
                     <h3 className="sectionFormulaireTitre">{props.title}</h3>
