@@ -11,6 +11,9 @@ import AuthRequise from "./components/AuthRequise/AuthRequise";
 import NonAutorise from "./components/NonAutorise/NonAutorise";
 import NonTrouve from "./components/NonTrouve/NonTrouve";
 import Formulaire from "./components/Formulaire/Formulaire";
+import ListRoleComponent from "./components/ListRoleComponent";
+import CreerRoleComponent from "./components/CreerRoleComponent";
+import VoirUnRoleComponent from "./components/VoirUnRoleComponent";
 
 function App() {
 
@@ -33,7 +36,9 @@ function App() {
 
                     <Route path="/non-autorise" element={<NonAutorise/>} />
 
-                    <Route path="*" element={<NonTrouve/>} />
+                    <Route exact path="/roles" element={<ListRoleComponent/>}/>
+                    <Route exact path="/roles/:id" element={<CreerRoleComponent/>}/>
+                    <Route exact path = "/voir-roles/:id" element={<VoirUnRoleComponent/>}/>
 
 
                 </Routes>
@@ -44,3 +49,7 @@ function App() {
 }
 
 export default App;
+
+
+
+
