@@ -1,13 +1,14 @@
 import '../../styles/StyleEtudiant.css'
 import SectionFormulaire from "../SectionFormulaire/SectionFormulaire"
-import { TextField, InputLabel, Select, MenuItem, Container } from "@material-ui/core/";
+import { TextField, InputLabel, Select, Container } from "@material-ui/core/";
 import { Grid, Typography } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import Button from '../BoutonFormulaire/BoutonFormulaire';
 import MiseEnPage from '../MiseEnPage/MiseEnPage';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import * as React from "react";
+import Banniere from '../Banniere/Banniere';
 
 // stocke les infos des etudiant TODO : connecter avec les identifiants
 const infosEtudiant = {
@@ -20,11 +21,9 @@ const Formulaire = () => {
     const {
         register,
         handleSubmit,
-        formState,
         formState: { errors },
         getValues,
-        control,
-        reset
+        control
     } = useForm();
 
     let formData = new FormData();
@@ -39,48 +38,48 @@ const Formulaire = () => {
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    const [error, setError] = useState();
 
     async function handleFormSubmit(data) {
 
         try {
+            setIsSubmitting(true);
+
             formData.append('nouvelleDemande',
                 new Blob([JSON.stringify(data)], { type: "application/json" }));
-            setIsSubmitting(true);
-            await fetch("/api/demandes", {
+            
+            var response = await fetch("/api/demandes", {
                 method: "POST",
                 body: formData
             });
-        } catch (error) {
-            alert("ERREUR : Votre demande n'a pas pu être envoyée."); // TODO remplacer quand on aura React 16/react-js-banner
-        } finally {
-            setIsSubmitting(false);
+
+            if (!response.ok) {
+                throw new Error("Erreur du POST");
+            }
+
             navigate("/");
-        }
+        } catch (error) {
+            setError(error);
+            setIsSubmitting(false);
+        } 
     }
 
     const onSubmit = (data) => {
         handleFormSubmit(data);
     };
 
-    useEffect(() => {
-        if (formState.isSubmitSuccessful) {
-            reset({
-                sigleCours: "",
-                groupeCours: "",
-                enseignant: "",
-                absenceDateDebut: "",
-                absenceDateFin: "",
-                motifAbsence: "",
-                absenceDetails: ""
-            });
-        }
-    }, [formState, reset]);
 
     return (
         <>
             <MiseEnPage titre={'Demande de reprise d\'examen'}
                 children={
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        {error && 
+                            <Banniere 
+                                id="banniereErreur" 
+                                texte="ERREUR : Votre demande n'a pas pu être envoyée."
+                                className="banniereErreur"/>
+                        }
                         <SectionFormulaire
                             title={'INFORMATIONS PERSONNELLES'}
                             children={
@@ -117,6 +116,8 @@ const Formulaire = () => {
                                                 </Grid>
                                                 <Grid item xs={8}>
                                                     <Select
+                                                        data-testid="sigleCoursTestId"
+                                                        native
                                                         defaultValue=""
                                                         className="inputStandard"
                                                         labelId="etiquette-signelCours"
@@ -129,9 +130,9 @@ const Formulaire = () => {
                                                         {...register("sigleCours", { required: true })}
                                                         error={Boolean(errors.sigleCours)}
                                                     >
-                                                        <MenuItem value={'INM5151'}>INM5151</MenuItem>
-                                                        <MenuItem value={'INF6150'}>INF6150</MenuItem>
-                                                        <MenuItem value={'INF5171'}>INF5171</MenuItem>
+                                                        <option name={'INM5151'} value={'INM5151'}>INM5151</option>
+                                                        <option value={'INF6150'}>INF6150</option>
+                                                        <option value={'INF5171'}>INF5171</option>
                                                     </Select>
                                                 </Grid>
                                             </Grid>
@@ -143,11 +144,13 @@ const Formulaire = () => {
                                                 </Grid>
                                                 <Grid item xs={8}>
                                                     <TextField // TODO va être rempli automatiquement quand on choisit le sigle
+                                                        data-testid="groupeCoursTestId"
                                                         defaultValue=""
                                                         className="inputStandard"
                                                         labelid="etiquette-groupeCours"
                                                         id="groupeCours-input"
                                                         name="groupeCours"
+                                                        label="Groupe"
                                                         style={{
                                                             width: "90%"
                                                         }}
@@ -164,11 +167,13 @@ const Formulaire = () => {
                                                 </Grid>
                                                 <Grid item xs={8}>
                                                     <TextField // TODO va être rempli automatiquement quand on choisit le sigle
+                                                        data-testid="enseignantTestId"
                                                         defaultValue=""
                                                         className="inputStandard"
                                                         labelid="etiquette-enseignant"
                                                         id="enseignant-input"
                                                         name="enseignant"
+                                                        label="Enseignant"
                                                         style={{
                                                             width: "90%"
                                                         }}
@@ -247,6 +252,8 @@ const Formulaire = () => {
                                     <div>
                                         <InputLabel id="etiquette-motif-absence">Motif</InputLabel>
                                         <Select
+                                            data-testid="motifTestId"
+                                            native
                                             defaultValue=""
                                             className="inputStandard"
                                             labelId="etiquette-motif-absence"
@@ -256,12 +263,12 @@ const Formulaire = () => {
                                             {...register("motifAbsence", { required: true })}
                                             error={Boolean(errors.motifAbsence)}
                                         >
-                                            <MenuItem value={'MEDICAL'}>Hospitalisation</MenuItem>
-                                            <MenuItem value={'DECES'}>Décès</MenuItem>
-                                            <MenuItem value={'ACCIDENT'}>Accident</MenuItem>
-                                            <MenuItem value={'JUDICIAIRE'}>Convocation à un tribunal</MenuItem>
-                                            <MenuItem value={'RELIGIEUX'}>Motif religieux</MenuItem>
-                                            <MenuItem value={'AUTRE'}>Autre</MenuItem>
+                                            <option value={'MEDICAL'}>Hospitalisation</option>
+                                            <option value={'DECES'}>Décès</option>
+                                            <option value={'ACCIDENT'}>Accident</option>
+                                            <option value={'JUDICIAIRE'}>Convocation à un tribunal</option>
+                                            <option value={'RELIGIEUX'}>Motif religieux</option>
+                                            <option value={'AUTRE'}>Autre</option>
                                         </Select>
                                     </div>
                                     <div>
@@ -313,6 +320,7 @@ const Formulaire = () => {
                                     Annuler
                                 </Button>
                                 <Button
+                                    id="boutonSoumettre"
                                     variant="contained"
                                     disableElevation
                                     type="submit"
