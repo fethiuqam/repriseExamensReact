@@ -1,7 +1,11 @@
 package ca.uqam.repriseexamen.controller;
 
+import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.MotifAbsence;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +19,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDate;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -27,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("datatest")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DemandeRepriseExamenControllerTest {
+
 
     private MockMvc mockMvc;
     @Autowired
@@ -114,21 +120,23 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Ignore
     @Test
     public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()
             throws Exception {
 
-        // Requete simplifiee d'une nouvelle demande en format JSON
-        String requeteDemande =
-                "{\"absenceDateDebut\": \"2022-06-06\"," +
-                "\"absenceDateFin\": \"2022-06-08\"," +
-                "\"motifAbsence\": 1," +
-                "\"absenceDetails\": \"Décès de ma grand-mère.\"}";
+        DemandeRepriseExamen demande = DemandeRepriseExamen.builder()
+                .absenceDateDebut(LocalDate.of(2022, 6,6))
+                .absenceDateFin(LocalDate.of(2022, 6, 8))
+                .motifAbsence(MotifAbsence.DECES)
+                .absenceDetails("Deces de ma grande tante")
+                .build();
 
+        ObjectMapper objectMapper =
+                new ObjectMapper().registerModule(new JavaTimeModule())
+                        .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         MockMultipartFile dre = new MockMultipartFile("nouvelleDemande", null,
-                "application/json", requeteDemande.getBytes());
+                "application/json", objectMapper.writeValueAsBytes(demande));
 
         MockMultipartFile fichier = new MockMultipartFile("files",
                 "filename.pdf",
