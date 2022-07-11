@@ -20,7 +20,7 @@ exports[`Formulaire affiché correctement 1`] = `
       onSubmit={[Function]}
     >
       <div
-        className="MuiContainer-root MuiContainer-maxWidthLg"
+        className="MuiContainer-root"
       >
         <div
           className="MuiPaper-root sectionFormulaire MuiPaper-outlined"
@@ -71,7 +71,7 @@ exports[`Formulaire affiché correctement 1`] = `
         </div>
       </div>
       <div
-        className="MuiContainer-root MuiContainer-maxWidthLg"
+        className="MuiContainer-root"
       >
         <div
           className="MuiPaper-root sectionFormulaire MuiPaper-outlined"
@@ -112,6 +112,7 @@ exports[`Formulaire affiché correctement 1`] = `
                   >
                     <div
                       className="MuiInputBase-root MuiInput-root MuiInput-underline inputStandard"
+                      data-testid="sigleCoursTestId"
                       onClick={[Function]}
                       style={
                         Object {
@@ -119,35 +120,35 @@ exports[`Formulaire affiché correctement 1`] = `
                         }
                       }
                     >
-                      <div
-                        aria-haspopup="listbox"
-                        aria-labelledby="etiquette-signelCours sigleCours-input"
-                        className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+                      <select
+                        aria-invalid={false}
+                        className="MuiSelect-root MuiSelect-select MuiInputBase-input MuiInput-input"
+                        defaultValue=""
                         id="sigleCours-input"
-                        onBlur={[Function]}
-                        onFocus={[Function]}
-                        onKeyDown={[Function]}
-                        onMouseDown={[Function]}
-                        role="button"
-                        tabIndex={0}
-                      >
-                        <span
-                          dangerouslySetInnerHTML={
-                            Object {
-                              "__html": "&#8203;",
-                            }
-                          }
-                        />
-                      </div>
-                      <input
-                        aria-hidden={true}
-                        className="MuiSelect-nativeInput"
+                        multiple={false}
                         name="sigleCours"
                         onAnimationStart={[Function]}
+                        onBlur={[Function]}
                         onChange={[Function]}
-                        tabIndex={-1}
-                        value=""
-                      />
+                        onFocus={[Function]}
+                      >
+                        <option
+                          name="INM5151"
+                          value="INM5151"
+                        >
+                          INM5151
+                        </option>
+                        <option
+                          value="INF6150"
+                        >
+                          INF6150
+                        </option>
+                        <option
+                          value="INF5171"
+                        >
+                          INF5171
+                        </option>
+                      </select>
                       <svg
                         aria-hidden={true}
                         className="MuiSvgIcon-root MuiSelect-icon"
@@ -183,6 +184,7 @@ exports[`Formulaire affiché correctement 1`] = `
                   >
                     <div
                       className="MuiFormControl-root MuiTextField-root inputStandard"
+                      data-testid="groupeCoursTestId"
                       labelid="etiquette-groupeCours"
                       style={
                         Object {
@@ -190,6 +192,14 @@ exports[`Formulaire affiché correctement 1`] = `
                         }
                       }
                     >
+                      <label
+                        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                        data-shrink={false}
+                        htmlFor="groupeCours-input"
+                        id="groupeCours-input-label"
+                      >
+                        Groupe
+                      </label>
                       <div
                         className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                         onClick={[Function]}
@@ -235,6 +245,7 @@ exports[`Formulaire affiché correctement 1`] = `
                   >
                     <div
                       className="MuiFormControl-root MuiTextField-root inputStandard"
+                      data-testid="enseignantTestId"
                       labelid="etiquette-enseignant"
                       style={
                         Object {
@@ -242,6 +253,14 @@ exports[`Formulaire affiché correctement 1`] = `
                         }
                       }
                     >
+                      <label
+                        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+                        data-shrink={false}
+                        htmlFor="enseignant-input"
+                        id="enseignant-input-label"
+                      >
+                        Enseignant
+                      </label>
                       <div
                         className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
                         onClick={[Function]}
@@ -353,7 +372,7 @@ exports[`Formulaire affiché correctement 1`] = `
         </div>
       </div>
       <div
-        className="MuiContainer-root MuiContainer-maxWidthLg"
+        className="MuiContainer-root"
       >
         <div
           className="MuiPaper-root sectionFormulaire MuiPaper-outlined"
@@ -382,37 +401,52 @@ exports[`Formulaire affiché correctement 1`] = `
                 </label>
                 <div
                   className="MuiInputBase-root MuiInput-root MuiInput-underline inputStandard"
+                  data-testid="motifTestId"
                   onClick={[Function]}
                 >
-                  <div
-                    aria-haspopup="listbox"
-                    aria-labelledby="etiquette-motif-absence menu-motif-absence"
-                    className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+                  <select
+                    aria-invalid={false}
+                    className="MuiSelect-root MuiSelect-select MuiInputBase-input MuiInput-input"
+                    defaultValue=""
                     id="menu-motif-absence"
-                    onBlur={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <span
-                      dangerouslySetInnerHTML={
-                        Object {
-                          "__html": "&#8203;",
-                        }
-                      }
-                    />
-                  </div>
-                  <input
-                    aria-hidden={true}
-                    className="MuiSelect-nativeInput"
+                    multiple={false}
                     name="motifAbsence"
                     onAnimationStart={[Function]}
+                    onBlur={[Function]}
                     onChange={[Function]}
-                    tabIndex={-1}
-                    value=""
-                  />
+                    onFocus={[Function]}
+                  >
+                    <option
+                      value="MEDICAL"
+                    >
+                      Hospitalisation
+                    </option>
+                    <option
+                      value="DECES"
+                    >
+                      Décès
+                    </option>
+                    <option
+                      value="ACCIDENT"
+                    >
+                      Accident
+                    </option>
+                    <option
+                      value="JUDICIAIRE"
+                    >
+                      Convocation à un tribunal
+                    </option>
+                    <option
+                      value="RELIGIEUX"
+                    >
+                      Motif religieux
+                    </option>
+                    <option
+                      value="AUTRE"
+                    >
+                      Autre
+                    </option>
+                  </select>
                   <svg
                     aria-hidden={true}
                     className="MuiSvgIcon-root MuiSelect-icon"
@@ -480,10 +514,10 @@ exports[`Formulaire affiché correctement 1`] = `
                     />
                     <fieldset
                       aria-hidden={true}
-                      className="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
+                      className="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
                     >
                       <legend
-                        className="PrivateNotchedOutline-legendLabelled-7"
+                        className="PrivateNotchedOutline-legendLabelled-11"
                       >
                         <span>
                           Explications détaillées
@@ -578,6 +612,7 @@ exports[`Formulaire affiché correctement 1`] = `
           <button
             className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButtonBase-root css-122gtp7-MuiButtonBase-root-MuiButton-root"
             disabled={false}
+            id="boutonSoumettre"
             onBlur={[Function]}
             onContextMenu={[Function]}
             onDragLeave={[Function]}
