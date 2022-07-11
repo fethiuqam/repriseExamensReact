@@ -1,6 +1,7 @@
 package ca.uqam.repriseexamen.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class DemandeRepriseExamen {
     private MotifAbsence motifAbsence;
     private String absenceDetails;
     private String descriptionExamen;
+    @JsonManagedReference
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Statut> listeStatut;
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,30 +1,23 @@
 package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
-import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
-import ca.uqam.repriseexamen.dto.LigneDREDTO;
-import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
-import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
+import ca.uqam.repriseexamen.dto.*;
 import ca.uqam.repriseexamen.model.*;
 import com.fasterxml.jackson.databind.JsonNode;
-import ca.uqam.repriseexamen.dto.LigneHistoriqueEtudiantDTO;
-import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
-import ca.uqam.repriseexamen.model.Justification;
-import ca.uqam.repriseexamen.model.Statut;
-import ca.uqam.repriseexamen.model.TypeStatut;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.IllegalTransactionStateException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import ca.uqam.repriseexamen.model.Statut;
 
 @Service
 @Transactional

@@ -5,19 +5,15 @@ import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.TypeDecision;
 import ca.uqam.repriseexamen.model.TypeStatut;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
-import com.fasterxml.jackson.databind.JsonNode;
 import ca.uqam.repriseexamen.service.JustificationService;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Arrays;

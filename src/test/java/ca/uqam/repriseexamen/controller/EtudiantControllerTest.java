@@ -4,8 +4,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,13 +16,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("datatest")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class EtudiantControllerTest {
 
     private MockMvc mockMvc;
@@ -40,7 +43,7 @@ public class EtudiantControllerTest {
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
                 .andExpect(jsonPath("$[0].coursGroupe", is("INF1120-030")))
                 .andExpect(jsonPath("$[0].motifAbsence", is("MEDICAL")))
-                .andExpect(jsonPath("$[1].statutCourant", is("ACCEPTEE")))
+                .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
                 .andExpect(jsonPath("$[1].coursGroupe", is("INF3173-040")))
                 .andExpect(jsonPath("$[1].motifAbsence", is("AUTRE")));
     }
