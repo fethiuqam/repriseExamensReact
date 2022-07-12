@@ -1,5 +1,5 @@
 export const connectionUtilisateur = async (authReq)=> {
-    return await fetch(`http://localhost:8080/api/login`,
+    return await fetch(`/api/login`,
         {
             method: 'post',
             body: JSON.stringify(authReq),
