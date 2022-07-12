@@ -1,7 +1,10 @@
 package ca.uqam.repriseexamen.controller;
 
+import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.MotifAbsence;
+import ca.uqam.repriseexamen.model.TypeDecision;
+import ca.uqam.repriseexamen.model.TypeStatut;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,25 +20,34 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+@Transactional
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("datatest")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DemandeRepriseExamenControllerTest {
 
+    private static final long SLEEP_TIME = 10;
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext context;
+    @Autowired
+    private DemandeRepriseExamenRepository demandeRepository;
 
     @Before
     public void setUp() {
@@ -156,6 +168,10 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
+        assertThat(demande.get().getListeDecision().get(0).getDetails()).isNull();
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
     }
 
     @Test
@@ -165,6 +181,10 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"details\" : \"details de decision\"}"))
                 .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
+        assertThat(demande.get().getListeDecision().get(0).getDetails()).isEqualTo("details de decision");
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
     }
 
     @Test
@@ -174,6 +194,8 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
     }
 
     @Test
@@ -183,6 +205,9 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
     }
 
     @Test
@@ -192,6 +217,8 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
     }
 
     @Test
@@ -201,10 +228,14 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
     }
 
     @Test
@@ -214,6 +245,8 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNull();
     }
 
     @Test
@@ -223,6 +256,9 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
     }
 
     @Test
@@ -232,6 +268,8 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
     }
 
     @Test
@@ -241,10 +279,14 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_DIRECTEUR);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
     @Test
@@ -254,10 +296,13 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/2/accepter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
     }
 
     @Test
@@ -267,10 +312,13 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/2/rejeter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
     }
 
     @Test
@@ -280,14 +328,19 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_DIRECTEUR);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
     @Test
@@ -297,10 +350,14 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/2/accepter-enseignant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_ENSEIGNANT);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.ACCEPTEE);
     }
 
     @Test
@@ -310,31 +367,59 @@ public class DemandeRepriseExamenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/2/rejeter-enseignant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_ENSEIGNANT);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
+
     @Test
-    public void devraitRetournerStatutNoTAcceptablePourAccepterEtRejterEnseignantDejaRejeteeDirecteur()
+    public void devraitRetournerStatutNoTAcceptablePourAccepterEnseignantDejaRejeteeDirecteur()
             throws Exception {
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/1/accepter-enseignant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_DIRECTEUR);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
+    }
+
+    @Test
+    public void devraitRetournerStatutNoTAcceptablePourRejterEnseignantDejaRejeteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-enseignant")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_DIRECTEUR);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
 }
