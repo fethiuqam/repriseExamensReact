@@ -1,5 +1,6 @@
 package ca.uqam.repriseexamen.controller;
 
+
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.MotifAbsence;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,10 +44,11 @@ public class DemandeRepriseExamenControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
+
     @Test
-    public void devraitRetournerListeDRECommisDTODeLongueurDeuxAvecStatutOk()
+    public void devraitRetournerListeDREPersonnelDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?role=commis").contentType(MediaType.APPLICATION_JSON))
+       this.mockMvc.perform(get("/api/demandes?type=personnel").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
@@ -58,7 +60,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEnseignantDTODeLongueurUneAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?role=enseignant&id=1").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes?type=enseignant&id=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].statutCourant", is("ACCEPTEE")))
@@ -68,7 +70,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEnseignantDTOVideAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?role=enseignant&id=2").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes?type=enseignant&id=2").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -76,7 +78,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?role=etudiant&id=1").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes?type=etudiant&id=3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
@@ -88,7 +90,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurUneAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?role=etudiant&id=2").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes?type=etudiant&id=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].statutCourant", is("ENREGISTREE")))
@@ -99,7 +101,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEtudiantDTOVideAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?role=etudiant&id=3").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes?type=etudiant&id=5").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }

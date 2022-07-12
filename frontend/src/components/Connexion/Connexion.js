@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import React, {useContext, useState} from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,11 +9,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {useNavigate, useLocation} from 'react-router-dom';
 import AuthContext from "../../context/AuthProvider";
+import {connectionUtilisateur} from "../../api/AuthentificationService";
 
 
 export default function Connexion() {
 
-    const {setAuth, setRole, setId} = useContext(AuthContext);
+    const {setAuth, setType, setId, setJwt} = useContext(AuthContext);
+
+    const [valAuth, setValAuth] = useState({
+        codeMs: '',
+        motDePasse: ''
+    });
+
+    const [errConnectMessage, setErrConnectMessage] = useState('');
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,36 +29,29 @@ export default function Connexion() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
 
-        if (data.get('user') === 'commis') {
-            setAuth(true);
-            setRole("commis");
-        } else if (data.get('user') === 'directeur') {
-            setAuth(true);
-            setRole("directeur");
-        } else if (data.get('user') === 'etudiant') {
-            setAuth(true);
-            setRole("etudiant");
-            setId(1);
-        } else if (data.get('user') === 'enseignant') {
-            setAuth(true);
-            setRole("enseignant");
-            setId(1);
-        } else {
-            setAuth(false);
-            setRole(null);
-            setId(null);
-        }
-        navigate(from, {replace: true});
+        connectionUtilisateur(valAuth).then((response)=>{
+             setAuth(true);
+             setType(response.type);
+             setId(response.id);
+             setJwt(response.token);
+             navigate(from, {replace: true});
+
+        }).catch(()=>{
+            setErrConnectMessage("Échec, mauvaises informations d'identification");
+        });
+    };
+
+    const handleChange = (val) => {
+        val.persist();
+        setValAuth(valAuth => ({
+            ...valAuth,
+            [val.target.name]: val.target.value
+        }));
     };
 
     return (
         <>
-            <p>Utilisateurs pour tester : commis - etudiant - enseignant</p>
-            <p>Le id de l'etudiant et l'enseignant : 1</p>
-            <p>Le mot de passe est facultatif</p>
-
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <Box
@@ -72,19 +73,23 @@ export default function Connexion() {
                             margin="normal"
                             required
                             fullWidth
-                            id="user"
+                            id="codeMs"
                             label="Code MS"
-                            name="user"
+                            name="codeMs"
                             autoFocus
+                            value={valAuth.codeMs}
+                            onChange={handleChange}
                         />
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
+                            name="motDePasse"
                             label="Mot de passe"
                             type="password"
-                            id="password"
+                            id="motDePasse"
+                            value={valAuth.motDePasse}
+                            onChange={handleChange}
                         />
                         <Button
                             type="submit"
@@ -95,6 +100,11 @@ export default function Connexion() {
                             Se connecter
                         </Button>
                     </Box>
+                    {errConnectMessage && (
+                        <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                            <h4 style={{color: 'red'}}>{errConnectMessage}</h4>
+                        </Box>
+                    )}
                 </Box>
             </Container>
         </>

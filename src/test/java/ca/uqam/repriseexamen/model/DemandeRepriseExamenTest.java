@@ -1,5 +1,6 @@
 package ca.uqam.repriseexamen.model;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,6 +49,7 @@ public class DemandeRepriseExamenTest {
 
         assertEquals(this.dreEnregistreeSoumise.getDateHeureSoumission(), expected);
         assertEquals(this.dreEnregistreeSoumiseEnTraitement.getDateHeureSoumission(), expected);
+        Assert.assertTrue("",true);
     }
 
     @Test

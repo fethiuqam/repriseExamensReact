@@ -1,7 +1,7 @@
 package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
-import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
+import ca.uqam.repriseexamen.dto.LigneDREPersonnelDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
@@ -29,8 +29,8 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     private DemandeRepriseExamenRepository demandeRepriseExamenRepository;
 
     @Override
-    public List<LigneDREDTO> getAllDemandeRepriseExamenCommis() {
-        List<LigneDRECommisDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDRECommisDTOBy();
+    public List<LigneDREDTO> getAllDemandeRepriseExamenPersonnel() {
+        List<LigneDREPersonnelDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREPersonnelDTOBy();
 
         return listeLigneDRE.stream()
                 .filter(dre -> !dre.getStatutCourant().equals(TypeStatut.ENREGISTREE))

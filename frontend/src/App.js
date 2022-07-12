@@ -23,11 +23,11 @@ function App() {
 
                     <Route exact path="/connexion" element={<Connexion/>} />
 
-                    <Route element={<AuthRequise rolesPermis={['directeur', 'commis', 'enseignant', 'etudiant']} />}>
+                    <Route element={<AuthRequise typesPermis={['directeur', 'personnel', 'enseignant', 'etudiant']} />}>
                         <Route exact path="/" element={<ListeDRE/>} />
                     </Route>
 
-                    <Route element={<AuthRequise rolesPermis={['etudiant']} />}>
+                    <Route element={<AuthRequise typesPermis={['etudiant']} />}>
                         <Route exact path="/faire-demande" element={<Formulaire/>} />
                     </Route>
 

@@ -2,6 +2,7 @@ package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import ca.uqam.repriseexamen.service.JustificationService;
 import lombok.AllArgsConstructor;
@@ -28,18 +29,20 @@ public class DemandeRepriseExamenController {
     @Autowired
     private JustificationService justificationService;
 
+    private UtilisateurAuthentifieService authentifieService;
+
     /**
-     * Route pour récupérer les demandes de reprises d'examen en fonction du role
+     * Route pour récupérer les demandes de reprises d'examen en fonction du type
      * de l'utilisateur
      * 
      * @return LigneDREDTO
      */
     @GetMapping("")
     public List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant
-            (@RequestParam(required = false) Long id, @RequestParam(required = true) String role) {
-        switch (role){
-            case "commis":
-                return demandeRepriseExamenService.getAllDemandeRepriseExamenCommis();
+            (@RequestParam(required = false) Long id, @RequestParam(required = true) String type) {
+        switch (type){
+            case "personnel":
+                return demandeRepriseExamenService.getAllDemandeRepriseExamenPersonnel();
 
             case "enseignant":
                 if (id != null)

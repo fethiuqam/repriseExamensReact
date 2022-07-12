@@ -5,16 +5,19 @@ values
     ( 'systeme d exploitation', 'INF3173') ,
     ( 'algorithmique', 'INF5130');
 
-insert into enseignant ( nom, prenom, matricule , email)
+insert into utilisateur ( code_ms,nom, prenom, matricule , email, mot_de_passe,dtype)
 values
-    ('lord', 'melanie', 'LORM45698732', 'lord.melanie.courrier.uqam.ca' ),
-    ('jack', 'berger', 'BERJ32695723', 'berger.jack.courrier.uqam.ca' );
+    ('enseignant1','lord', 'melanie', 'LORM45698732', 'lord.melanie.courrier.uqam.ca', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant' ),
+    ('enseignant2','jack', 'berger', 'BERJ32695723', 'berger.jack.courrier.uqam.ca',  '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant' );
 
-insert into etudiant (code_permanent, nom, prenom, email, telephone)
+insert into utilisateur (code_ms,code_permanent, nom, prenom, email, telephone, mot_de_passe,dtype)
 values
-    ('TREM23146985', 'tremblay', 'marc', 'tremblay.marc.courrier.uqam.ca', '5146667777'),
-    ('BEAJ69326598', 'beaudry', 'jean', 'beaudry.jean.courrier.uqam.ca', '5145553333');
+    ('etudiant1','TREM23146985', 'tremblay', 'marc', 'tremblay.marc.courrier.uqam.ca', '5146667777', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','etudiant'),
+    ('etudiant2','BEAJ69326598', 'beaudry', 'jean', 'beaudry.jean.courrier.uqam.ca', '5145553333', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','etudiant');
 
+insert into utilisateur (code_ms, nom, prenom, mot_de_passe, employe_id, dtype)
+values
+    ('commis','lauzon', 'manon', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW', '1', 'commis' );
 
 insert into cours_groupe (groupe, session, cours_id, enseignant_id)
 values
@@ -24,9 +27,9 @@ values
 
 insert into demande_reprise_examen (absence_date_debut , absence_date_fin , motif_absence , absence_details , description_examen , cours_groupe_id , etudiant_id )
 values
-    ('2022-03-01', '2022-03-10', 0, 'intervention chirurgicale programmee', 'examen intra', 1, 1),
-    ('2022-04-30', '2022-04-20', 5, 'autre motif', 'examen final', 3, 1),
-    ('2022-04-25', '2022-04-26', 3, 'convocation au tribunal pour temoignage', 'examen final', 2, 2);
+    ('2022-03-01', '2022-03-10', 0, 'intervention chirurgicale programmee', 'examen intra', 1, 3),
+    ('2022-04-30', '2022-04-20', 5, 'autre motif', 'examen final', 3, 3),
+    ('2022-04-25', '2022-04-26', 3, 'convocation au tribunal pour temoignage', 'examen final', 2, 4);
 
 insert into justification (description , url , demande_reprise_examen_id )
 values
