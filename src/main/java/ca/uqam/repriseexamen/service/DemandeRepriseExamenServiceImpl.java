@@ -1,14 +1,17 @@
 package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
-import ca.uqam.repriseexamen.dto.*;
+import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
+import ca.uqam.repriseexamen.dto.LigneDREDTO;
+import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
+import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
 import ca.uqam.repriseexamen.model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.IllegalTransactionStateException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.NotAcceptableStatusException;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -16,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import ca.uqam.repriseexamen.model.Statut;
 
 @Service
 @Transactional
@@ -91,7 +92,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
             demande.getListeDecision().add(decision);
             demandeRepriseExamenRepository.save(demande);
         } else {
-            throw new IllegalTransactionStateException(DECISION_COURANTE_NON_COMPATIBLE);
+            throw new NotAcceptableStatusException(DECISION_COURANTE_NON_COMPATIBLE);
         }
     }
 
@@ -106,7 +107,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
             demande.getListeDecision().remove(decision.orElse(null));
             demandeRepriseExamenRepository.save(demande);
         } else {
-            throw new IllegalTransactionStateException(DECISION_COURANTE_NON_COMPATIBLE);
+            throw new NotAcceptableStatusException(DECISION_COURANTE_NON_COMPATIBLE);
         }
     }
 

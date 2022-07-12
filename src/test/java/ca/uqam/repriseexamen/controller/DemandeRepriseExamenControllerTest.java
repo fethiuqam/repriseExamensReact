@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DemandeRepriseExamenControllerTest {
 
-
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext context;
@@ -149,4 +148,193 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
 
     }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourAccepterCommisBodyVide()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourAccepterCommisBodyAvecDetails()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"details de decision\"}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void devraitRetournerNotAcceptableStatutPourAccepterCommisDejaAccepteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourRejeterCommisBodyVide()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void devraitRetournerNotAcceptableStatutPourRejeterCommisDejaAccepteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoTAcceptablePourRejeterCommisDejaRejeteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNotAcceptablePourAccepterDirecteurNonAccepteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourAccepterDirecteurDejaAccepteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void devraitRetournerStatutNotAcceptablePourRejeterDirecteurDejaAccepteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourRejeterDirecteurDejaRejeteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoTAcceptablePourAccepterDirecteurDejaAccepteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoTAcceptablePourRejeterDirecteurDejaAccepteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/2/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoTAcceptablePourRejeterDirecteurDejaRejeteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourAccepterEnseignantDejaAccepterDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourRejeterEnseignantDejaAccepterDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/2/rejeter-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void devraitRetournerStatutNoTAcceptablePourAccepterEtRejterEnseignantDejaRejeteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+    }
+
 }

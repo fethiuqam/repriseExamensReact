@@ -181,7 +181,6 @@ values
     ('convocation du tribunal', 'url1_demande3', 3),
     ('justificatif autre', 'url1_demande2', 2);
 
-
 insert into statut (date_heure , type_statut , demande_reprise_examen_id )
 values
     ('2022-01-15T10:34:09', 0, 1),
@@ -287,3 +286,7 @@ values
     ('2022-04-22T13:36:02', 6, 26),
     ('2022-02-04T14:36:02', 0, 27),
     ('2022-02-04T14:37:02', 6, 27);
+
+insert into decision (date_heure , type_decision , demande_reprise_examen_id )
+values
+    ('2022-03-20T10:34:09', 0, 2);
