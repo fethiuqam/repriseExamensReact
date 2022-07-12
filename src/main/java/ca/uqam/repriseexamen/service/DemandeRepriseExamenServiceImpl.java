@@ -127,13 +127,18 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     public void updateStatutDemande(Long id, TypeStatut typeStatut) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        Statut statut = Statut.builder()
-                .typeStatut(typeStatut)
-                .dateHeure(LocalDateTime.now())
-                .demandeRepriseExamen(demande)
-                .build();
-        demande.getListeStatut().add(statut);
-        demandeRepriseExamenRepository.save(demande);
+        Optional<Statut> statutDejaPresent = demande.getListeStatut().stream()
+                .filter(s -> s.getTypeStatut() == typeStatut)
+                .findFirst();
+        if(statutDejaPresent.isEmpty()){
+            Statut statut = Statut.builder()
+                    .typeStatut(typeStatut)
+                    .dateHeure(LocalDateTime.now())
+                    .demandeRepriseExamen(demande)
+                    .build();
+            demande.getListeStatut().add(statut);
+            demandeRepriseExamenRepository.save(demande);
+        }
     }
 
     @Override

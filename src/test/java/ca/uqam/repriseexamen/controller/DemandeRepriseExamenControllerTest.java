@@ -422,4 +422,210 @@ public class DemandeRepriseExamenControllerTest {
         assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
+    @Test
+    public void devraitRetournerStatutNoContentPourAnnulerRejetCommisDejaRejeteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNull();
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+
+    @Test
+    public void devraitRetournerStatutNotAcceptablePourAnnulerRejetCommisNonRejetee()
+            throws Exception {
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNull();
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNull();
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourAnnulerRejetCommisDejaAccepteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourAnnulerRejetDirecteurDejaRejeteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_DIRECTEUR);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+
+    @Test
+    public void devraitRetournerStatutNotAcceptablePourAnnulerRejetDirecteurDejaAccepteeCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+    @Test
+    public void devraitRetournerStatutNotAcceptablePourAnnulerRejetDirecteurDejaAccepteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+
+    @Test
+    public void devraitRetournerStatutNoContentPourAnnulerRejetEnseignantDejaRejeteeEnseignant()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/rejeter-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_ENSEIGNANT);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+
+    @Test
+    public void devraitRetournerStatutNotAcceptablePourAnnulerRejetEnseignantDejaAccepteeEnseignant()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_ENSEIGNANT);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.ACCEPTEE);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_ENSEIGNANT);
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.ACCEPTEE);
+    }
+
+    @Test
+    public void devraitRetournerStatutNotAcceptablePourAnnulerRejetEnseignantDejaAccepteeDirecteur()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-directeur")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNoContent());
+        TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-enseignant")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
+        assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
 }
