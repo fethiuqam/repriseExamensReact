@@ -38,6 +38,7 @@ verify:
 .deploy_app: &deploy_app
   <<: *deploy
   script:
+    - ls -la target
     - docker login --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - echo "APP_IMAGE_TAG=$CI_REGISTRY_IMAGE/app:$ENV_TAG"  >> .env
     - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
