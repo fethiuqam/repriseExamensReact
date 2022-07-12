@@ -2,7 +2,7 @@ package ca.uqam.repriseexamen.dto;
 
 import org.springframework.beans.factory.annotation.Value;
 
-public interface LigneDRECommisDTO extends LigneDREDTO {
+public interface LigneDREPersonnelDTO extends LigneDREDTO {
 
     @Value("#{target.getEtudiant().getPrenom() + ' ' + target.getEtudiant().getNom()}")
     String getNomEtudiant();

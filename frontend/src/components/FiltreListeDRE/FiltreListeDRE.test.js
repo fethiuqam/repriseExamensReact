@@ -16,9 +16,9 @@ const STATUTS = [
 
 const mockFiltrer = jest.fn();
 
-test("devrait rendre 3 champs de texte et 2 boutons pour le commis", () => {
+test("devrait rendre 3 champs de texte et 2 boutons pour le personnel", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}
@@ -32,7 +32,7 @@ test("devrait rendre 3 champs de texte et 2 boutons pour le commis", () => {
 
 test("devrait rendre 2 champs de texte et 2 boutons pour l'enseignat'", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "enseignant", id: 1}}>
+        <AuthContext.Provider value={{type: "enseignant", id: 1}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}
@@ -46,7 +46,7 @@ test("devrait rendre 2 champs de texte et 2 boutons pour l'enseignat'", () => {
 
 test("devrait rendre 2 champs de texte et 2 boutons pour l'etudiant", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "etudiant", id: 1}}>
+        <AuthContext.Provider value={{type: "etudiant", id: 1}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}
@@ -61,7 +61,7 @@ test("devrait rendre 2 champs de texte et 2 boutons pour l'etudiant", () => {
 
 test("tous les champs de texte devraient etre vides", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}
@@ -75,7 +75,7 @@ test("tous les champs de texte devraient etre vides", () => {
 
 test("tous les statuts devraient etre selectionnes au debut", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}
@@ -89,7 +89,7 @@ test("tous les statuts devraient etre selectionnes au debut", () => {
 
 test("devrait enlever puis ajouter une option au filtre statut en cliquant sur une option", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}
@@ -107,7 +107,7 @@ test("devrait enlever puis ajouter une option au filtre statut en cliquant sur u
 
 test("devrait reinitialiser les champs avec le bouton reinitialiser", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}
@@ -124,7 +124,7 @@ test("devrait reinitialiser les champs avec le bouton reinitialiser", () => {
 
 test("devrait reinitialiser le filtre statut avec le bouton reinitialiser", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
                 filtrer={mockFiltrer}

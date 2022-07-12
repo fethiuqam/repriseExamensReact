@@ -33,8 +33,8 @@ public class EtudiantController {
     }
 
     @RequestMapping(value = "/{idEtudiant}/historique", method = RequestMethod.GET)
-    public List<LigneHistoriqueEtudiantDTO> getHistorique(@PathVariable Long idEtudiant, @RequestParam String role) {
-        if(!role.equals("commis"))
+    public List<LigneHistoriqueEtudiantDTO> getHistorique(@PathVariable Long idEtudiant, @RequestParam String type) {
+        if(!type.equals("personnel"))
             throw new IllegalArgumentException();
 
         return demandeRepriseExamenService.getHistoriqueEtudiant(idEtudiant);

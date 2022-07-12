@@ -45,7 +45,7 @@ const StyledTab = styled((props) => (
 
 const Entete = () => {
 
-    const {setAuth, setRole, setId, auth, role} = useContext(AuthContext);
+    const {setAuth, setType, setId, setJwt, auth, type} = useContext(AuthContext);
 
     const [value, setValue] = React.useState(0);
 
@@ -55,8 +55,9 @@ const Entete = () => {
 
     const deconnecter = () => {
         setAuth(false);
-        setRole(null);
+        setType(null);
         setId(null);
+        setJwt(null);
         return <Navigate to="/"/>;
     }
 
@@ -75,10 +76,10 @@ const Entete = () => {
                                     aria-label="styled tabs example"
                                 >
                                     <StyledTab label="Consulter les demandes" to="/" component={Link}/>
-                                    {role === "etudiant" &&
+                                    {type === "etudiant" &&
                                         <StyledTab label="Faire une demande" to="/faire-demande" component={Link}/>
                                     }
-                                    {role === "commis" &&
+                                    {type === "personnel" &&
                                         <StyledTab label="Planifier les reprises d'examen"/>
                                     }
                                 </StyledTabs>

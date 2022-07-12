@@ -5,10 +5,11 @@ import { Grid, Typography } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import Button from '../BoutonFormulaire/BoutonFormulaire';
 import MiseEnPage from '../MiseEnPage/MiseEnPage';
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import * as React from "react";
 import Banniere from '../Banniere/Banniere';
+import AuthContext from "../../context/AuthProvider";
 
 // stocke les infos des etudiant TODO : connecter avec les identifiants
 const infosEtudiant = {
@@ -18,6 +19,7 @@ const infosEtudiant = {
 }
 
 const Formulaire = () => {
+    const {jwt} = useContext(AuthContext);
     const {
         register,
         handleSubmit,
@@ -50,7 +52,8 @@ const Formulaire = () => {
             
             var response = await fetch("/api/demandes", {
                 method: "POST",
-                body: formData
+                body: formData,
+                headers: { 'Authorization':'Bearer ' + jwt }
             });
 
             if (!response.ok) {

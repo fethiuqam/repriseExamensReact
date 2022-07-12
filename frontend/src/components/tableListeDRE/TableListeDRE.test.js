@@ -1,19 +1,19 @@
 import {render, screen} from "@testing-library/react";
 import TableListeDRE from "./TableListeDRE";
-import {commisItems} from "../../mocks/mockData";
+import {personnelItems} from "../../mocks/mockData";
 import AuthContext from "../../context/AuthProvider";
 
-const enseignantItems = commisItems.map(item => {
+const enseignantItems = personnelItems.map(item => {
     const {nomEnseignant, matriculeEnseignant, ...enseignantItem} = item;
     return enseignantItem;
 })
 
-const etudiantItems = commisItems.map(item => {
+const etudiantItems = personnelItems.map(item => {
     const {matriculeEnseignant, nomEtudiant, codePermanentEtudiant, ...etudiantItem} = item;
     return etudiantItem;
 })
 
-const commisColonnes = [
+const personnelColonnes = [
     {name: 'Soumise le', prop: 'dateHeureSoumission', active: false},
     {name: 'Étudiant', prop: 'nomEtudiant', active: false},
     {name: 'Enseignant', prop: 'nomEnseignant', active: false},
@@ -40,12 +40,12 @@ const etudiantColonnes = [
 
 const mockTrier = jest.fn();
 
-test("devrait retourner pour une table 4 elements tr, 7 elements th et 21 elements td pour commis", () => {
+test("devrait retourner pour une table 4 elements tr, 7 elements th et 21 elements td pour personnel", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <TableListeDRE
-                items={commisItems}
-                colonnes={commisColonnes}
+                items={personnelItems}
+                colonnes={personnelColonnes}
                 trier={mockTrier}
             />
         </AuthContext.Provider>
@@ -58,7 +58,7 @@ test("devrait retourner pour une table 4 elements tr, 7 elements th et 21 elemen
 
 test("devrait retourner pour une table 4 elements tr, 6 elements th et 18 elements td pour enseignant", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "enseignant", id: 1}}>
+        <AuthContext.Provider value={{type: "enseignant", id: 1}}>
             <TableListeDRE
                 items={enseignantItems}
                 colonnes={enseignantColonnes}
@@ -74,7 +74,7 @@ test("devrait retourner pour une table 4 elements tr, 6 elements th et 18 elemen
 
 test("devrait retourner pour une table 4 elements tr, 6 elements th et 18 elements td pour etudiant", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "etudiant", id: 1}}>
+        <AuthContext.Provider value={{type: "etudiant", id: 1}}>
             <TableListeDRE
                 items={etudiantItems}
                 colonnes={etudiantColonnes}
@@ -90,15 +90,15 @@ test("devrait retourner pour une table 4 elements tr, 6 elements th et 18 elemen
 
 test("devrait contenir les valeurs des entetes a chaque element th", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <TableListeDRE
-                items={commisItems}
-                colonnes={commisColonnes}
+                items={personnelItems}
+                colonnes={personnelColonnes}
                 trier={mockTrier}
             />
         </AuthContext.Provider>
     );
-    for (const colonne of commisColonnes) {
+    for (const colonne of personnelColonnes) {
         expect(screen.getByRole('columnheader', {name: colonne["name"]})).toBeInTheDocument();
     }
     unmount();

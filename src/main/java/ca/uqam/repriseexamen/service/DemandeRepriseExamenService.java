@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DemandeRepriseExamenService {
 
-    List<LigneDREDTO> getAllDemandeRepriseExamenCommis();
+    List<LigneDREDTO> getAllDemandeRepriseExamenPersonnel();
     List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long id);
     List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long id);
     List<LigneHistoriqueEtudiantDTO> getHistoriqueEtudiant(long id);
