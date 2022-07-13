@@ -35,7 +35,7 @@ export default function LigneDRE({item}) {
             <TableCell>
                 <Chip label={item.statut}/>
             </TableCell>
-            {role === "commis" &&
+            {type === "personnel" &&
                 <TableCell>
                     <Chip label={item.decision ? item.decision : "Aucune"}/>
                 </TableCell>

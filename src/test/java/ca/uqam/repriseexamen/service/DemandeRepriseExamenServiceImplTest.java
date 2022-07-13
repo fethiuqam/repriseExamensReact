@@ -1,10 +1,10 @@
 package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
-import ca.uqam.repriseexamen.dto.LigneDREPersonnelDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
+import ca.uqam.repriseexamen.dto.LigneDREPersonnelDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.TypeDecision;
 import ca.uqam.repriseexamen.model.TypeStatut;
@@ -17,9 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,11 +56,11 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Before
     public void setUp() {
-        when(ligneDREPersonnelEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDREPersonnelSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDREPersonnelAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
+        when(ligneDREPersonnelEnregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDREPersonnelSoumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDREPersonnelAcceptee.getStatut()).thenReturn(TypeStatut.ACCEPTEE);
 
-        when(repository.findLigneDREPersonnelDTOBy())
+        when(demandeRepository.findLigneDREPersonnelDTOBy())
                 .thenReturn(Arrays.asList(
                         ligneDREPersonnelEnregistree,
                         ligneDREPersonnelSoumise,

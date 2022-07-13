@@ -44,7 +44,7 @@ export default function ListeDRE() {
         ...[{name: 'Cours', prop: 'sigleCours', active: false},
             {name: 'Session', prop: 'session', active: false},
             {name: 'Statut', prop: 'statut', active: false}],
-        ...(role === "commis" ?[{name: 'Décision', prop: 'decision', active: false}] : [] )
+        ...(type === "personnel" ?[{name: 'Décision', prop: 'decision', active: false}] : [] )
     ]);
 
     useEffect(() => {
