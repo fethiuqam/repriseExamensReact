@@ -64,12 +64,12 @@ public class RoleControllerTest {
                 .permissions(permissions2)
                 .build();
         roleRepository.save(role2);
-
-        Role role3 = Role.builder()
-                .nom("Admin")
-                .permissions(permissions3)
-                .build();
-        roleRepository.save(role3);
+//
+//        Role role3 = Role.builder()
+//                .nom("Admin")
+//                .permissions(permissions3)
+//                .build();
+//        roleRepository.save(role3);
     }
 
     @Test
@@ -80,11 +80,9 @@ public class RoleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$._embedded.roles[0].nom", is("Directeur")))
                 .andExpect(jsonPath("$._embedded.roles[0].permissions[0]", is("AfficherDRE")))
+
                 .andExpect(jsonPath("$._embedded.roles[1].nom", is("Commis")))
-                .andExpect(jsonPath("$._embedded.roles[1].permissions[2]", is("AfficherJustificatifs")))
-                .andExpect(jsonPath("$._embedded.roles[2].nom", is("Admin")))
-                .andExpect(jsonPath("$._embedded.roles[2].permissions[2]", is("GererRoles")))
-                .andExpect(jsonPath("$._embedded.roles[2].permissions[3]", is("GererUsagers")));
+                .andExpect(jsonPath("$._embedded.roles[1].permissions[2]", is("AfficherJustificatifs")));
     }
 
     @Test
@@ -95,15 +93,16 @@ public class RoleControllerTest {
                 .andExpect(jsonPath("$.nom", is("Directeur")))
                 .andExpect(jsonPath("$.permissions[1]", is("ListerDRE")));
 
-        this.mockMvc.perform(get("/api/roles/3").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nom", is("Admin")))
-                .andExpect(jsonPath("$.permissions[1]", is("ListerDRE")));
 
         this.mockMvc.perform(get("/api/roles/2").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nom", is("Commis")))
                 .andExpect(jsonPath("$.permissions[3]", is("PlanifierDates")));
+
+//        this.mockMvc.perform(get("/api/roles/3").contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.nom", is("Admin")))
+//                .andExpect(jsonPath("$.permissions[1]", is("ListerDRE")));
     }
 
     @Test
@@ -133,13 +132,15 @@ public class RoleControllerTest {
 
     @Test
     public void updateRole() throws Exception{
-        List<Permission> permissions2 = new ArrayList<>();
-        permissions2.add(Permission.AfficherDRE);
-        permissions2.add(Permission.ListerDRE);
-        permissions2.add(Permission.AfficherJustificatifs);
-        permissions2.add(Permission.PlanifierDates);
-        this.mockMvc.perform(put("/api/roles/1")
-                        .content(asJsonString(new Role("Nouveau Role",permissions2)))
+
+        List<Permission> permissions5 = new ArrayList<>();
+        permissions5.add(Permission.AfficherDRE);
+        permissions5.add(Permission.ListerDRE);
+        permissions5.add(Permission.AfficherJustificatifs);
+        permissions5.add(Permission.PlanifierDates);
+
+        this.mockMvc.perform(put("/api/roles/3")
+                        .content(asJsonString(new Role("Nouveau Role",permissions5)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -150,8 +151,7 @@ public class RoleControllerTest {
     public void deleteRole() throws Exception {
         this.mockMvc.perform(delete("/api/roles/3") )
                 .andExpect(status().isNoContent());
-
         this.mockMvc.perform(get("/api/roles/3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-    }
+   }
 }

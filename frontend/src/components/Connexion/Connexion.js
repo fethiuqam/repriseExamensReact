@@ -19,6 +19,11 @@ export default function Connexion() {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
+    const routeChange = () =>{
+        let path = `/roles`;
+        navigate(path);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -50,6 +55,12 @@ export default function Connexion() {
             <p>Utilisateurs pour tester : commis - etudiant - enseignant</p>
             <p>Le id de l'etudiant et l'enseignant : 1</p>
             <p>Le mot de passe est facultatif</p>
+
+            <Container>
+                <Button color="primary" className="px-4"
+                        onClick={routeChange}>Role
+                </Button>
+            </Container>
 
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>

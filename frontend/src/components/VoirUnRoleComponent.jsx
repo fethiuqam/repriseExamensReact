@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import {Button} from "@material-ui/core";
+//import {useParams} from "react-router";
 
 class VoirUnRoleComponent extends Component {
+
     constructor(props) {
         super(props)
 
         this.state = {
-            id: this.props.match.params.id,
+            id : this.props.match.params.id,
             nom: '',
             permissions: []
         }

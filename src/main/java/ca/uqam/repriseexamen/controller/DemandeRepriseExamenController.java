@@ -1,5 +1,6 @@
 package ca.uqam.repriseexamen.controller;
 
+//import ca.uqam.repriseexamen.dao.RoleRepository;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
@@ -25,13 +26,15 @@ public class DemandeRepriseExamenController {
     @Autowired
     private DemandeRepriseExamenService demandeRepriseExamenService;
 
+    private RoleController roleController;
+
     @Autowired
     private JustificationService justificationService;
 
     /**
      * Route pour récupérer les demandes de reprises d'examen en fonction du role
      * de l'utilisateur
-     * 
+     *
      * @return LigneDREDTO
      */
     @GetMapping("")
@@ -56,7 +59,7 @@ public class DemandeRepriseExamenController {
 
     /**
      * Route pour soumettre une demande de reprise d'examen
-     * 
+     *
      * @param nouvelleDemande body de la demande à soumettre
      * @param fichiers un ou plusieurs fichiers
      * @return DemandeRepriseExamen la demande soumise

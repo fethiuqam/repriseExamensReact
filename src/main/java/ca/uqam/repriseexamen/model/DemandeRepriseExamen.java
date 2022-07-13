@@ -73,7 +73,7 @@ public class DemandeRepriseExamen {
 
     public Long getEnseignantId(){
         Long id = 0L;
-        
+
         if(coursGroupe != null){
             id = coursGroupe.getEnseignant().getId();
         }
@@ -83,15 +83,11 @@ public class DemandeRepriseExamen {
 
     public Long getEtudiantId(){
         Long id = 0L;
-        
+
         if(etudiant != null){
             id = etudiant.getId();
         }
-
-<<<<<<< HEAD
-=======
         return id;
     }
 
->>>>>>> 257c6f1fc45259d3b53a9342beee19f7bce8b51d
 }
