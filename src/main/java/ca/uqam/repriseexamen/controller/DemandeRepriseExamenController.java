@@ -66,16 +66,18 @@ public class DemandeRepriseExamenController {
      */
     @PostMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public DemandeRepriseExamen soumettreDemandeRepriseExamen(@RequestPart DemandeRepriseExamen nouvelleDemande,
-                                                              @RequestPart("files") MultipartFile[] fichiers) {
+                                                              @RequestPart(value = "files", required = false) MultipartFile[] fichiers) {
 
         DemandeRepriseExamen dre = demandeRepriseExamenService.soumettreDemandeRepriseExamen(nouvelleDemande);
-        Arrays.asList(fichiers).stream().forEach(fichier -> {
-            try {
-                justificationService.ajouterJustification(dre, fichier);
-            } catch (IOException e) {
-                ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
-            }
-        });
+        if (fichiers != null) {
+            Arrays.asList(fichiers).stream().forEach(fichier -> {
+                try {
+                    justificationService.ajouterJustification(dre, fichier);
+                } catch (IOException e) {
+                    ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
+                }
+            });
+        }
         return dre;
     }
 
