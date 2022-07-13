@@ -36,7 +36,6 @@ export default function Connexion() {
              setId(response.id);
              setJwt(response.token);
              navigate(from, {replace: true});
-
         }).catch(()=>{
             setErrConnectMessage("Échec, mauvaises informations d'identification");
         });
