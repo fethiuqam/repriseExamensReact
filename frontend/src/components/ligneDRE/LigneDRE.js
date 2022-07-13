@@ -11,23 +11,23 @@ const FORMAT_DATE = 'dd MMMM yyyy';
 
 export default function LigneDRE({item}) {
 
-    const {role} = useContext(AuthContext);
+    const {type} = useContext(AuthContext);
 
     return (
         <TableRow key={item.id}>
             <TableCell>{format(new Date(item.dateHeureSoumission), FORMAT_DATE, {locale})}</TableCell>
-            {role === "etudiant"
+            {type === "etudiant"
                 ? null
                 : <TableCell>
                     <ListItemText primary={item.nomEtudiant} secondary={item.codePermanentEtudiant}/>
                 </TableCell>
             }
-            {role === "enseignant"
+            {type === "enseignant"
                 ? null
                 : <TableCell>
                     <ListItemText
                         primary={item.nomEnseignant}
-                        secondary={role === 'commis' && item.matriculeEnseignant}/>
+                        secondary={type === 'personnel' && item.matriculeEnseignant}/>
                 </TableCell>
             }
             <TableCell>{item.sigleCours} - {item.groupe}</TableCell>

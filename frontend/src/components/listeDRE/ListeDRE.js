@@ -31,7 +31,7 @@ const comparator = (prop, desc = true) => (a, b) => {
 
 export default function ListeDRE() {
 
-    const {role, id} = useContext(AuthContext);
+    const {type, id, jwt} = useContext(AuthContext);
 
     const [listeDRE, setListeDRE] = useState([]);
     const [listeDREFiltree, setListeDREFiltree] = useState([]);
@@ -39,8 +39,8 @@ export default function ListeDRE() {
     const [enChargement, setEnChargement] = useState(true);
     const [colonnes, setColonnes] = useState([
         ...[{name: 'Soumise le', prop: 'dateHeureSoumission', active: false}],
-        ...(role === "etudiant" ? [] : [{name: 'Étudiant', prop: 'nomEtudiant', active: false}]),
-        ...(role === "enseignant" ? [] : [{name: 'Enseignant', prop: 'nomEnseignant', active: false}]),
+        ...(type === "etudiant" ? [] : [{name: 'Étudiant', prop: 'nomEtudiant', active: false}]),
+        ...(type === "enseignant" ? [] : [{name: 'Enseignant', prop: 'nomEnseignant', active: false}]),
         ...[{name: 'Cours', prop: 'sigleCours', active: false},
             {name: 'Session', prop: 'session', active: false},
             {name: 'Statut', prop: 'statut', active: false}],
@@ -48,10 +48,14 @@ export default function ListeDRE() {
     ]);
 
     useEffect(() => {
-        const API_URL = `/api/demandes?role=${role}&id=${id ? id : ""}`;
+        const API_URL = `/api/demandes?type=${type}&id=${id ? id : ""}`;
         const fetchItems = async () => {
             try {
-                const reponse = await fetch(API_URL);
+                const reponse = await fetch(API_URL,
+                    {
+                        method: 'get',
+                        headers: {'Authorization':'Bearer ' + jwt}
+                    });
                 if (!reponse.ok) throw Error('Un problème est survenu lors du chargement des données.');
                 const listedre = await reponse.json();
                 setListeDRE(listedre);
@@ -64,7 +68,7 @@ export default function ListeDRE() {
             }
         }
         fetchItems();
-    }, [role, id])
+    }, [type, id, jwt]);
 
 
     const filtrer = useCallback((filtre) => {
@@ -72,19 +76,19 @@ export default function ListeDRE() {
             filtre.statuts.includes(item.statut)
             && item.sigleCours.toUpperCase().includes(filtre.cours.toUpperCase()));
 
-        if (role !== "etudiant") {
+        if (type !== "etudiant") {
             filtreItems = filtreItems.filter(item =>
                 item.codePermanentEtudiant.toUpperCase().includes(filtre.etudiant.toUpperCase())
                 || item.nomEtudiant.toUpperCase().includes(filtre.etudiant.toUpperCase()));
         }
 
-        if (role !== "enseignant") {
+        if (type !== "enseignant") {
             filtreItems = filtreItems.filter(item =>
                     item.nomEnseignant.toUpperCase().includes(filtre.enseignant.toUpperCase())
                 || item.matriculeEnseignant?.toUpperCase().includes(filtre.enseignant.toUpperCase()))
         }
         setListeDREFiltree(filtreItems);
-    }, [listeDRE, role]);
+    }, [listeDRE, type]);
 
     const trier = (index) => {
         setColonnes(
@@ -112,7 +116,7 @@ export default function ListeDRE() {
                 <FiltreListeDRE
                     statuts={STATUTS}
                     filtrer={filtrer}
-                    role={role}
+                    type={type}
                 />
             </SectionFormulaire>
             <SectionFormulaire
@@ -131,7 +135,7 @@ export default function ListeDRE() {
                                 items={listeDREFiltree}
                                 colonnes={colonnes}
                                 trier={trier}
-                                role={role}
+                                type={type}
                             />
 
                             : <Box sx={{display: 'flex', justifyContent: 'center'}}>

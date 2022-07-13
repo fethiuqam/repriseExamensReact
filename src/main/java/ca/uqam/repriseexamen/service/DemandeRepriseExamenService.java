@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface DemandeRepriseExamenService {
 
-    List<LigneDREDTO> getAllDemandeRepriseExamenCommis();
+    List<LigneDREDTO> getAllDemandeRepriseExamenPersonnel();
     List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long id);
     List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long id);
 

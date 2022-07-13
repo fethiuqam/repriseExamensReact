@@ -11,7 +11,7 @@ import AuthContext from "../../context/AuthProvider";
 
 export default function TableListeDRE({items, colonnes, trier}) {
 
-    const {role} = useContext(AuthContext);
+    const {type} = useContext(AuthContext);
 
     const onSortClick = index => () => {
         trier(index)
@@ -45,7 +45,7 @@ export default function TableListeDRE({items, colonnes, trier}) {
                 {items
                     .map(item => {
                         return (
-                            <LigneDRE item={item} key={item.id} role={role}/>
+                            <LigneDRE item={item} key={item.id} type={type}/>
                         );
                     })}
             </TableBody>

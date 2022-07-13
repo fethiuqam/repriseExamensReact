@@ -1,5 +1,5 @@
 
-export const commisItems = [
+export const personnelItems = [
     {
         id: 1,
         session: "HIVER",

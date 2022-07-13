@@ -3,7 +3,7 @@ package ca.uqam.repriseexamen.dto;
 import ca.uqam.repriseexamen.model.TypeDecision;
 import org.springframework.beans.factory.annotation.Value;
 
-public interface LigneDRECommisDTO extends LigneDREDTO {
+public interface LigneDREPersonnelDTO extends LigneDREDTO {
 
     @Value("#{target.getDecisionCourante()}")
     TypeDecision getDecision();

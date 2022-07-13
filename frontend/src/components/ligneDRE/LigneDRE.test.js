@@ -1,14 +1,14 @@
 import {render, screen} from "@testing-library/react";
 import LigneDRE from "./LigneDRE";
-import {commisItems} from "../../mocks/mockData";
+import {personnelItems} from "../../mocks/mockData";
 import AuthContext from "../../context/AuthProvider";
 
 test("devrait retourner pour une ligne un element tr et 10 elements td", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <table>
                 <tbody>
-                <LigneDRE item={commisItems[0]}/>
+                <LigneDRE item={personnelItems[0]}/>
                 </tbody>
             </table>
         </AuthContext.Provider>
@@ -21,15 +21,15 @@ test("devrait retourner pour une ligne un element tr et 10 elements td", () => {
 
 test("devrait contenir les valeurs des proprietes de l'objet item a chaque element td", () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <table>
                 <tbody>
-                <LigneDRE item={commisItems[2]}/>
+                <LigneDRE item={personnelItems[0]}/>
                 </tbody>
             </table>
         </AuthContext.Provider>
     );
-    const {id, dateHeureSoumission, ...itemTest} = commisItems[2];
+    const {id, dateHeureSoumission, ...itemTest} = personnelItems[0];
     for (const key in itemTest) {
         expect(screen.getByText(itemTest[key], {exact: false, insensitive: true})).toBeInTheDocument();
     }
@@ -37,9 +37,9 @@ test("devrait contenir les valeurs des proprietes de l'objet item a chaque eleme
 });
 
 test("devrait retourner pour une ligne un element tr et 8 elements td", () => {
-    const {nomEnseignant, matriculeEnseignant, ...enseignantItem} = commisItems[0];
+    const {nomEnseignant, matriculeEnseignant, ...enseignantItem} = personnelItems[0];
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "enseignant", id: 1}}>
+        <AuthContext.Provider value={{type: "enseignant", id: 1}}>
             <table>
                 <tbody>
                 <LigneDRE item={enseignantItem}/>
@@ -53,9 +53,9 @@ test("devrait retourner pour une ligne un element tr et 8 elements td", () => {
 });
 
 test("devrait retourner pour une ligne un element tr et 7 elements td", () => {
-    const {matriculeEnseignant, nomEtudiant, codePermanentEtudiant, ...etudiantItem} = commisItems[0];
+    const {matriculeEnseignant, nomEtudiant, codePermanentEtudiant, ...etudiantItem} = personnelItems[0];
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "etudiant", id: 1}}>
+        <AuthContext.Provider value={{type: "etudiant", id: 1}}>
             <table>
                 <tbody>
                 <LigneDRE item={etudiantItem}/>
