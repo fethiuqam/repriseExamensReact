@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,8 +35,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@Transactional
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("datatest")
@@ -54,6 +53,7 @@ public class DemandeRepriseExamenControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
+    @WithMockUser(username="commis")
     @Test
     public void devraitRetournerListeDREPersonnelDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
@@ -66,16 +66,17 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$[1].sigleCours", is("INF3173")));
     }
 
+
+    @WithMockUser(username="enseigant1")
     @Test
     public void devraitRetournerListeDREEnseignantDTODeLongueurUneAvecStatutOk()
             throws Exception {
         this.mockMvc.perform(get("/api/demandes?type=enseignant&id=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
-//                .andExpect(jsonPath("$[0].statut", is("EN_TRAITEMENT")))
-//                .andExpect(jsonPath("$[0].sigleCours", is("INF3173")));
     }
 
+    @WithMockUser(username="enseigant2")
     @Test
     public void devraitRetournerListeDREEnseignantDTOVideAvecStatutOk()
             throws Exception {
@@ -84,6 +85,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
+    @WithMockUser(username="etudiant1")
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
@@ -96,6 +98,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$[1].sigleCours", is("INF3173")));
     }
 
+    @WithMockUser(username="etudiant2")
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurUneAvecStatutOk()
             throws Exception {
@@ -107,6 +110,7 @@ public class DemandeRepriseExamenControllerTest {
 
     }
 
+    @WithMockUser(username="etudiant3")
     @Test
     public void devraitRetournerListeDREEtudiantDTOVideAvecStatutOk()
             throws Exception {
@@ -156,7 +160,6 @@ public class DemandeRepriseExamenControllerTest {
 
         this.mockMvc.perform(multipart("/api/demandes").file(dre).file(fichier))
                 .andExpect(status().isOk())
-                //.andExpect(jsonPath("$.dateSoumission", is(LocalDate.now().toString())))
                 .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
 
     }
