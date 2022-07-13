@@ -2,6 +2,7 @@ package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.model.Utilisateur;
 import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import ca.uqam.repriseexamen.service.JustificationService;
@@ -39,19 +40,20 @@ public class DemandeRepriseExamenController {
      */
     @GetMapping("")
     public List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant
-            (@RequestParam(required = false) Long id, @RequestParam(required = true) String type) {
-        switch (type){
+            (@RequestParam(required = false) Long id, @RequestParam(required = true) String type) throws Exception{
+
+        Utilisateur authentifie = authentifieService.GetAuthentifie();
+        switch (authentifie.getType()){
             case "personnel":
                 return demandeRepriseExamenService.getAllDemandeRepriseExamenPersonnel();
 
             case "enseignant":
                 if (id != null)
-                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEnseignant(id);
+                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEnseignant(authentifie.getId());
 
             case "etudiant":
                 if(id != null)
-                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEtudiant(id);
-
+                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEtudiant(authentifie.getId());
             default:
                 throw new IllegalArgumentException();
         }

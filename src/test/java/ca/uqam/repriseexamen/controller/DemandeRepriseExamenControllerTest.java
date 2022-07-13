@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class DemandeRepriseExamenControllerTest {
 
-
     private MockMvc mockMvc;
     @Autowired
     protected WebApplicationContext context;
@@ -44,7 +44,7 @@ public class DemandeRepriseExamenControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
-
+    @WithMockUser(username="commis")
     @Test
     public void devraitRetournerListeDREPersonnelDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
@@ -57,6 +57,8 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$[1].sigleCours", is("INF3173")));
     }
 
+
+    @WithMockUser(username="enseigant1")
     @Test
     public void devraitRetournerListeDREEnseignantDTODeLongueurUneAvecStatutOk()
             throws Exception {
@@ -67,6 +69,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$[0].sigleCours", is("INF3173")));
     }
 
+    @WithMockUser(username="enseigant2")
     @Test
     public void devraitRetournerListeDREEnseignantDTOVideAvecStatutOk()
             throws Exception {
@@ -75,6 +78,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
+    @WithMockUser(username="etudiant1")
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
@@ -87,6 +91,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(jsonPath("$[1].sigleCours", is("INF3173")));
     }
 
+    @WithMockUser(username="etudiant2")
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurUneAvecStatutOk()
             throws Exception {
@@ -98,6 +103,7 @@ public class DemandeRepriseExamenControllerTest {
 
     }
 
+    @WithMockUser(username="etudiant3")
     @Test
     public void devraitRetournerListeDREEtudiantDTOVideAvecStatutOk()
             throws Exception {

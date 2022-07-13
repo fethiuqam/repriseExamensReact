@@ -2,6 +2,7 @@ package ca.uqam.repriseexamen.model;
 
 
 import javax.persistence.*;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
