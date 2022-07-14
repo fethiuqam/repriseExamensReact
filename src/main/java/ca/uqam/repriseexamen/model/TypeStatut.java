@@ -7,8 +7,6 @@ public enum TypeStatut {
     EN_TRAITEMENT,
     ACCEPTEE,
     REJETEE,
-    DEMANDE_INFO,
-    REPONSE_INFO,
     PLANIFIEE,
     ABSENCE,
     COMPLETEE,
