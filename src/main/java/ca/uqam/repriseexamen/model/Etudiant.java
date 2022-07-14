@@ -10,13 +10,15 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-
 @Data
 @NoArgsConstructor
 @DiscriminatorValue("etudiant")
 public class Etudiant extends Utilisateur {
     public static final String TYPE_NAME = "etudiant";
     private String codePermanent;
+    private String nom;
+    private String prenom;
+    private String email;
     private String telephone;
     @OneToMany(mappedBy = "etudiant")
     private List<DemandeRepriseExamen> demandes;

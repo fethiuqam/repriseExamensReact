@@ -43,7 +43,8 @@ export default function ListeDRE() {
         ...(type === "enseignant" ? [] : [{name: 'Enseignant', prop: 'nomEnseignant', active: false}]),
         ...[{name: 'Cours', prop: 'sigleCours', active: false},
             {name: 'Session', prop: 'session', active: false},
-            {name: 'Statut', prop: 'statutCourant', active: false}]
+            {name: 'Statut', prop: 'statut', active: false}],
+        ...(type === "personnel" ?[{name: 'Décision', prop: 'decision', active: false}] : [] )
     ]);
 
     useEffect(() => {
@@ -72,7 +73,7 @@ export default function ListeDRE() {
 
     const filtrer = useCallback((filtre) => {
         let filtreItems = [...listeDRE].filter(item =>
-            filtre.statuts.includes(item.statutCourant)
+            filtre.statuts.includes(item.statut)
             && item.sigleCours.toUpperCase().includes(filtre.cours.toUpperCase()));
 
         if (type !== "etudiant") {

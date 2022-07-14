@@ -45,7 +45,11 @@ insert into statut (date_heure , type_statut , demande_reprise_examen_id )
 values
     ('2022-01-15T10:34:09', 0, 1),
     ('2022-01-15T10:40:01', 1, 1),
-    ('2022-02-12T11:05:08', 0, 3),
     ('2022-03-15T09:34:09', 0, 2),
     ('2022-03-17T14:40:01', 1, 2),
-    ('2022-03-20T10:34:09', 3, 2);
+    ('2022-03-20T10:34:09', 3, 2),
+    ('2022-02-12T11:05:08', 0, 3);
+
+insert into decision (date_heure , type_decision , demande_reprise_examen_id )
+values
+    ('2022-03-20T10:34:09', 0, 2);

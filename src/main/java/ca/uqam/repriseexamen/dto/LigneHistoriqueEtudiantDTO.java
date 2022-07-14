@@ -1,22 +1,15 @@
 package ca.uqam.repriseexamen.dto;
 
-import java.time.LocalDateTime;
-
-import org.springframework.beans.factory.annotation.Value;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import ca.uqam.repriseexamen.model.MotifAbsence;
 import ca.uqam.repriseexamen.model.TypeStatut;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.time.LocalDateTime;
 
 public interface LigneHistoriqueEtudiantDTO {
 
     @Value("#{target.getId()}")
     long getId();
-
-    @JsonIgnore
-    @Value("#{target.getEtudiant().getId()}")
-    long getEtudiantId();
 
     @Value("#{target.getDateHeureSoumission()}")
     LocalDateTime getDateHeureSoumission();
@@ -31,6 +24,6 @@ public interface LigneHistoriqueEtudiantDTO {
     String getCoursGroupe();
 
     @Value("#{target.getStatutCourant()}")
-    TypeStatut getStatutCourant();
+    TypeStatut getStatut();
     
 }

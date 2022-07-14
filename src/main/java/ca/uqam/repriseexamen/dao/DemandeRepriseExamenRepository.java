@@ -7,14 +7,17 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RepositoryRestResource(collectionResourceRel = "demandes", path = "demandes")
 public interface DemandeRepriseExamenRepository extends JpaRepository<DemandeRepriseExamen, Long> {
 
+    Optional<DemandeRepriseExamen> findDemandeRepriseExamenById(Long id);
+
     List<LigneDREPersonnelDTO> findLigneDREPersonnelDTOBy();
-    List<LigneDREEnseignantDTO> findLigneDREEnseignantDTOBy();
-    List<LigneDREEtudiantDTO> findLigneDREEtudiantDTOBy();
-    List<LigneHistoriqueEtudiantDTO> findLigneHistoriqueEtudiantDTOBy();
+    List<LigneDREEnseignantDTO> findLigneDREEnseignantDTOByCoursGroupeEnseignantId( Long id);
+    List<LigneDREEtudiantDTO> findLigneDREEtudiantDTOByEtudiantId(Long id);
+    List<LigneHistoriqueEtudiantDTO> findLigneHistoriqueEtudiantDTOByEtudiantId(Long id);
 
 }

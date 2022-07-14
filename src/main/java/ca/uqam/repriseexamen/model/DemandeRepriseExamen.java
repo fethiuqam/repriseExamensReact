@@ -1,94 +1,69 @@
 package ca.uqam.repriseexamen.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class DemandeRepriseExamen {
 
-    // Attributs
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
-    private List<Statut> listeStatut;
-
-    @ManyToOne
-    private Etudiant etudiant;
-
-    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.PERSIST)
-    private List<Justification> listeJustification;
-
-    @ManyToOne
-    private CoursGroupe coursGroupe;
-
     private LocalDate absenceDateDebut;
     private LocalDate absenceDateFin;
-    private LocalDate dateSoumission;
     private MotifAbsence motifAbsence;
     private String absenceDetails;
     private String descriptionExamen;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Statut> listeStatut;
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Decision> listeDecision;
+    @ManyToOne
+    private Etudiant etudiant;
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Justification> listeJustification;
+    @ManyToOne
+    private CoursGroupe coursGroupe;
 
-    // Méthodes publiques
+    @JsonIgnore
+    public LocalDateTime getDateHeureSoumission() {
+        Optional<Statut> statutSoumission = listeStatut.stream()
+                .filter(o -> o.getTypeStatut().equals(TypeStatut.SOUMISE))
+                .findFirst();
 
-    public LocalDateTime getDateHeureSoumission(){
-        LocalDateTime heureSoumission = null;
-
-        if(listeStatut != null){
-            Optional<Statut> statutSoumission = listeStatut.stream()
-                    .filter(o -> o.getTypeStatut().equals(TypeStatut.SOUMISE))
-                    .findFirst();
-
-            heureSoumission = statutSoumission.map(Statut::getDateHeure).orElse(null);
-        }
-        return heureSoumission;
+        return statutSoumission.map(Statut::getDateHeure).orElse(null);
     }
 
-    public TypeStatut getStatutCourant(){
-        TypeStatut typeStatutCourant = null;
+    @JsonIgnore
+    public TypeStatut getStatutCourant() {
+        Optional<Statut> statutCourant = listeStatut.stream()
+                .max(Comparator.comparing(Statut::getDateHeure));
 
-        if(listeStatut != null){
-            Optional<Statut> statutCourant = listeStatut.stream()
-                    .max(Comparator.comparing(Statut::getDateHeure));
-
-            typeStatutCourant = statutCourant.map(Statut::getTypeStatut).orElse(null);
-        }
-        return typeStatutCourant;
+        return statutCourant.map(Statut::getTypeStatut).orElse(null);
     }
 
-    public Long getEnseignantId(){
-        Long id = 0L;
-        
-        if(coursGroupe != null){
-            id = coursGroupe.getEnseignant().getId();
-        }
+    @JsonIgnore
+    public TypeDecision getDecisionCourante() {
+        Optional<Decision> decisionCourante = listeDecision.stream()
+                .max(Comparator.comparing(Decision::getDateHeure));
 
-        return id;
+        return decisionCourante.map(Decision::getTypeDecision).orElse(null);
     }
-
-    public Long getEtudiantId(){
-        Long id = 0L;
-        
-        if(etudiant != null){
-            id = etudiant.getId();
-        }
-
-        return id;
-    }
-
 }

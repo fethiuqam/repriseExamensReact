@@ -52,7 +52,7 @@ test("devrait retourner pour une table 4 elements tr, 7 elements th et 21 elemen
     );
     expect(screen.getAllByRole("row")).toHaveLength(4);
     expect(screen.getAllByRole("columnheader")).toHaveLength(7);
-    expect(screen.getAllByRole("cell")).toHaveLength(21);
+    expect(screen.getAllByRole("cell")).toHaveLength(24);
     unmount();
 });
 

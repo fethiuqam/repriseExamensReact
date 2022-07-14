@@ -15,7 +15,7 @@ public interface LigneDREDTO {
     LocalDateTime getDateHeureSoumission();
 
     @Value("#{target.getStatutCourant()}")
-    TypeStatut getStatutCourant();
+    TypeStatut getStatut();
 
     @Value("#{target.getCoursGroupe().getCours().getSigle()}")
     String getSigleCours();

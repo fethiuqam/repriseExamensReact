@@ -15,7 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,10 +39,10 @@ public class EtudiantControllerTest {
         this.mockMvc.perform(get("/api/etudiants/3/historique?type=personnel").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$[0].statut", is("SOUMISE")))
                 .andExpect(jsonPath("$[0].coursGroupe", is("INF1120-030")))
                 .andExpect(jsonPath("$[0].motifAbsence", is("MEDICAL")))
-                .andExpect(jsonPath("$[1].statutCourant", is("ACCEPTEE")))
+                .andExpect(jsonPath("$[1].statut", is("EN_TRAITEMENT")))
                 .andExpect(jsonPath("$[1].coursGroupe", is("INF3173-040")))
                 .andExpect(jsonPath("$[1].motifAbsence", is("AUTRE")));
     }
@@ -51,10 +51,7 @@ public class EtudiantControllerTest {
     public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurUneAvecStatutOk() throws Exception {
         this.mockMvc.perform(get("/api/etudiants/4/historique?type=personnel").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].statutCourant", is("ENREGISTREE")))
-                .andExpect(jsonPath("$[0].coursGroupe", is("INF2120-020")))
-                .andExpect(jsonPath("$[0].motifAbsence", is("JUDICIAIRE")));
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
