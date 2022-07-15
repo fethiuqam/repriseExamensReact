@@ -4,6 +4,7 @@ import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.MotifAbsence;
 import ca.uqam.repriseexamen.model.TypeDecision;
+import ca.uqam.repriseexamen.model.TypeMessage;
 import ca.uqam.repriseexamen.model.TypeStatut;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -706,5 +707,79 @@ public class DemandeRepriseExamenControllerTest {
         Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
         assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_DIRECTEUR);
         assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+
+    @Test
+    @WithMockUser(username = "etudiant1")
+    public void envoyerMessageDevraitRetournerTypeMessageEtudiantAvecTailleDeux() throws Exception {
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeAvant.get().getTypeMessageCourant()).isNotNull().isEqualTo(TypeMessage.DEMANDE_COMMIS);
+        assertThat(demandeAvant.get().getListeMessage()).isNotNull().hasSize(1);
+
+        this.mockMvc.perform(post("/api/demandes/1/messages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"message\": \"message test réponse etudiant\"}"))
+                .andExpect(status().isNoContent());
+                
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demandeApres.get().getTypeMessageCourant()).isNotNull().isEqualTo(TypeMessage.REPONSE_ETUDIANT);
+        assertThat(demandeApres.get().getListeMessage()).isNotNull().hasSize(2);
+    }
+
+    @Test
+    @WithMockUser(username = "commis")
+    public void envoyerMessageDevraitRetournerTypeMessageCommisAvecTaille3() throws Exception {
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demandeAvant.get().getTypeMessageCourant()).isNotNull().isEqualTo(TypeMessage.REPONSE_ETUDIANT);
+        assertThat(demandeAvant.get().getListeMessage()).isNotNull().hasSize(2);
+
+        this.mockMvc.perform(post("/api/demandes/2/messages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"message\": \"message test réponse commis\"}"))
+                .andExpect(status().isNoContent());
+                
+        Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demandeApres.get().getTypeMessageCourant()).isNotNull().isEqualTo(TypeMessage.DEMANDE_COMMIS);
+        assertThat(demandeApres.get().getListeMessage()).isNotNull().hasSize(3);
+    }
+
+    @Test
+    @WithMockUser(username = "etudiant1")
+    public void envoyerMessageDevraitRetournerForbiddenPourEtudiantSiAucuneDemandeInfos() throws Exception {
+        Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(3L);
+        assertThat(demandeAvant.get().getTypeMessageCourant()).isNull();
+        assertThat(demandeAvant.get().getListeMessage()).isNullOrEmpty();
+
+        this.mockMvc.perform(post("/api/demandes/3/messages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"message\": \"message test réponse étudiant\"}"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "commis")
+    public void envoyerMessageDevraitRetournerStatutNotAcceptableSiBodyNonConforme() throws Exception {
+        this.mockMvc.perform(post("/api/demandes/3/messages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = "commis")
+    public void envoyerMessageDevraitRetournerNotFoundSiDemandeExistePas() throws Exception {
+        this.mockMvc.perform(post("/api/demandes/4/messages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"message\": \"test\"}"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "enseignant1")
+    public void envoyerMessageDevraitRetournerUnauthorizedSiEnseignant() throws Exception {
+        this.mockMvc.perform(post("/api/demandes/1/messages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"message\": \"test\"}"))
+                .andExpect(status().isUnauthorized());
     }
 }

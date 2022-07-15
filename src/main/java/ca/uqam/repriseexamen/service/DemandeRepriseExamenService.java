@@ -3,11 +3,14 @@ package ca.uqam.repriseexamen.service;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.TypeDecision;
+import ca.uqam.repriseexamen.model.TypeMessage;
 import ca.uqam.repriseexamen.model.TypeStatut;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
 
 public interface DemandeRepriseExamenService {
 
@@ -34,4 +37,6 @@ public interface DemandeRepriseExamenService {
     void updateStatutDemande(Long id, TypeStatut typeStatut);
 
     void annulerRejetStatut(Long id);
+
+    ResponseEntity<?> envoyerMessage(Long demandeId, TypeMessage type, JsonNode json) throws Exception;
 }

@@ -41,6 +41,8 @@ public class DemandeRepriseExamen {
     private List<Justification> listeJustification;
     @ManyToOne
     private CoursGroupe coursGroupe;
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> listeMessage;
 
     @JsonIgnore
     public LocalDateTime getDateHeureSoumission() {
@@ -65,5 +67,13 @@ public class DemandeRepriseExamen {
                 .max(Comparator.comparing(Decision::getDateHeure));
 
         return decisionCourante.map(Decision::getTypeDecision).orElse(null);
+    }
+
+    @JsonIgnore
+    public TypeMessage getTypeMessageCourant() {
+        Optional<Message> dernierMessage = listeMessage.stream()
+                .max(Comparator.comparing(Message::getDateHeure));
+
+        return dernierMessage.map(Message::getTypeMessage).orElse(null);
     }
 }
