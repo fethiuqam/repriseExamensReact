@@ -119,4 +119,15 @@ footer {
   font-weight: bold;
 }
 
+.errTypeFichier {
+  color:red;
+  font-weight: bold;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 

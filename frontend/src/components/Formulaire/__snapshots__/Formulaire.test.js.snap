@@ -537,43 +537,39 @@ exports[`Formulaire affiché correctement 1`] = `
                 </p>
               </div>
               <div>
-                <input
-                  id="justificatifs"
-                  multiple={true}
-                  onChange={[Function]}
-                  style={
-                    Object {
-                      "display": "none",
-                    }
-                  }
-                  type="file"
-                />
+                Types de fichiers acceptés : JPEG, PNG et PDF 
+              </div>
+              <div>
                 <label
-                  htmlFor="justificatifs"
+                  className="sc-bczRLJ bMBuBa  "
+                  htmlFor="file"
+                  onClick={[Function]}
                 >
-                  <span
-                    className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButtonBase-root button css-122gtp7-MuiButtonBase-root-MuiButton-root"
-                    onBlur={[Function]}
-                    onContextMenu={[Function]}
-                    onDragLeave={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onKeyUp={[Function]}
-                    onMouseDown={[Function]}
-                    onMouseLeave={[Function]}
-                    onMouseUp={[Function]}
-                    onTouchEnd={[Function]}
-                    onTouchMove={[Function]}
-                    onTouchStart={[Function]}
-                    role="button"
-                    tabIndex={0}
+                  <input
+                    accept=".jpeg,.png,.pdf,.jpg"
+                    multiple={true}
+                    name="file"
+                    onChange={[Function]}
+                    onClick={[Function]}
+                    type="file"
+                  />
+                  <div
+                    className="MuiBox-root css-cksj3t"
                   >
-                    Téléverser
-                    <span
-                      className="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-                    />
-                  </span>
+                    <div
+                      className="center"
+                    >
+                      <h3>
+                        Glisser les pièces jointes pour ajouter des preuves justificatives
+                      </h3>
+                    </div>
+                  </div>
                 </label>
+              </div>
+              <div>
+                <ul
+                  className="afficherFichiers"
+                />
               </div>
             </div>
           </div>

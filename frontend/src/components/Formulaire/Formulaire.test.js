@@ -108,14 +108,14 @@ test('Bannière affichée quand le post échoue', async () => {
 test('Formulaire affiché correctement', () => {
 
   jest.useFakeTimers().setSystemTime(new Date('2020-01-01'));
-  
+
   const FormulaireAvecRoute = () => {
     return(
       <BrowserRouter>
         <Formulaire />
       </BrowserRouter>
     );
-  } 
+  }
 
   const tree = TestRenderer
       .create(<FormulaireAvecRoute/>, {
