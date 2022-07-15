@@ -5,11 +5,18 @@ import { Grid, Typography } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import Button from '../BoutonFormulaire/BoutonFormulaire';
 import MiseEnPage from '../MiseEnPage/MiseEnPage';
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import * as React from "react";
 import Banniere from '../Banniere/Banniere';
 import AuthContext from "../../context/AuthProvider";
+import Box from '@mui/material/Box';
+import AttachmentIcon from '@mui/icons-material/Attachment';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { FileUploader } from "react-drag-drop-files";
+
+
+
 
 // stocke les infos des etudiant TODO : connecter avec les identifiants
 const infosEtudiant = {
@@ -29,13 +36,50 @@ const Formulaire = () => {
     } = useForm();
 
     let formData = new FormData();
-    const onFileChange = (e) => {
-        const fichiers = Array.from(e.target.files);
-        if (e.target && e.target.files) {
-            for (let i = 0; i < fichiers.length; i++) {
-                formData.append("files", fichiers[i]);
-            }
+
+    // states pour la gestion des pieces jointes
+    const fileTypes = ["JPEG", "PNG", "PDF", "JPG"];
+    const [files, setFiles] = useState([]);
+
+    /***
+     * Ajoute des nouveaux fichiers
+     * @param {*} nouveauFichiers les nouveaux fichiers a ajouter
+     */
+    const handleChangeFile = (nouveauFichiers) => {
+        setFiles(ancienFichiers => [...ancienFichiers, ...nouveauFichiers]);
+    };
+
+    /**
+     * Fonction appelee aux changements effectues aux fichiers
+     * Notes: le commentaire eslint-disable-line etait la methode
+     * la plus efficace pour enlever un warning de dependance qui
+     * n'avait pas d'impact sinon
+     */
+    useEffect(() => {
+        ajouterFilesFormdata();
+    }, [files]); // eslint-disable-line
+
+    /**
+     * Fonction pour supprimer un fichier donne 
+     * @param {*} nombre index du fichier a enlever
+     */
+    const supprimerFichier = (nombre) => {
+        try {
+            const nouvArray = [...files];
+            nouvArray.splice(nombre, 1);
+            setFiles(nouvArray);
+        } catch (e){
+            console.error("Erreur dans la supression fichier")
         }
+    };
+
+    /***
+     * Fonction pour faire un update des fichiers dans formdata
+     * a partir des fichiers presents dans le state files
+     */
+    const ajouterFilesFormdata = () => {
+        formData.delete("files");
+        files.forEach(f => formData.append("files", f));
     }
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -291,23 +335,57 @@ const Formulaire = () => {
                                     <div className="textColor">
                                         <Typography>Justificatifs</Typography>
                                     </div>
+                                    <div>Types de fichiers acceptés : JPEG, PNG et PDF </div>
                                     <div>
-                                        <input
-                                            style={{ display: "none" }}
-                                            id="justificatifs"
-                                            type="file"
-                                            onChange={onFileChange}
-                                            multiple
+                                        <FileUploader
+                                            multiple={true}
+                                            handleChange={handleChangeFile}
+                                            onTypeError={(err) => console.log("Erreur type fichier")}
+                                            name="file"
+                                            types={fileTypes}
+                                            label="Deposez vos fichiers ici"
+                                            fileOrFiles={null}
+                                            children={
+                                            <Box component="div" sx={{
+                                                width: 800,
+                                                height: 200,
+                                                p: 1,
+                                                border: '1px dashed grey',
+                                                '&:hover': {
+                                                    backgroundColor: 'primary.main',
+                                                    opacity: [0.6, 0.5, 0.4],
+                                                  },}}>
+                                                <div className="center">
+                                                    <h3>Glisser les pièces jointes pour ajouter des preuves justificatives</h3>
+                                                </div>                                          
+                                            </Box>
+                                        }
                                         />
-                                        <label htmlFor="justificatifs">
-                                            <Button
-                                                variant="contained"
-                                                disableElevation
-                                                className="button"
-                                                component="span">
-                                                Téléverser
-                                            </Button>
-                                        </label>
+                                    </div>
+                                    <div>
+                                        <ul className="afficherFichiers">
+                                            {files.map(function(file, idx){
+                                                return (
+                                                <li key={idx}>
+                                                    <AttachmentIcon></AttachmentIcon>
+                                                    {file.name}
+                                                    <span className='divSupprimerFichierButton'>
+                                                        <Button
+                                                            className="buttonSupprimerFichier"
+                                                            startIcon={<DeleteIcon/>}
+                                                            disableElevation
+                                                            color="error"
+                                                            size="small"
+                                                            onClick={() => {
+                                                                supprimerFichier(idx);
+                                                            }}
+                                                        >
+                                                        </Button>
+                                                    </span>
+                                                    <br/>
+                                                </li>)
+                                            })}
+                                        </ul>
                                     </div>
                                 </div>
                             }
