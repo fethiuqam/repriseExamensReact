@@ -41,7 +41,7 @@ export default function LigneDRE({item}) {
                 </TableCell>
             }
             <TableCell>
-                <Badge color="error" invisible={false} badgeContent={<h3>!</h3>} >
+                <Badge color="error" invisible={true} badgeContent={<h3>!</h3>} >
                     <Button
                         size="small"
                         variant="contained"

@@ -1,10 +1,10 @@
 package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
-import ca.uqam.repriseexamen.dto.LigneDREPersonnelDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
+import ca.uqam.repriseexamen.dto.LigneDREPersonnelDTO;
 import ca.uqam.repriseexamen.model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
@@ -30,7 +30,8 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
 
     @Override
     public List<LigneDREDTO> getAllDemandeRepriseExamenPersonnel() {
-        List<LigneDREPersonnelDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREPersonnelDTOBy();
+        List<LigneDREPersonnelDTO> listeLigneDRE = demandeRepriseExamenRepository
+                .findLigneDREPersonnelDTOBy();
 
         return listeLigneDRE.stream()
                 .filter(dre -> !dre.getStatut().equals(TypeStatut.ENREGISTREE))
@@ -38,9 +39,9 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long id) {
+    public List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long idEnseignant) {
         List<LigneDREEnseignantDTO> listeLigneDRE = demandeRepriseExamenRepository
-                .findLigneDREEnseignantDTOByCoursGroupeEnseignantId(id);
+                .findLigneDREEnseignantDTOByCoursGroupeEnseignantId(idEnseignant);
 
         return listeLigneDRE.stream()
                 .filter(dre -> dre.getDecision() != null
@@ -52,11 +53,37 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long id) {
-        List<LigneDREEtudiantDTO> listeLigneDRE = demandeRepriseExamenRepository.findLigneDREEtudiantDTOByEtudiantId(id);
+    public List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long idEtudiant) {
+        List<LigneDREEtudiantDTO> listeLigneDRE = demandeRepriseExamenRepository
+                .findLigneDREEtudiantDTOByEtudiantId(idEtudiant);
         return new ArrayList<>(listeLigneDRE);
     }
 
+    @Override
+    public LigneDREDTO getDemandeRepriseExamenPersonnelById(long id) {
+        Optional<LigneDREPersonnelDTO> demande = demandeRepriseExamenRepository.findLigneDREPersonnelDTOById(id);
+        return demande.orElse(null);
+    }
+
+    @Override
+    public LigneDREDTO getDemandeRepriseExamenEnseignantById(long id, long idEnseignant) {
+        Optional<LigneDREEnseignantDTO> demande = demandeRepriseExamenRepository
+                .findLigneDREEnseignantDTOById(id);
+        if (demande.isPresent() && idEnseignant != demande.get().getIdEnseignant()) {
+            throw new RuntimeException("Acces non autorisé");
+        }
+        return demande.orElse(null);
+    }
+
+    @Override
+    public LigneDREDTO getDemandeRepriseExamenEtudiantById(long id, long idEtudiant) {
+        Optional<LigneDREEtudiantDTO> demande = demandeRepriseExamenRepository
+                .findLigneDREEtudiantDTOById(id);
+        if (demande.isPresent() && idEtudiant != demande.get().getIdEtudiant()) {
+            throw new RuntimeException("Acces non autorisé");
+        }
+        return demande.orElse(null);
+    }
 
 
     @Override
@@ -130,7 +157,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         Optional<Statut> statutDejaPresent = demande.getListeStatut().stream()
                 .filter(s -> s.getTypeStatut() == typeStatut)
                 .findFirst();
-        if(statutDejaPresent.isEmpty()){
+        if (statutDejaPresent.isEmpty()) {
             Statut statut = Statut.builder()
                     .typeStatut(typeStatut)
                     .dateHeure(LocalDateTime.now())
