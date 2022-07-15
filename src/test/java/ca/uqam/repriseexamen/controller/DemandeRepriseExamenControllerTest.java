@@ -58,9 +58,10 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREPersonnelDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
-       this.mockMvc.perform(get("/api/demandes?type=personnel").contentType(MediaType.APPLICATION_JSON))
+       this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
+               .andExpect(jsonPath("$[0].*", hasSize(17)))
                 .andExpect(jsonPath("$[0].statut", is("SOUMISE")))
                 .andExpect(jsonPath("$[0].sigleCours", is("INF1120")))
                 .andExpect(jsonPath("$[1].statut", is("EN_TRAITEMENT")))
@@ -68,20 +69,20 @@ public class DemandeRepriseExamenControllerTest {
     }
 
 
-    @WithMockUser(username="enseigant1")
+    @WithMockUser(username="enseignant1")
     @Test
     public void devraitRetournerListeDREEnseignantDTODeLongueurUneAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?type=enseignant&id=1").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    @WithMockUser(username="enseigant2")
+    @WithMockUser(username="enseignant2")
     @Test
     public void devraitRetournerListeDREEnseignantDTOVideAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?type=enseignant&id=2").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
@@ -90,9 +91,10 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurDeuxAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?type=etudiant&id=3").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].*", hasSize(13)))
                 .andExpect(jsonPath("$[0].statut", is("SOUMISE")))
                 .andExpect(jsonPath("$[0].sigleCours", is("INF1120")))
                 .andExpect(jsonPath("$[1].statut", is("EN_TRAITEMENT")))
@@ -103,9 +105,10 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEtudiantDTODeLongueurUneAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?type=etudiant&id=4").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].*", hasSize(13)))
                 .andExpect(jsonPath("$[0].statut", is("ENREGISTREE")))
                 .andExpect(jsonPath("$[0].sigleCours", is("INF2120")));
 
@@ -115,26 +118,98 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerListeDREEtudiantDTOVideAvecStatutOk()
             throws Exception {
-        this.mockMvc.perform(get("/api/demandes?type=etudiant&id=5").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
+    @WithMockUser(username="commis")
     @Test
-    public void devraitRetournerStatutNonTrouve()
+    public void devraitRetournerDREPersonnelDTODuPremierEtudiantAvecStatutOk()
             throws Exception {
+        this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(17)))
+                .andExpect(jsonPath("$.statut", is("SOUMISE")))
+                .andExpect(jsonPath("$.sigleCours", is("INF1120")));
+    }
 
-        this.mockMvc.perform(get("/api/demande").contentType(MediaType.APPLICATION_JSON))
+    @WithMockUser(username="commis")
+    @Test
+    public void devraitRetournerDREPersonnelDTODuDeuxiemeEtudiantAvecStatutOk()
+            throws Exception {
+        this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(17)))
+                .andExpect(jsonPath("$.statut", is("ENREGISTREE")))
+                .andExpect(jsonPath("$.sigleCours", is("INF2120")));
+    }
+
+    @WithMockUser(username="commis")
+    @Test
+    public void devraitRetournerStatutNonTrouvePourIdNonValide()
+            throws Exception {
+        this.mockMvc.perform(get("/api/demandes/5").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 
+    @WithMockUser(username="etudiant1")
     @Test
-    public void devraitRetournerStatutMauvaiseRequete()
+    public void devraitRetournerDREEtudiantDTODuPremierEtudiantAvecStatutOk()
             throws Exception {
-
-        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+        this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(13)))
+                .andExpect(jsonPath("$.statut", is("SOUMISE")))
+                .andExpect(jsonPath("$.sigleCours", is("INF1120")));
     }
+
+    @WithMockUser(username="etudiant1")
+    @Test
+    public void devraitRetournerStatutNonAutorisePourDREDuDeuxiemeEtudiant()
+            throws Exception {
+        this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(username="etudiant2")
+    @Test
+    public void devraitRetournerDREEtudiantDTODuDeuxiemeEtudiantAvecStatutOk()
+            throws Exception {
+        this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(13)))
+                .andExpect(jsonPath("$.statut", is("ENREGISTREE")))
+                .andExpect(jsonPath("$.sigleCours", is("INF2120")));
+    }
+
+    @WithMockUser(username="etudiant2")
+    @Test
+    public void devraitRetournerStatutNonAutorisePourDREDupremierEtudiant()
+            throws Exception {
+        this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(username="enseignant1")
+    @Test
+    public void devraitRetournerDREEnseignantDTODuPremierEtudiantAvecStatutOk()
+            throws Exception {
+        this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(12)))
+                .andExpect(jsonPath("$.statut", is("SOUMISE")))
+                .andExpect(jsonPath("$.sigleCours", is("INF1120")));
+    }
+
+    @WithMockUser(username="enseignant1")
+    @Test
+    public void devraitRetournerAuPremierEnseignantStatutNonAutorisePourDREDuDeuxiemeEtudiant()
+            throws Exception {
+        this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
 
     @Test
     public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()

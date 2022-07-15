@@ -2,15 +2,14 @@ package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
-import ca.uqam.repriseexamen.model.Utilisateur;
-import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
 import ca.uqam.repriseexamen.model.TypeDecision;
 import ca.uqam.repriseexamen.model.TypeStatut;
+import ca.uqam.repriseexamen.model.Utilisateur;
+import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import ca.uqam.repriseexamen.service.JustificationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,44 +37,80 @@ public class DemandeRepriseExamenController {
     /**
      * Route pour récupérer les demandes de reprises d'examen en fonction du type
      * de l'utilisateur
-     * 
+     *
      * @return LigneDREDTO
      */
     @GetMapping("")
-    public List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant
-            (@RequestParam(required = false) Long id, @RequestParam(required = true) String type) throws Exception{
+    public ResponseEntity<?> getAllDemandeRepriseExamen() throws Exception {
 
         Utilisateur authentifie = authentifieService.GetAuthentifie();
-        switch (authentifie.getType()){
+        List<LigneDREDTO> demandes;
+
+        switch (authentifie.getType()) {
             case "personnel":
-                return demandeRepriseExamenService.getAllDemandeRepriseExamenPersonnel();
-
+                demandes = demandeRepriseExamenService.getAllDemandeRepriseExamenPersonnel();
+                break;
             case "enseignant":
-                if (id != null)
-                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEnseignant(authentifie.getId());
-
+                demandes = demandeRepriseExamenService.getAllDemandeRepriseExamenEnseignant(authentifie.getId());
+                break;
             case "etudiant":
-                if(id != null)
-                    return demandeRepriseExamenService.getAllDemandeRepriseExamenEtudiant(authentifie.getId());
+                demandes = demandeRepriseExamenService.getAllDemandeRepriseExamenEtudiant(authentifie.getId());
+                break;
             default:
-                throw new IllegalArgumentException();
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("{\"error\":\"acces non autorisé.\"}");
         }
+        return new ResponseEntity<>(demandes, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getDemandeRepriseExamen(@PathVariable Long id) throws Exception {
+
+        Utilisateur authentifie = authentifieService.GetAuthentifie();
+        LigneDREDTO demande;
+
+        try {
+            switch (authentifie.getType()) {
+                case "personnel":
+                    demande = demandeRepriseExamenService.getDemandeRepriseExamenPersonnelById(id);
+                    break;
+                case "enseignant":
+                    demande = demandeRepriseExamenService.getDemandeRepriseExamenEnseignantById(id, authentifie.getId());
+                    break;
+                case "etudiant":
+                    demande = demandeRepriseExamenService.getDemandeRepriseExamenEtudiantById(id, authentifie.getId());
+                    break;
+                default:
+                    return ResponseEntity
+                            .status(HttpStatus.UNAUTHORIZED)
+                            .body("{\"error\":\"acces non autorisé.\"}");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("{\"error\":\"" + e.getMessage() + "\"}");
+        }
+        if(demande != null)
+            return new ResponseEntity<>(demande, HttpStatus.OK);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     /**
      * Route pour soumettre une demande de reprise d'examen
-     * 
+     *
      * @param nouvelleDemande body de la demande à soumettre
-     * @param fichiers un ou plusieurs fichiers
+     * @param fichiers        un ou plusieurs fichiers
      * @return DemandeRepriseExamen la demande soumise
      */
-    @PostMapping(value = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public DemandeRepriseExamen soumettreDemandeRepriseExamen(@RequestPart DemandeRepriseExamen nouvelleDemande,
                                                               @RequestPart(value = "files", required = false) MultipartFile[] fichiers) {
 
         DemandeRepriseExamen dre = demandeRepriseExamenService.soumettreDemandeRepriseExamen(nouvelleDemande);
         if (fichiers != null) {
-            Arrays.asList(fichiers).stream().forEach(fichier -> {
+            Arrays.stream(fichiers).forEach(fichier -> {
                 try {
                     justificationService.ajouterJustification(dre, fichier);
                 } catch (IOException e) {

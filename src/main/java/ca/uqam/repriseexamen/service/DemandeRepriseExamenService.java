@@ -12,8 +12,16 @@ import java.util.Optional;
 public interface DemandeRepriseExamenService {
 
     List<LigneDREDTO> getAllDemandeRepriseExamenPersonnel();
-    List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long id);
-    List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long id);
+
+    List<LigneDREDTO> getAllDemandeRepriseExamenEnseignant(long idEnseignant);
+
+    List<LigneDREDTO> getAllDemandeRepriseExamenEtudiant(long idEtudiant);
+
+    LigneDREDTO getDemandeRepriseExamenPersonnelById(long id);
+
+    LigneDREDTO getDemandeRepriseExamenEnseignantById(long id, long idEnseignant);
+
+    LigneDREDTO getDemandeRepriseExamenEtudiantById(long id, long idEtudiant);
 
     DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre);
 

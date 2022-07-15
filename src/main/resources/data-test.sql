@@ -8,8 +8,8 @@ values
 
 insert into utilisateur (code_ms,nom, prenom, matricule , email, mot_de_passe,dtype)
 values
-    ('enseigant1','lord', 'melanie', 'LORM45698732', 'lord.melanie.courrier.uqam.ca', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant'),
-    ('enseigant2','jack', 'berger', 'BERJ32695723', 'berger.jack.courrier.uqam.ca', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant' );
+    ('enseignant1','lord', 'melanie', 'LORM45698732', 'lord.melanie.courrier.uqam.ca', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant'),
+    ('enseignant2','jack', 'berger', 'BERJ32695723', 'berger.jack.courrier.uqam.ca', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant' );
 
 insert into utilisateur (code_ms,code_permanent, nom, prenom, email, telephone, mot_de_passe,dtype)
 values

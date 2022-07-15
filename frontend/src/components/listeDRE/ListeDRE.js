@@ -48,7 +48,7 @@ export default function ListeDRE() {
     ]);
 
     useEffect(() => {
-        const API_URL = `/api/demandes?type=${type}&id=${id ? id : ""}`;
+        const API_URL = "/api/demandes";
         const fetchItems = async () => {
             try {
                 const reponse = await fetch(API_URL,
