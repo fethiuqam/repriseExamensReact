@@ -9,6 +9,8 @@ import ca.uqam.repriseexamen.model.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.NotAcceptableStatusException;
@@ -178,6 +180,32 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
                 .findFirst();
         demande.getListeStatut().remove(statutRejet.orElse(null));
         demandeRepriseExamenRepository.save(demande);
+    }
+
+    @Override
+    public ResponseEntity<?> envoyerMessage(Long demandeId, TypeMessage typeMessage, JsonNode json) throws Exception {
+        if(json.has("message")) {
+            DemandeRepriseExamen demande = findDemandeRepriseExamen(demandeId)
+                    .orElseThrow(ResourceNotFoundException::new);
+
+            // Un étudiant ne devrait pas pouvoir envoyer un message si un commis ne demande pas d'informations supplémentaire.
+            if(typeMessage == TypeMessage.REPONSE_ETUDIANT && demande.getListeMessage().isEmpty())
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+            Message message = Message.builder()
+                .typeMessage(typeMessage)
+                .contenu(json.get("message").asText())
+                .dateHeure(LocalDateTime.now())
+                .demandeRepriseExamen(demande)
+                .build();
+    
+            demande.getListeMessage().add(message);
+            demandeRepriseExamenRepository.save(demande);
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 }

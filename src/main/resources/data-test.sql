@@ -53,3 +53,9 @@ values
 insert into decision (date_heure , type_decision , demande_reprise_examen_id )
 values
     ('2022-03-20T10:34:09', 0, 2);
+
+insert into message (type_message, contenu, date_heure, demande_reprise_examen_id)
+values
+    (0, 'Veuillez fournir une preuve médicale', '2022-02-15T10:34:09', 1),
+    (0, 'Veuillez fournir une preuve de votre absence', '2022-02-15T10:39:09', 2),
+    (1, 'Je vais soumettre un fichier PDF dans la demande', '2022-02-15T12:54:08', 2);

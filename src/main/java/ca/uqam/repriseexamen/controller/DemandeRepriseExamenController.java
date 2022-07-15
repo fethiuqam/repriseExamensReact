@@ -3,6 +3,7 @@ package ca.uqam.repriseexamen.controller;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.TypeDecision;
+import ca.uqam.repriseexamen.model.TypeMessage;
 import ca.uqam.repriseexamen.model.TypeStatut;
 import ca.uqam.repriseexamen.model.Utilisateur;
 import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
@@ -187,5 +188,19 @@ public class DemandeRepriseExamenController {
         demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJETEE_ENSEIGNANT);
         demandeRepriseExamenService.annulerRejetStatut(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping(path = "/{id}/messages")
+    public ResponseEntity<?> envoyerMessage(@PathVariable Long id, @RequestBody JsonNode json) throws Exception {
+        Utilisateur authentifie = authentifieService.GetAuthentifie();
+
+        switch (authentifie.getType()){
+            case "personnel":
+                return demandeRepriseExamenService.envoyerMessage(id, TypeMessage.DEMANDE_COMMIS, json);
+            case "etudiant":
+                return demandeRepriseExamenService.envoyerMessage(id, TypeMessage.REPONSE_ETUDIANT, json);
+            default:
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
