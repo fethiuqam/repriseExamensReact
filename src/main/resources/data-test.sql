@@ -1,9 +1,9 @@
-insert into cours (nom, sigle)
+insert into cours ( nom, sigle)
 values
-    ('programmation 1', 'INF1120') ,
-    ('programmation 2', 'INF2120') ,
-    ('systeme d exploitation', 'INF3173') ,
-    ('algorithmique', 'INF5130');
+    ( 'programmation 1', 'INF1120') ,
+    ( 'programmation 2', 'INF2120') ,
+    ( 'systeme d exploitation', 'INF3173') ,
+    ( 'algorithmique', 'INF5130');
 
 
 insert into utilisateur (code_ms,nom, prenom, matricule , email, mot_de_passe,dtype)
@@ -42,9 +42,15 @@ values
 
 insert into cours_groupe (groupe, session, cours_id, enseignant_id)
 values
-    ('030', 1, 1, 1 ),
-    ('020', 1, 2, 2 ),
-    ('040', 1, 3, 1 );
+    ('030', 1, 1, 1),
+    ('020', 1, 2, 2),
+    ('040', 1, 3, 1);
+
+insert into cours_groupe_etudiant (cours_groupe_id, etudiant_id)
+values
+    ( 1, 3 ),
+    ( 2, 3 ),
+    ( 3, 3 );
 
 insert into demande_reprise_examen (absence_date_debut , absence_date_fin , motif_absence , absence_details , description_examen , cours_groupe_id , etudiant_id )
 values

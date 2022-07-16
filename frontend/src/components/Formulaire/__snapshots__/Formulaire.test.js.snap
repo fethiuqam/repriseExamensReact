@@ -45,25 +45,19 @@ exports[`Formulaire affiché correctement 1`] = `
                   <th>
                     Nom
                   </th>
-                  <th>
-                    Tremblay
-                  </th>
+                  <th />
                 </tr>
                 <tr>
                   <th>
                     Prénom
                   </th>
-                  <th>
-                    Jeanne
-                  </th>
+                  <th />
                 </tr>
                 <tr>
                   <th>
                     Code permanent
                   </th>
-                  <th>
-                    TREJ90021580
-                  </th>
+                  <th />
                 </tr>
               </tbody>
             </table>
@@ -120,35 +114,35 @@ exports[`Formulaire affiché correctement 1`] = `
                         }
                       }
                     >
-                      <select
-                        aria-invalid={false}
-                        className="MuiSelect-root MuiSelect-select MuiInputBase-input MuiInput-input"
-                        defaultValue=""
+                      <div
+                        aria-haspopup="listbox"
+                        aria-labelledby="etiquette-signelCours sigleCours-input"
+                        className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
                         id="sigleCours-input"
-                        multiple={false}
+                        onBlur={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        onMouseDown={[Function]}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        <span
+                          dangerouslySetInnerHTML={
+                            Object {
+                              "__html": "&#8203;",
+                            }
+                          }
+                        />
+                      </div>
+                      <input
+                        aria-hidden={true}
+                        className="MuiSelect-nativeInput"
                         name="sigleCours"
                         onAnimationStart={[Function]}
-                        onBlur={[Function]}
                         onChange={[Function]}
-                        onFocus={[Function]}
-                      >
-                        <option
-                          name="INM5151"
-                          value="INM5151"
-                        >
-                          INM5151
-                        </option>
-                        <option
-                          value="INF6150"
-                        >
-                          INF6150
-                        </option>
-                        <option
-                          value="INF5171"
-                        >
-                          INF5171
-                        </option>
-                      </select>
+                        tabIndex={-1}
+                        value=""
+                      />
                       <svg
                         aria-hidden={true}
                         className="MuiSvgIcon-root MuiSelect-icon"
@@ -181,47 +175,7 @@ exports[`Formulaire affiché correctement 1`] = `
                   </div>
                   <div
                     className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vok43g-MuiGrid-root"
-                  >
-                    <div
-                      className="MuiFormControl-root MuiTextField-root inputStandard"
-                      data-testid="groupeCoursTestId"
-                      labelid="etiquette-groupeCours"
-                      style={
-                        Object {
-                          "width": "90%",
-                        }
-                      }
-                    >
-                      <label
-                        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-                        data-shrink={false}
-                        htmlFor="groupeCours-input"
-                        id="groupeCours-input-label"
-                      >
-                        Groupe
-                      </label>
-                      <div
-                        className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                        onClick={[Function]}
-                      >
-                        <input
-                          aria-invalid={false}
-                          autoFocus={false}
-                          className="MuiInputBase-input MuiInput-input"
-                          defaultValue=""
-                          disabled={false}
-                          id="groupeCours-input"
-                          name="groupeCours"
-                          onAnimationStart={[Function]}
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          onFocus={[Function]}
-                          required={false}
-                          type="text"
-                        />
-                      </div>
-                    </div>
-                  </div>
+                  />
                 </div>
               </div>
               <div
@@ -242,52 +196,80 @@ exports[`Formulaire affiché correctement 1`] = `
                   </div>
                   <div
                     className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vok43g-MuiGrid-root"
+                  />
+                </div>
+              </div>
+              <div
+                className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
+              >
+                <div
+                  className="MuiGrid-root MuiGrid-container css-11lq3yg-MuiGrid-root"
+                >
+                  <div
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 css-gj1fbr-MuiGrid-root"
+                  >
+                    <label
+                      className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated"
+                      id="etiquette-descriptionExamen"
+                    >
+                      Type d'examen
+                    </label>
+                  </div>
+                  <div
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vok43g-MuiGrid-root"
                   >
                     <div
-                      className="MuiFormControl-root MuiTextField-root inputStandard"
-                      data-testid="enseignantTestId"
-                      labelid="etiquette-enseignant"
+                      className="MuiInputBase-root MuiInput-root MuiInput-underline inputStandard"
+                      onClick={[Function]}
                       style={
                         Object {
                           "width": "90%",
                         }
                       }
                     >
-                      <label
-                        className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-                        data-shrink={false}
-                        htmlFor="enseignant-input"
-                        id="enseignant-input-label"
-                      >
-                        Enseignant
-                      </label>
                       <div
-                        className="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
-                        onClick={[Function]}
+                        aria-haspopup="listbox"
+                        aria-labelledby="descriptionExamen-input"
+                        className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+                        id="descriptionExamen-input"
+                        onBlur={[Function]}
+                        onFocus={[Function]}
+                        onKeyDown={[Function]}
+                        onMouseDown={[Function]}
+                        role="button"
+                        tabIndex={0}
                       >
-                        <input
-                          aria-invalid={false}
-                          autoFocus={false}
-                          className="MuiInputBase-input MuiInput-input"
-                          defaultValue=""
-                          disabled={false}
-                          id="enseignant-input"
-                          name="enseignant"
-                          onAnimationStart={[Function]}
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          onFocus={[Function]}
-                          required={false}
-                          type="text"
+                        <span
+                          dangerouslySetInnerHTML={
+                            Object {
+                              "__html": "&#8203;",
+                            }
+                          }
                         />
                       </div>
+                      <input
+                        aria-hidden={true}
+                        className="MuiSelect-nativeInput"
+                        name="descriptionExamen"
+                        onAnimationStart={[Function]}
+                        onChange={[Function]}
+                        tabIndex={-1}
+                        value=""
+                      />
+                      <svg
+                        aria-hidden={true}
+                        className="MuiSvgIcon-root MuiSelect-icon"
+                        focusable="false"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M7 10l5 5 5-5z"
+                        />
+                      </svg>
                     </div>
                   </div>
                 </div>
               </div>
-              <div
-                className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
-              />
             </div>
             <div
               className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 affichageInfosTable css-mhc70k-MuiGrid-root"
@@ -354,7 +336,6 @@ exports[`Formulaire affiché correctement 1`] = `
                       defaultValue=""
                       disabled={false}
                       id="dateFin"
-                      max="2020-01-01"
                       name="absenceDateFin"
                       onAnimationStart={[Function]}
                       onBlur={[Function]}
@@ -404,49 +385,35 @@ exports[`Formulaire affiché correctement 1`] = `
                   data-testid="motifTestId"
                   onClick={[Function]}
                 >
-                  <select
-                    aria-invalid={false}
-                    className="MuiSelect-root MuiSelect-select MuiInputBase-input MuiInput-input"
-                    defaultValue=""
+                  <div
+                    aria-haspopup="listbox"
+                    aria-labelledby="etiquette-motif-absence menu-motif-absence"
+                    className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
                     id="menu-motif-absence"
-                    multiple={false}
+                    onBlur={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseDown={[Function]}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <span
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "&#8203;",
+                        }
+                      }
+                    />
+                  </div>
+                  <input
+                    aria-hidden={true}
+                    className="MuiSelect-nativeInput"
                     name="motifAbsence"
                     onAnimationStart={[Function]}
-                    onBlur={[Function]}
                     onChange={[Function]}
-                    onFocus={[Function]}
-                  >
-                    <option
-                      value="MEDICAL"
-                    >
-                      Hospitalisation
-                    </option>
-                    <option
-                      value="DECES"
-                    >
-                      Décès
-                    </option>
-                    <option
-                      value="ACCIDENT"
-                    >
-                      Accident
-                    </option>
-                    <option
-                      value="JUDICIAIRE"
-                    >
-                      Convocation à un tribunal
-                    </option>
-                    <option
-                      value="RELIGIEUX"
-                    >
-                      Motif religieux
-                    </option>
-                    <option
-                      value="AUTRE"
-                    >
-                      Autre
-                    </option>
-                  </select>
+                    tabIndex={-1}
+                    value=""
+                  />
                   <svg
                     aria-hidden={true}
                     className="MuiSvgIcon-root MuiSelect-icon"
@@ -514,10 +481,10 @@ exports[`Formulaire affiché correctement 1`] = `
                     />
                     <fieldset
                       aria-hidden={true}
-                      className="PrivateNotchedOutline-root-9 MuiOutlinedInput-notchedOutline"
+                      className="PrivateNotchedOutline-root-5 MuiOutlinedInput-notchedOutline"
                     >
                       <legend
-                        className="PrivateNotchedOutline-legendLabelled-11"
+                        className="PrivateNotchedOutline-legendLabelled-7"
                       >
                         <span>
                           Explications détaillées

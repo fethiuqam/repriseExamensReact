@@ -1,13 +1,16 @@
 package ca.uqam.repriseexamen.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -22,6 +25,8 @@ import java.util.Optional;
 @Builder
 public class DemandeRepriseExamen {
 
+    // Attributs
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,19 +35,28 @@ public class DemandeRepriseExamen {
     private MotifAbsence motifAbsence;
     private String absenceDetails;
     private String descriptionExamen;
-    @JsonManagedReference
+
+    @JsonManagedReference(value = "listeStatut")
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Statut> listeStatut;
+
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Decision> listeDecision;
+
+    @JsonBackReference(value = "demandesEtudiant")
     @ManyToOne
     private Etudiant etudiant;
+
+    @JsonManagedReference(value = "listeJustification")
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Justification> listeJustification;
+
     @ManyToOne
     private CoursGroupe coursGroupe;
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> listeMessage;
+
+    // Méthodes publiques
 
     @JsonIgnore
     public LocalDateTime getDateHeureSoumission() {

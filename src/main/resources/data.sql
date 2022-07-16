@@ -75,6 +75,12 @@ values
     ('020', 1, 2, 2),
     ('040', 1, 3, 1);
 
+insert into cours_groupe_etudiant (cours_groupe_id, etudiant_id)
+values
+    ( 1, 3 ),
+    ( 2, 3 ),
+    ( 3, 3 );
+
 insert into demande_reprise_examen (absence_date_debut , absence_date_fin , motif_absence , absence_details , description_examen , cours_groupe_id , etudiant_id )
 values
     ('2022-03-01', '2022-03-10', 0, 'intervention chirurgicale programmee', 'examen intra', 1, 3),
