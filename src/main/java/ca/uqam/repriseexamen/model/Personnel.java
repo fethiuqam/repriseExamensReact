@@ -22,7 +22,7 @@ public class Personnel extends Utilisateur {
 
     @Builder
     public Personnel(Long id, String nom, String prenom, String email, String codeMs, String motDePasse, String type, Collection<Role> roles, int employeId) {
-        super(id, nom, prenom, email, codeMs, motDePasse, type, roles);
+        super(id, codeMs, motDePasse, type, roles, nom, prenom, email);
         this.employeId = employeId;
     }
 }
