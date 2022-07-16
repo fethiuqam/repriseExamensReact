@@ -41,6 +41,7 @@ public class AuthentificationController {
         response.setToken(jwtToken);
         response.setId(authentifieService.GetAuthentifie().getId());
         response.setType(authentifieService.GetAuthentifie().getType());
+        response.setPermissions(authentifieService.GetAuthentifie().getPermissions());
 
         return ResponseEntity.ok(response);
     }

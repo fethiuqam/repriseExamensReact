@@ -51,6 +51,24 @@ insert into utilisateur (code_ms, nom, prenom, mot_de_passe, employe_id, dtype)
 values
     ('commis','lauzon', 'manon', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW', '1', 'personnel' );
 
+insert into role (nom)
+values
+    ('commis');
+
+insert into role_permissions (role_id, permissions)
+values
+    (1, 0),
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (1, 6);
+
+insert into utilisateurs_roles (utilisateurs_id, roles_id)
+values
+    (5, 1);
+
 insert into cours_groupe (groupe, session, cours_id, enseignant_id)
 values
     ('030', 1, 1, 1),
