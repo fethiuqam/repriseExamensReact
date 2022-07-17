@@ -36,7 +36,6 @@ public abstract class Utilisateur {
     @Column(name = "dtype", insertable = false, updatable = false)
     protected String type;
 
-    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "utilisateurs_roles", joinColumns = @JoinColumn(name = "utilisateurs_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     protected Collection<Role> roles;
