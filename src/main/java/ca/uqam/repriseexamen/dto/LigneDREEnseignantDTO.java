@@ -6,15 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 
 public interface LigneDREEnseignantDTO extends LigneDREDTO {
 
-    @Value("#{target.getEtudiant().getPrenom() + ' ' + target.getEtudiant().getNom()}")
-    String getNomEtudiant();
-
-    @Value("#{target.getEtudiant().getCodePermanent()}")
-    String getCodePermanentEtudiant();
-
-    @JsonIgnore
     @Value("#{target.getDecisionCourante()}")
-    TypeDecision getDecision();
+    TypeDecision getDecisionCourante();
 
     @JsonIgnore
     @Value("#{target.getCoursGroupe().getEnseignant().getId()}")

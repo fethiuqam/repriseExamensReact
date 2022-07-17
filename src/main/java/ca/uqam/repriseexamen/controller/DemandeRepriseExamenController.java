@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api/demandes")
@@ -132,10 +133,12 @@ public class DemandeRepriseExamenController {
     }
 
     @PatchMapping(path = "/{id}/rejeter-commis")
-    public ResponseEntity<?> rejeterDemandeParCommis(@PathVariable Long id, @RequestBody JsonNode patch) {
+    public ResponseEntity<?> rejeterDemandeParCommis(@PathVariable Long id, @RequestBody JsonNode patch) throws InterruptedException {
         demandeRepriseExamenService.ajouterDemandeDecision(id, patch, null,
                 TypeDecision.REJETEE_COMMIS);
         demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.EN_TRAITEMENT);
+        TimeUnit.MILLISECONDS.sleep(10);
+        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.REJETEE);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -148,7 +151,7 @@ public class DemandeRepriseExamenController {
 
     @PatchMapping(path = "/{id}/rejeter-directeur")
     public ResponseEntity<?> rejeterDemandeParDirecteur(@PathVariable Long id, @RequestBody JsonNode patch) {
-        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, TypeDecision.REJETEE_COMMIS,
+        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, TypeDecision.ACCEPTEE_COMMIS,
                 TypeDecision.REJETEE_DIRECTEUR);
         demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.REJETEE);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -173,6 +176,7 @@ public class DemandeRepriseExamenController {
     @PatchMapping(path = "/{id}/annuler-rejet-commis")
     public ResponseEntity<?> annulerRejetDemandeParCommis(@PathVariable Long id) {
         demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJETEE_COMMIS);
+        demandeRepriseExamenService.annulerRejetStatut(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

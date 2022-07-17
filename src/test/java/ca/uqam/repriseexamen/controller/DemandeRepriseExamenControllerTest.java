@@ -62,11 +62,11 @@ public class DemandeRepriseExamenControllerTest {
        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-               .andExpect(jsonPath("$[0].*", hasSize(17)))
-                .andExpect(jsonPath("$[0].statut", is("SOUMISE")))
-                .andExpect(jsonPath("$[0].sigleCours", is("INF1120")))
-                .andExpect(jsonPath("$[1].statut", is("EN_TRAITEMENT")))
-                .andExpect(jsonPath("$[1].sigleCours", is("INF3173")));
+               .andExpect(jsonPath("$[0].*", hasSize(15)))
+                .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF1120")))
+                .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
+                .andExpect(jsonPath("$[1].coursGroupe.cours.sigle", is("INF3173")));
     }
 
 
@@ -95,11 +95,11 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].*", hasSize(13)))
-                .andExpect(jsonPath("$[0].statut", is("SOUMISE")))
-                .andExpect(jsonPath("$[0].sigleCours", is("INF1120")))
-                .andExpect(jsonPath("$[1].statut", is("EN_TRAITEMENT")))
-                .andExpect(jsonPath("$[1].sigleCours", is("INF3173")));
+                .andExpect(jsonPath("$[0].*", hasSize(12)))
+                .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF1120")))
+                .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
+                .andExpect(jsonPath("$[1].coursGroupe.cours.sigle", is("INF3173")));
     }
 
     @WithMockUser(username="etudiant2")
@@ -109,9 +109,9 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].*", hasSize(13)))
-                .andExpect(jsonPath("$[0].statut", is("ENREGISTREE")))
-                .andExpect(jsonPath("$[0].sigleCours", is("INF2120")));
+                .andExpect(jsonPath("$[0].*", hasSize(12)))
+                .andExpect(jsonPath("$[0].statutCourant", is("ENREGISTREE")))
+                .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF2120")));
 
     }
 
@@ -130,9 +130,9 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(17)))
-                .andExpect(jsonPath("$.statut", is("SOUMISE")))
-                .andExpect(jsonPath("$.sigleCours", is("INF1120")));
+                .andExpect(jsonPath("$.*", hasSize(15)))
+                .andExpect(jsonPath("$.statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF1120")));
     }
 
     @WithMockUser(username="commis")
@@ -141,9 +141,9 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(17)))
-                .andExpect(jsonPath("$.statut", is("ENREGISTREE")))
-                .andExpect(jsonPath("$.sigleCours", is("INF2120")));
+                .andExpect(jsonPath("$.*", hasSize(15)))
+                .andExpect(jsonPath("$.statutCourant", is("ENREGISTREE")))
+                .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF2120")));
     }
 
     @WithMockUser(username="commis")
@@ -160,9 +160,9 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(13)))
-                .andExpect(jsonPath("$.statut", is("SOUMISE")))
-                .andExpect(jsonPath("$.sigleCours", is("INF1120")));
+                .andExpect(jsonPath("$.*", hasSize(12)))
+                .andExpect(jsonPath("$.statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF1120")));
     }
 
     @WithMockUser(username="etudiant1")
@@ -179,9 +179,9 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(13)))
-                .andExpect(jsonPath("$.statut", is("ENREGISTREE")))
-                .andExpect(jsonPath("$.sigleCours", is("INF2120")));
+                .andExpect(jsonPath("$.*", hasSize(12)))
+                .andExpect(jsonPath("$.statutCourant", is("ENREGISTREE")))
+                .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF2120")));
     }
 
     @WithMockUser(username="etudiant2")
@@ -198,9 +198,9 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(12)))
-                .andExpect(jsonPath("$.statut", is("SOUMISE")))
-                .andExpect(jsonPath("$.sigleCours", is("INF1120")));
+                .andExpect(jsonPath("$.*", hasSize(11)))
+                .andExpect(jsonPath("$.statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF1120")));
     }
 
     @WithMockUser(username="enseignant1")
@@ -287,7 +287,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(status().isNoContent());
         Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
         assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
-        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
     @Test
@@ -315,7 +315,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(status().isNotAcceptable());
         Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
         assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
-        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
     @Test
@@ -342,18 +342,19 @@ public class DemandeRepriseExamenControllerTest {
     }
 
     @Test
-    public void devraitRetournerStatutNotAcceptablePourRejeterDirecteurDejaAccepteeCommis()
+    public void devraitRetournerStatutNoContentPourRejeterDirecteurDejaAccepteeCommis()
             throws Exception {
         this.mockMvc.perform(patch("/api/demandes/2/rejeter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
-                .andExpect(status().isNotAcceptable());
+                .andExpect(status().isNoContent());
         Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
-        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_DIRECTEUR);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
     @Test
-    public void devraitRetournerStatutNoContentPourRejeterDirecteurDejaRejeteeCommis()
+    public void devraitRetournerStatutNotAcceptablePourRejeterDirecteurDejaRejeteeCommis()
             throws Exception {
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -363,9 +364,9 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(patch("/api/demandes/1/rejeter-directeur")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotAcceptable());
         Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
-        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_DIRECTEUR);
+        assertThat(demande.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
         assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
     }
 
@@ -404,7 +405,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerStatutNoTAcceptablePourRejeterDirecteurDejaRejeteeDirecteur()
             throws Exception {
-        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
@@ -461,7 +462,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerStatutNoTAcceptablePourAccepterEnseignantDejaRejeteeDirecteur()
             throws Exception {
-        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
@@ -483,7 +484,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerStatutNoTAcceptablePourRejterEnseignantDejaRejeteeDirecteur()
             throws Exception {
-        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
@@ -512,7 +513,7 @@ public class DemandeRepriseExamenControllerTest {
         TimeUnit.MILLISECONDS.sleep(SLEEP_TIME);
         Optional<DemandeRepriseExamen> demandeAvant = demandeRepository.findDemandeRepriseExamenById(1L);
         assertThat(demandeAvant.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
-        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+        assertThat(demandeAvant.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.REJETEE);
         this.mockMvc.perform(patch("/api/demandes/1/annuler-rejet-commis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
@@ -558,7 +559,7 @@ public class DemandeRepriseExamenControllerTest {
     @Test
     public void devraitRetournerStatutNoContentPourAnnulerRejetDirecteurDejaRejeteeDirecteur()
             throws Exception {
-        this.mockMvc.perform(patch("/api/demandes/1/rejeter-commis")
+        this.mockMvc.perform(patch("/api/demandes/1/accepter-commis")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{}"))
                 .andExpect(status().isNoContent());
@@ -576,7 +577,7 @@ public class DemandeRepriseExamenControllerTest {
                         .content("{}"))
                 .andExpect(status().isNoContent());
         Optional<DemandeRepriseExamen> demandeApres = demandeRepository.findDemandeRepriseExamenById(1L);
-        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.REJETEE_COMMIS);
+        assertThat(demandeApres.get().getDecisionCourante()).isNotNull().isEqualTo(TypeDecision.ACCEPTEE_COMMIS);
         assertThat(demandeApres.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
     }
 

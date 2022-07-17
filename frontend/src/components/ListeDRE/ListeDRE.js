@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, useContext} from 'react';
 import FiltreListeDRE from "../FiltreListeDRE/FiltreListeDRE";
-import TableListeDRE from "../tableListeDRE/TableListeDRE";
+import TableListeDRE from "../TableListeDRE/TableListeDRE";
 import AuthContext from "../../context/AuthProvider";
 import SectionFormulaire from "../SectionFormulaire/SectionFormulaire";
 import MiseEnPage from "../MiseEnPage/MiseEnPage";
@@ -39,12 +39,12 @@ export default function ListeDRE() {
     const [enChargement, setEnChargement] = useState(true);
     const [colonnes, setColonnes] = useState([
         ...[{name: 'Soumise le', prop: 'dateHeureSoumission', active: false}],
-        ...(type === "etudiant" ? [] : [{name: 'Étudiant', prop: 'nomEtudiant', active: false}]),
-        ...(type === "enseignant" ? [] : [{name: 'Enseignant', prop: 'nomEnseignant', active: false}]),
-        ...[{name: 'Cours', prop: 'sigleCours', active: false},
-            {name: 'Session', prop: 'session', active: false},
-            {name: 'Statut', prop: 'statut', active: false}],
-        ...(type === "personnel" ?[{name: 'Décision', prop: 'decision', active: false}] : [] )
+        ...(type === "etudiant" ? [] : [{name: 'Étudiant', prop: 'etudiant.prenom', active: false}]),
+        ...(type === "enseignant" ? [] : [{name: 'Enseignant', prop: 'enseignant.prenom', active: false}]),
+        ...[{name: 'Cours', prop: 'coursGroupe.cours.sigle', active: false},
+            {name: 'Session', prop: 'coursGroupe.session', active: false},
+            {name: 'Statut', prop: 'statutCourant', active: false}],
+        ...(type === "personnel" ?[{name: 'Décision', prop: 'decisionCourante', active: false}] : [] )
     ]);
 
     useEffect(() => {
@@ -73,19 +73,21 @@ export default function ListeDRE() {
 
     const filtrer = useCallback((filtre) => {
         let filtreItems = [...listeDRE].filter(item =>
-            filtre.statuts.includes(item.statut)
-            && item.sigleCours.toUpperCase().includes(filtre.cours.toUpperCase()));
+            filtre.statuts.includes(item.statutCourant)
+            && item.coursGroupe.cours.sigle.toUpperCase().includes(filtre.cours.toUpperCase()));
 
         if (type !== "etudiant") {
             filtreItems = filtreItems.filter(item =>
-                item.codePermanentEtudiant.toUpperCase().includes(filtre.etudiant.toUpperCase())
-                || item.nomEtudiant.toUpperCase().includes(filtre.etudiant.toUpperCase()));
+                item.etudiant.codePermanent.toUpperCase().includes(filtre.etudiant.toUpperCase())
+                || item.etudiant.nom.toUpperCase().includes(filtre.etudiant.toUpperCase())
+                || item.etudiant.prenom.toUpperCase().includes(filtre.etudiant.toUpperCase()));
         }
 
         if (type !== "enseignant") {
             filtreItems = filtreItems.filter(item =>
-                    item.nomEnseignant.toUpperCase().includes(filtre.enseignant.toUpperCase())
-                || item.matriculeEnseignant?.toUpperCase().includes(filtre.enseignant.toUpperCase()))
+                item.enseignant.matricule.toUpperCase().includes(filtre.enseignant.toUpperCase())
+                || item.enseignant.nom.toUpperCase().includes(filtre.enseignant.toUpperCase())
+                || item.enseignant.prenom.toUpperCase().includes(filtre.enseignant.toUpperCase()));
         }
         setListeDREFiltree(filtreItems);
     }, [listeDRE, type]);

@@ -1,5 +1,6 @@
 package ca.uqam.repriseexamen.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class Decision {
     private LocalDateTime dateHeure;
     private TypeDecision typeDecision;
     private String details;
+    @JsonIgnore
     @ManyToOne
     private DemandeRepriseExamen demandeRepriseExamen;
 }

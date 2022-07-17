@@ -37,7 +37,7 @@ public class EtudiantServiceImpl implements EtudiantService {
                 .findLigneHistoriqueEtudiantDTOByEtudiantId(id);
 
         return listeLigneHistorique.stream()
-                .filter(dre -> !dre.getStatut().equals(TypeStatut.ENREGISTREE))
+                .filter(dre -> !dre.getStatutCourant().equals(TypeStatut.ENREGISTREE))
                 .collect(Collectors.toList());
     }
 }

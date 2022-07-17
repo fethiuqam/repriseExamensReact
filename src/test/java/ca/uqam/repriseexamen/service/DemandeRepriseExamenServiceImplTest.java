@@ -56,9 +56,9 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Before
     public void setUp() {
-        when(ligneDREPersonnelEnregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDREPersonnelSoumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDREPersonnelAcceptee.getStatut()).thenReturn(TypeStatut.ACCEPTEE);
+        when(ligneDREPersonnelEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDREPersonnelSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDREPersonnelAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
 
         when(demandeRepository.findLigneDREPersonnelDTOBy())
                 .thenReturn(Arrays.asList(
@@ -66,10 +66,10 @@ public class DemandeRepriseExamenServiceImplTest {
                         ligneDREPersonnelSoumise,
                         ligneDREPersonnelAcceptee));
 
-        when(ligneDREEnseignantEnregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDREEnseignantAcceptee.getStatut()).thenReturn(TypeStatut.ACCEPTEE);
-        when(ligneDREEnseignantAcceptee.getDecision()).thenReturn(TypeDecision.ACCEPTEE_ENSEIGNANT);
-        when(ligneDREEnseignantSoumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDREEnseignantEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDREEnseignantAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
+        when(ligneDREEnseignantAcceptee.getDecisionCourante()).thenReturn(TypeDecision.ACCEPTEE_ENSEIGNANT);
+        when(ligneDREEnseignantSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
 
 
         when(demandeRepository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(1L))
@@ -78,9 +78,9 @@ public class DemandeRepriseExamenServiceImplTest {
         when(demandeRepository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(2L))
                 .thenReturn(List.of(ligneDREEnseignantSoumise));
 
-        when(ligneDREEtudiant1Enregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDREEtudiant1Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDREEtudiant2Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDREEtudiant1Enregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDREEtudiant1Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDREEtudiant2Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
 
         when(demandeRepository.findLigneDREEtudiantDTOByEtudiantId(1L))
                 .thenReturn(Arrays.asList(ligneDREEtudiant1Enregistree, ligneDREEtudiant1Soumise));

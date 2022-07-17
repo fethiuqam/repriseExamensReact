@@ -39,11 +39,11 @@ public class EtudiantControllerTest {
         this.mockMvc.perform(get("/api/etudiants/3/historique?type=personnel").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].statut", is("SOUMISE")))
-                .andExpect(jsonPath("$[0].coursGroupe", is("INF1120-030")))
+                .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF1120")))
                 .andExpect(jsonPath("$[0].motifAbsence", is("MEDICAL")))
-                .andExpect(jsonPath("$[1].statut", is("EN_TRAITEMENT")))
-                .andExpect(jsonPath("$[1].coursGroupe", is("INF3173-040")))
+                .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
+                .andExpect(jsonPath("$[1].coursGroupe.cours.sigle", is("INF3173")))
                 .andExpect(jsonPath("$[1].motifAbsence", is("AUTRE")));
     }
 
