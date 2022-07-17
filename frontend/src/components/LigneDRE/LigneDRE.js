@@ -6,10 +6,11 @@ import LoupeRoundedIcon from '@mui/icons-material/LoupeRounded';
 import AuthContext from "../../context/AuthProvider";
 import {format} from "date-fns";
 import locale from "date-fns/locale/fr-CA"
+import { Link } from "react-router-dom";
 
 const FORMAT_DATE = 'dd MMMM yyyy';
 
-export default function LigneDRE({item}) {
+function LigneDRE({item}) {
 
     const {type} = useContext(AuthContext);
 
@@ -19,25 +20,26 @@ export default function LigneDRE({item}) {
             {type === "etudiant"
                 ? null
                 : <TableCell>
-                    <ListItemText primary={item.nomEtudiant} secondary={item.codePermanentEtudiant}/>
+                    <ListItemText primary={`${item.etudiant.prenom} ${item.etudiant.nom}`}
+                                  secondary={item.etudiant.codePermanent}/>
                 </TableCell>
             }
             {type === "enseignant"
                 ? null
                 : <TableCell>
                     <ListItemText
-                        primary={item.nomEnseignant}
-                        secondary={type === 'personnel' && item.matriculeEnseignant}/>
+                        primary={`${item.enseignant.prenom} ${item.enseignant.nom}`}
+                        secondary={type === 'personnel' && item.enseignant.matricule}/>
                 </TableCell>
             }
-            <TableCell>{item.sigleCours} - {item.groupe}</TableCell>
-            <TableCell>{item.session}</TableCell>
+            <TableCell>{item.coursGroupe.cours.sigle} - {item.coursGroupe.groupe}</TableCell>
+            <TableCell>{item.coursGroupe.session}</TableCell>
             <TableCell>
-                <Chip label={item.statut}/>
+                <Chip label={item.statutCourant}/>
             </TableCell>
             {type === "personnel" &&
                 <TableCell>
-                    <Chip label={item.decision ? item.decision : "Aucune"}/>
+                    <Chip label={item.decisionCourante ? item.decisionCourante : "Aucune"}/>
                 </TableCell>
             }
             <TableCell>
@@ -45,14 +47,16 @@ export default function LigneDRE({item}) {
                     <Button
                         size="small"
                         variant="contained"
+                        component={Link}
                         endIcon={<LoupeRoundedIcon/>}
-                        href={`/demandes/${item.id}`}
+                        to={`/details/${item.id}`}
                     >
                         Consulter
                     </Button>
                 </Badge>
-
             </TableCell>
         </TableRow>
     );
 }
+
+export default LigneDRE;

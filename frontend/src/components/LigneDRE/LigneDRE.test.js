@@ -2,15 +2,18 @@ import {render, screen} from "@testing-library/react";
 import LigneDRE from "./LigneDRE";
 import {personnelItems} from "../../mocks/mockData";
 import AuthContext from "../../context/AuthProvider";
+import {BrowserRouter} from "react-router-dom";
 
 test("devrait retourner pour une ligne un element tr et 10 elements td", () => {
     render(
         <AuthContext.Provider value={{type: "personnel", id: null}}>
-            <table>
-                <tbody>
-                <LigneDRE item={personnelItems[0]}/>
-                </tbody>
-            </table>
+            <BrowserRouter>
+                <table>
+                    <tbody>
+                    <LigneDRE item={personnelItems[0]}/>
+                    </tbody>
+                </table>
+            </BrowserRouter>
         </AuthContext.Provider>
     );
     expect(screen.getAllByRole("row")).toHaveLength(1);
@@ -18,32 +21,17 @@ test("devrait retourner pour une ligne un element tr et 10 elements td", () => {
     expect(td).toHaveLength(8);
 });
 
-test("devrait contenir les valeurs des proprietes de l'objet item a chaque element td", () => {
-    render(
-        <AuthContext.Provider value={{type: "personnel", id: null}}>
-            <table>
-                <tbody>
-                <LigneDRE item={personnelItems[2]}/>
-                </tbody>
-            </table>
-        </AuthContext.Provider>
-    );
-
-    const {id, dateHeureSoumission, ...itemTest} = personnelItems[2];
-    for (const key in itemTest) {
-        expect(screen.getByText(itemTest[key], {exact: false, insensitive: true})).toBeInTheDocument();
-    }
-});
-
 test("devrait retourner pour une ligne un element tr et 8 elements td", () => {
     const {nomEnseignant, matriculeEnseignant, ...enseignantItem} = personnelItems[0];
     render(
         <AuthContext.Provider value={{type: "enseignant", id: 1}}>
-            <table>
-                <tbody>
-                <LigneDRE item={enseignantItem}/>
-                </tbody>
-            </table>
+            <BrowserRouter>
+                <table>
+                    <tbody>
+                    <LigneDRE item={enseignantItem}/>
+                    </tbody>
+                </table>
+            </BrowserRouter>
         </AuthContext.Provider>
     );
     expect(screen.getAllByRole("row")).toHaveLength(1);
@@ -54,11 +42,13 @@ test("devrait retourner pour une ligne un element tr et 7 elements td", () => {
     const {matriculeEnseignant, nomEtudiant, codePermanentEtudiant, ...etudiantItem} = personnelItems[0];
     render(
         <AuthContext.Provider value={{type: "etudiant", id: 1}}>
-            <table>
-                <tbody>
-                <LigneDRE item={etudiantItem}/>
-                </tbody>
-            </table>
+            <BrowserRouter>
+                <table>
+                    <tbody>
+                    <LigneDRE item={etudiantItem}/>
+                    </tbody>
+                </table>
+            </BrowserRouter>
         </AuthContext.Provider>
     );
     expect(screen.getAllByRole("row")).toHaveLength(1);

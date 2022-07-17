@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,7 +16,7 @@ import java.util.Collection;
 public class Personnel extends Utilisateur {
     private int employeId;
 
-    public Personnel(String nom, String prenom, String codeMs, String motDePasse, Collection<Role> roles, int employeId) {
+    public Personnel(String nom, String prenom, String codeMs, String motDePasse, List<Role> roles, int employeId) {
         super(nom, prenom, codeMs, motDePasse, roles);
         this.employeId = employeId;
     }

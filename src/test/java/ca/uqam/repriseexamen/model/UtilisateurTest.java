@@ -31,11 +31,11 @@ class UtilisateurTest {
 
     @Test
     void getPermissionsRetourneUnionDesPermissionsSiPlusieursRoles() {
-        Set<Permission> permissions = Set.of(Permission.AfficherDRE, Permission.JugerRecevabilite,
+        Set<Permission> permissions = Set.of(Permission.AfficherDRE, Permission.JugerCommis,
                 Permission.GererRoles);
 
         Role role1 = Role.builder().permissions(List.of(Permission.AfficherDRE, Permission.GererRoles)).build();
-        Role role2 = Role.builder().permissions(List.of(Permission.GererRoles, Permission.JugerRecevabilite)).build();
+        Role role2 = Role.builder().permissions(List.of(Permission.GererRoles, Permission.JugerCommis)).build();
         Personnel personnel = Personnel.builder().roles(List.of(role1, role2)).build();
 
         assertEquals(permissions, personnel.getPermissions());

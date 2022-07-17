@@ -41,9 +41,9 @@ public class EtudiantServiceImplTest {
 
     @Before
     public void setUp() {
-        when(ligneHistoriqueEtudiant1Enregistree.getStatut()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneHistoriqueEtudiant1Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneHistoriqueEtudiant2Soumise.getStatut()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneHistoriqueEtudiant1Enregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneHistoriqueEtudiant1Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneHistoriqueEtudiant2Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
 
         when(demandeRepository.findLigneHistoriqueEtudiantDTOByEtudiantId(1L))
                 .thenReturn(Arrays.asList(ligneHistoriqueEtudiant1Enregistree, ligneHistoriqueEtudiant1Soumise));

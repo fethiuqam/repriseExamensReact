@@ -36,7 +36,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
                 .findLigneDREPersonnelDTOBy();
 
         return listeLigneDRE.stream()
-                .filter(dre -> !dre.getStatut().equals(TypeStatut.ENREGISTREE))
+                .filter(dre -> !dre.getStatutCourant().equals(TypeStatut.ENREGISTREE))
                 .collect(Collectors.toList());
     }
 
@@ -46,10 +46,10 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
                 .findLigneDREEnseignantDTOByCoursGroupeEnseignantId(idEnseignant);
 
         return listeLigneDRE.stream()
-                .filter(dre -> dre.getDecision() != null
-                        && (dre.getDecision().equals(TypeDecision.ACCEPTEE_DIRECTEUR)
-                        || dre.getDecision().equals(TypeDecision.ACCEPTEE_ENSEIGNANT)
-                        || dre.getDecision().equals(TypeDecision.REJETEE_ENSEIGNANT))
+                .filter(dre -> dre.getDecisionCourante() != null
+                        && (dre.getDecisionCourante().equals(TypeDecision.ACCEPTEE_DIRECTEUR)
+                        || dre.getDecisionCourante().equals(TypeDecision.ACCEPTEE_ENSEIGNANT)
+                        || dre.getDecisionCourante().equals(TypeDecision.REJETEE_ENSEIGNANT))
                 )
                 .collect(Collectors.toList());
     }

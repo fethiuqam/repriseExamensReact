@@ -4,7 +4,9 @@ public enum Permission {
     ListerDRE,
     AfficherDRE,
     AfficherJustificatifs,
-    JugerRecevabilite,
+    JugerCommis,
+    JugerDirecteur,
+    JugerEnseignant,
     PlanifierDates,
     GererUsagers,
     GererRoles

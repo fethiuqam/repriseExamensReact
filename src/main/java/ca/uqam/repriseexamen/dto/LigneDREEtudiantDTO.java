@@ -8,9 +8,6 @@ import java.util.List;
 
 public interface LigneDREEtudiantDTO extends LigneDREDTO {
 
-    @Value("#{target.getCoursGroupe().getEnseignant().getPrenom() + ' ' + target.getCoursGroupe().getEnseignant().getNom()}")
-    String getNomEnseignant();
-
     @Value("#{target.getAbsenceDetails()}")
     String getAbsenceDetails();
 
