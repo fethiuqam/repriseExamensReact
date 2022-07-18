@@ -1,5 +1,5 @@
 import React from "react";
-import { Container , Paper } from '@material-ui/core';
+import { Container , Paper } from '@mui/material';
 import '../../styles/StyleEtudiant.css'
 
 function SectionFormulaire(props) {

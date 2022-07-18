@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import {Button, CircularProgress, Stack} from "@mui/material";
 import JugerDRE from "../JugerDRE/JugerDRE";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import {Container} from "@material-ui/core";
+import {Container} from "@mui/material";
 
 export default function DetailsDRE() {
 
