@@ -1,9 +1,6 @@
 package ca.uqam.repriseexamen.dto;
 
-import ca.uqam.repriseexamen.model.Decision;
-import ca.uqam.repriseexamen.model.Justification;
-import ca.uqam.repriseexamen.model.Statut;
-import ca.uqam.repriseexamen.model.TypeDecision;
+import ca.uqam.repriseexamen.model.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
@@ -24,5 +21,8 @@ public interface LigneDREPersonnelDTO extends LigneDREDTO {
 
     @Value("#{target.getListeDecision()}")
     List<Decision> getListeDecision();
+
+    @Value("#{target.getListeMessage()}")
+    List<Message> getListeMessage();
 
 }

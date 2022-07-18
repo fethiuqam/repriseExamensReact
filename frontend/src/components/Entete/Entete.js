@@ -76,11 +76,9 @@ const Entete = () => {
                                     aria-label="styled tabs example"
                                 >
                                     <StyledTab label="Consulter les demandes" to="/" component={Link}/>
+
                                     {type === "etudiant" &&
                                         <StyledTab label="Faire une demande" to="/faire-demande" component={Link}/>
-                                    }
-                                    {type === "personnel" &&
-                                        <StyledTab label="Planifier les reprises d'examen"/>
                                     }
                                 </StyledTabs>
                             </Box>

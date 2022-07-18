@@ -47,7 +47,7 @@ test('devrait enlever une ligne en deselectionnant un statut du filtre',
         expect( await screen.findAllByRole("row")).toHaveLength(4);
         const select = screen.getAllByRole("button")[0];
         fireEvent.mouseDown(select);
-        fireEvent.click(within(screen.getByRole('listbox')).getByText(/ACCEPTEE/i));
+        fireEvent.click(within(screen.getByRole('listbox')).getByText(/Acceptée/i));
         user.keyboard('{esc}');
         expect( screen.getAllByRole("row")).toHaveLength(3);
     })

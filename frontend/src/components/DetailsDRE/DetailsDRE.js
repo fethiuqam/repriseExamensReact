@@ -9,6 +9,7 @@ import {Button, CircularProgress, Stack} from "@mui/material";
 import JugerDRE from "../JugerDRE/JugerDRE";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import {Container} from "@mui/material";
+import MessagesDRE from "../MessagesDRE/MessagesDRE";
 
 export default function DetailsDRE() {
 
@@ -176,7 +177,15 @@ export default function DetailsDRE() {
                             }
                         </SectionFormulaire>
 
-
+                    }
+                    {dre.listeMessage
+                        ? <MessagesDRE
+                            messages={dre.listeMessage}
+                            typeUtilisateur={type}
+                            idDRE={idDRE}
+                            actualiserDRE={checherDRE}
+                        />
+                        : null
                     }
 
 

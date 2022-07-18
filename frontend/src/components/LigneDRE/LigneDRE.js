@@ -4,11 +4,9 @@ import TableRow from '@mui/material/TableRow';
 import {Badge, Button, Chip, ListItemText} from "@mui/material";
 import LoupeRoundedIcon from '@mui/icons-material/LoupeRounded';
 import AuthContext from "../../context/AuthProvider";
-import {format} from "date-fns";
-import locale from "date-fns/locale/fr-CA"
-import { Link } from "react-router-dom";
-
-const FORMAT_DATE = 'dd MMMM yyyy';
+import {Link} from "react-router-dom";
+import {afficherDate} from "../../utils/utils";
+import {DECISION_AFFICHAGE, SESSION_AFFICHAGE, STATUT_AFFICHAGE} from "../../utils/const";
 
 function LigneDRE({item}) {
 
@@ -16,7 +14,7 @@ function LigneDRE({item}) {
 
     return (
         <TableRow key={item.id}>
-            <TableCell>{format(new Date(item.dateHeureSoumission), FORMAT_DATE, {locale})}</TableCell>
+            <TableCell>{afficherDate(item.dateHeureSoumission)}</TableCell>
             {type === "etudiant"
                 ? null
                 : <TableCell>
@@ -33,17 +31,17 @@ function LigneDRE({item}) {
                 </TableCell>
             }
             <TableCell>{item.coursGroupe.cours.sigle} - {item.coursGroupe.groupe}</TableCell>
-            <TableCell>{item.coursGroupe.session}</TableCell>
+            <TableCell>{SESSION_AFFICHAGE[item.coursGroupe.session]}</TableCell>
             <TableCell>
-                <Chip label={item.statutCourant}/>
+                <Chip label={STATUT_AFFICHAGE[item.statutCourant]}/>
             </TableCell>
             {type === "personnel" &&
                 <TableCell>
-                    <Chip label={item.decisionCourante ? item.decisionCourante : "Aucune"}/>
+                    <Chip label={item.decisionCourante ? DECISION_AFFICHAGE[item.decisionCourante] : "Aucune"}/>
                 </TableCell>
             }
             <TableCell>
-                <Badge color="error" invisible={true} badgeContent={<h3>!</h3>} >
+                <Badge color="error" invisible={true} badgeContent={<h3>!</h3>}>
                     <Button
                         size="small"
                         variant="contained"

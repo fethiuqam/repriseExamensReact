@@ -11,6 +11,7 @@ import {
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Box from "@mui/material/Box";
 import AuthContext from "../../context/AuthProvider";
+import {STATUT_AFFICHAGE} from "../../utils/const";
 
 export default function FiltreListeDRE({statuts, filtrer}) {
 
@@ -43,7 +44,7 @@ export default function FiltreListeDRE({statuts, filtrer}) {
                     renderValue={(selected) => (
                         <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                             {selected.map((value) => (
-                                <Chip key={value} label={value}/>
+                                <Chip key={value} label={STATUT_AFFICHAGE[value]}/>
                             ))}
                         </Box>
                     )}
@@ -51,7 +52,7 @@ export default function FiltreListeDRE({statuts, filtrer}) {
                     {statuts.map((statut, index) => (
                         <MenuItem key={index} value={statut}>
                             <Checkbox checked={filtre.statuts.indexOf(statut) > -1}/>
-                            <ListItemText primary={statut}/>
+                            <ListItemText primary={STATUT_AFFICHAGE[statut]}/>
                         </MenuItem>
                     ))}
                 </Select>

@@ -28,7 +28,7 @@ function App() {
 
                     <Route exact path="/connexion" element={<Connexion/>} />
 
-                    <Route element={<AuthRequise typesPermis={['directeur', 'personnel', 'enseignant', 'etudiant']} />}>
+                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']} />}>
                         <Route exact path="/" element={<ListeDRE/>} />
                     </Route>
 
@@ -36,7 +36,7 @@ function App() {
                         <Route exact path="/faire-demande" element={<Formulaire/>} />
                     </Route>
 
-                    <Route element={<AuthRequise typesPermis={['directeur', 'personnel', 'enseignant', 'etudiant']} />}>
+                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']} />}>
                         <Route exact path="/details/:idDRE" element={<DetailsDRE/>} />
                     </Route>
 
