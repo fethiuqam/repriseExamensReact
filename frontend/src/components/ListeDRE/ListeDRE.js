@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, useContext} from 'react';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
 import FiltreListeDRE from "../FiltreListeDRE/FiltreListeDRE";
 import TableListeDRE from "../TableListeDRE/TableListeDRE";
 import AuthContext from "../../context/AuthProvider";
@@ -6,28 +6,8 @@ import SectionFormulaire from "../SectionFormulaire/SectionFormulaire";
 import MiseEnPage from "../MiseEnPage/MiseEnPage";
 import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
-
-const STATUTS = [
-    'ENREGISTREE',
-    'SOUMISE',
-    'EN_TRAITEMENT',
-    'ACCEPTEE',
-    'VALIDEE',
-    'REJETEE',
-    'ANNULEE',
-    'COMPLETEE'
-];
-
-const comparator = (prop, desc = true) => (a, b) => {
-    const order = desc ? -1 : 1;
-    if (a[prop] < b[prop]) {
-        return -1 * order;
-    }
-    if (a[prop] > b[prop]) {
-        return 1 * order;
-    }
-    return 0;
-};
+import {comparator} from "../../utils/utils";
+import {STATUTS} from "../../utils/const";
 
 export default function ListeDRE() {
 

@@ -1,15 +1,13 @@
 package ca.uqam.repriseexamen.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.time.LocalDateTime;
 
 @Entity
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
@@ -24,7 +22,7 @@ public class Message {
 
     private LocalDateTime dateHeure;
 
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     private DemandeRepriseExamen demandeRepriseExamen;
 }

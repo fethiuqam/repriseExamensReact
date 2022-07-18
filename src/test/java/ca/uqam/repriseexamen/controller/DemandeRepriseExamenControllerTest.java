@@ -1,11 +1,7 @@
 package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
-import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
-import ca.uqam.repriseexamen.model.MotifAbsence;
-import ca.uqam.repriseexamen.model.TypeDecision;
-import ca.uqam.repriseexamen.model.TypeMessage;
-import ca.uqam.repriseexamen.model.TypeStatut;
+import ca.uqam.repriseexamen.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -62,7 +58,7 @@ public class DemandeRepriseExamenControllerTest {
        this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-               .andExpect(jsonPath("$[0].*", hasSize(15)))
+               .andExpect(jsonPath("$[0].*", hasSize(16)))
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
                 .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF1120")))
                 .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
@@ -95,7 +91,7 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].*", hasSize(12)))
+                .andExpect(jsonPath("$[0].*", hasSize(13)))
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
                 .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF1120")))
                 .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
@@ -109,7 +105,7 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].*", hasSize(12)))
+                .andExpect(jsonPath("$[0].*", hasSize(13)))
                 .andExpect(jsonPath("$[0].statutCourant", is("ENREGISTREE")))
                 .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF2120")));
 
@@ -130,7 +126,7 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(15)))
+                .andExpect(jsonPath("$.*", hasSize(16)))
                 .andExpect(jsonPath("$.statutCourant", is("SOUMISE")))
                 .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF1120")));
     }
@@ -141,7 +137,7 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(15)))
+                .andExpect(jsonPath("$.*", hasSize(16)))
                 .andExpect(jsonPath("$.statutCourant", is("ENREGISTREE")))
                 .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF2120")));
     }
@@ -160,7 +156,7 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(12)))
+                .andExpect(jsonPath("$.*", hasSize(13)))
                 .andExpect(jsonPath("$.statutCourant", is("SOUMISE")))
                 .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF1120")));
     }
@@ -179,7 +175,7 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(12)))
+                .andExpect(jsonPath("$.*", hasSize(13)))
                 .andExpect(jsonPath("$.statutCourant", is("ENREGISTREE")))
                 .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF2120")));
     }
