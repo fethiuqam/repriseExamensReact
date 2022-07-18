@@ -2,12 +2,12 @@ import {useContext} from "react";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider";
 
-const AuthRequise = ({ rolesPermis }) => {
-    const { auth, role } = useContext(AuthContext)
+const AuthRequise = ({ typesPermis }) => {
+    const { auth, type } = useContext(AuthContext)
     const location = useLocation();
 
     return (
-        rolesPermis?.includes(role)
+        typesPermis?.includes(type)
             ? <Outlet />
             : auth
                 ? <Navigate to="/non-autorise" state={{ from: location }} replace />

@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("datatest")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class EtudiantControllerTest {
 
     private MockMvc mockMvc;
@@ -34,7 +36,7 @@ public class EtudiantControllerTest {
 
     @Test
     public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurDeuxAvecStatutOk() throws Exception {
-        this.mockMvc.perform(get("/api/etudiants/1/historique?role=commis").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/etudiants/3/historique?type=personnel").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
@@ -47,7 +49,7 @@ public class EtudiantControllerTest {
 
     @Test
     public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurUneAvecStatutOk() throws Exception {
-        this.mockMvc.perform(get("/api/etudiants/2/historique?role=commis").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/etudiants/4/historique?type=personnel").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].statutCourant", is("ENREGISTREE")))

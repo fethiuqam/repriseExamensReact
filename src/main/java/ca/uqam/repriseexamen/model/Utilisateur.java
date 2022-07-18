@@ -1,28 +1,40 @@
 package ca.uqam.repriseexamen.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
-import lombok.AllArgsConstructor;
+import javax.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.util.Collection;
 
 
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Inheritance
+public abstract class Utilisateur {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    protected String nom;
+    protected String prenom;
+    protected String email;
+    @Column(unique=true)
+    protected String codeMs;
+    protected String motDePasse;
+    @Column(name = "dtype", insertable = false, updatable = false)
+    protected String type;
 
-public class Utilisateur {
-    private @Id @GeneratedValue Long id;
-    private String nom;
-    private String prenom;
-    private String codeMs;
-    private String motDePasse;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "utilisateurs_roles",
+            joinColumns = @JoinColumn(name = "utilisateurs_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    protected Collection<Role> roles;
 
-    //@ElementCollection(targetClass=Role.class)
-    //private List<Role> roles;
+    public Utilisateur(String nom, String prenom, String codeMs, String motDePasse, Collection<Role> roles) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.codeMs = codeMs;
+        this.motDePasse = motDePasse;
+        this.roles = roles;
+    }
 
 }

@@ -1,137 +1,170 @@
-import React, {Component} from 'react';
-import {confirmAlert} from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
+import React, { useState, useEffect, useContext } from 'react';
+import AuthContext from "../context/AuthProvider";
+import SectionFormulaire from "./SectionFormulaire/SectionFormulaire";
+import MiseEnPage from "./MiseEnPage/MiseEnPage";
+import Box from "@mui/material/Box";
+import {CircularProgress, Link} from "@mui/material";
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-//import LigneDRE from "./ligneDRE/LigneDRE";
-import Button from "@mui/material/Button";
-//import {useNavigate} from "react-router-dom";
-//import {Link} from 'react-router-dom';
-//import {useParams} from "react-router";
-//import { createBrowserHistory } from "history";
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import { Typography } from "@mui/material";
+import { Button } from "@mui/material";
 
+const ListRoleComponent = () => {
 
-class ListRoleComponent extends Component {
+    const API_URL = `/api/roles`;
+    const { type, id, jwt } = useContext(AuthContext);
 
+    const [listeRoles, setlisteRoles] = useState([]);
+    const [fetchError, setFetchError] = useState(null);
+    const [enChargement, setEnChargement] = useState(true);
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            roles: []
-        }
-        this.remove = this.remove.bind(this);
-        this.ajouterRole = this.ajouterRole.bind(this);
-    }
-
-
-    componentDidMount() {
-        fetch('/roles')
-            .then(response => response.json())
-            .then(data => this.setState({roles: data}));
-    }
-
-    navigateToHome(id) {
-        const { history } = this.props;
-        history.push(`/voir-roles/${id}`);
-    }
-
-    async remove(id) {
-        await fetch(`/roles/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const reponse = await fetch(API_URL,
+                    {
+                        method: 'get',
+                        headers: { 'Authorization': 'Bearer ' + jwt }
+                    });
+                if (!reponse.ok) throw Error('Un problème est survenu lors du chargement des données.');
+                const listRoles = await reponse.json();
+                setlisteRoles(listRoles._embedded.roles);
+                setFetchError(null);
+            } catch (err) {
+                setFetchError(err.message);
+            } finally {
+                setEnChargement(false);
             }
-        }).then(() => {
-            let updatedRoles = [...this.state.roles].filter(i => i.id !== id);
-            this.setState({roles: updatedRoles});
-        });
+        }
+        fetchItems();
+    }, [type, id, jwt]);
+
+    const handleDeleteClick = (rolesId) => {
+        const supprimerRoles = async () => {
+            try {
+                const reponse = await fetch(API_URL + rolesId,
+                    {
+                        method: 'delete'
+                    });
+                if (!reponse.ok) throw Error('Un problème est survenu lors du suppressions des cours.');
+                setFetchError(null);
+            } catch (err) {
+                setFetchError(err.message);
+            } finally {
+                setEnChargement(false);
+            }
+        }
+        const newRoles = [...listeRoles];
+        const index = listeRoles.findIndex((roles) => roles.id === rolesId);
+        newRoles.splice(index, 1);
+        setListeRoles(newRoles);
+        supprimerRoles();
     }
 
+    return (
+        <MiseEnPage>
+            <SectionFormulaire
+                title={'LISTE ROLES'}>
+                <Button
+                    size="small"
+                    variant="contained"
+                >
+                    Ajouter
+                </Button>
+                {enChargement
+                    ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <CircularProgress />
+                    </Box>
+                    : fetchError
+                        ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <h3 style={{ color: 'red' }}>{fetchError}</h3>
+                        </Box>
+                        : Object.keys(listeRoles).length > 0
+                            ?
+                            //<div className="sectionFormulaireDivContenu">
+                            <Table className="tableDRE-style" style={{ marginTop: '10px', marginBottom: 'auto' }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            <Typography noWrap sx={{fontWeight: "bold"}}>
+                                                ID
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography noWrap sx={{fontWeight: "bold"}}>
+                                                NOM
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography noWrap sx={{fontWeight: "bold"}}>
+                                                Options
+                                            </Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {listeRoles.map((roles) => (
+                                        <TableRow key={roles.id} sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+                                            <TableCell>{roles.id}</TableCell>
+                                            <TableCell>{roles.nom}</TableCell>
+                                            <TableCell>
+                                                <Box display="flex" justify='space-between'>
+                                                    <Button
+                                                        size="small"
+                                                        variant="contained"
+                                                    >
+                                                        Modifier
+                                                    </Button>
 
-    ajouterRole() {
-        this.props.history.push('/roles/new');
-    }
+                                                    <Button
+                                                        style={{ backgroundColor: "red", }}
+                                                        size="small"
+                                                        variant="contained"
+                                                        onClick={() => handleDeleteClick(roles.id)}
+                                                    >
+                                                        Supprimer
+                                                    </Button>
 
-    modifierRole(id) {
-        this.props.history.push(`/roles/${id}`);
-    }
+                                                    <Button
+                                                        size="small"
+                                                        variant="contained"
+                                                    >
+                                                        Voir
+                                                    </Button>
 
 
-    voirRole(id) {
-        this.props.history.push(`/voir-roles/${id}`);
-    }
+                                                    {/*<Icon*/}
+                                                    {/*    name = "delete"*/}
+                                                    {/*    tooltip = "Delete"*/}
+                                                    {/*    theme = "light"*/}
+                                                    {/*    size = "tiny"*/}
+                                                    {/*    onClick={() => handleDeleteClick(roles.id)}*/}
+                                                    {/*/>*/}
+                                                    {/*<Grid item xs={8}>*/}
+                                                    {/*    <DeleteIcon onClick={() => handleDeleteClick(roles.id)}/>*/}
+                                                    {/*</Grid>*/}
+
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
 
 
-    cancel() {
-        this.props.history.push('/roles');
-    }
+                            //</div>
 
-    submit = (id) => {
-        confirmAlert({
-            title: 'Confirmation de suppression',
-            message: 'Êtes-vous sur de vouloir supprimer ce rôle ?',
-            buttons: [
-                {
-                    label: 'Yes',
-                    onClick: () => this.remove(id)
-                },
-                {
-                    label: 'No',
-                    onClick: () => this.cancel()
+                            : <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                <h3>Aucune demande à afficher.</h3>
+                            </Box>
                 }
-            ]
-        });
-    };
-
-
-    render() {
-        const {history } = this.props;
-        return (
-            <TableContainer component={Paper}>
-                <Button variant="outlined" color="primary" onClick={this.ajouterRole}> Ajouter un Role</Button>
-                <Table sx={{minWidth: 650}} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Nom </TableCell>
-                            <TableCell align="right">Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.state.roles.map(role =>
-                            <TableRow
-                                key={role.id}
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {role.nom}
-                                </TableCell>
-                                <TableCell align="right">
-                                    <Button variant="contained" color="primary"
-                                            onClick={() => this.modifierRole(role.id)}>
-                                        MODIFIER
-                                    </Button>
-                                    <Button variant="contained" color="error" onClick={() => this.submit(role.id)}>
-                                        SUPPRIMER
-                                    </Button>
-                                    <Button variant="outlined" onClick={() => this.voirRole(role.id)} >
-                                        VOIR
-                                        {/*<Link to="voir/1">VOIR</Link>*/}
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        )
-    }
+            </SectionFormulaire>
+        </MiseEnPage>
+    );
 }
 
-export default ListRoleComponent
+export default ListRoleComponent;
+

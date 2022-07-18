@@ -1,59 +1,58 @@
-import React, {Component} from 'react'
-import {Button} from "@material-ui/core";
-//import {useParams} from "react-router";
+import React, {Component, useEffect, useState} from 'react'
+import { useParams} from "react-router-dom";
 
-class VoirUnRoleComponent extends Component {
 
-    constructor(props) {
-        super(props)
+const VoirUnRoleComponent = props => {
+    const {id} = useParams();
+    //let navigate = useNavigate();
 
-        this.state = {
-            id : this.props.match.params.id,
-            nom: '',
-            permissions: []
+    const [nom, setNom] = useState('');
+    const [permissions, setPermissions] = useState([]);
+    const [fetchError, setFetchError] = useState(null);
+
+    useEffect(() => {
+        const fetchItems = async () => {
+            try {
+                const reponse = await fetch(`/roles/${id}`,
+                    {
+                        method: 'get'
+                    });
+                const rolesList = await reponse.json();
+                setNom(rolesList.nom);
+                setPermissions(rolesList.permissions);
+            } catch (err) {
+                setFetchError(err.message);
+            }
         }
+        fetchItems();
+    },[]);
 
-    }
 
-    async componentDidMount() {
-        fetch(`/roles/${this.state.id}`)
-            .then(response => response.json())
-            .then(data => this.setState({nom: data.nom, permissions: data.permissions}));
-    }
+    return (
+        <div className="container center2 mt-5">
 
-    cancel() {
-        this.props.history.push('/roles');
-    }
+            <div className="row">
 
-    render() {
-        return (
-            <div>
-                <h2 className="text-center">Roles num : {this.state.id}</h2>
-                <br></br>
-                <div className="row">
-                    <h3>{this.state.nom}</h3>
-                    <table className="table table-striped table-bordered">
-
-                        <thead>
-                        <tr>
-                            <th> Permissiosn</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            {this.state.permissions.map(perm =>
-                                <td>{perm}</td>
+                <div className="card col-md-6 offset-md-3 offset-md-3 center3">
+                    <div className="card-body">
+                        <form>
+                            <div className="form-group">
+                                <h2> {nom} </h2>
+                            </div>
+                            <div className="form-group">
+                                <label> Permissions: </label>
+                            </div>
+                            {permissions.map(perm =>
+                                <FormGroup>
+                                    {perm}
+                                </FormGroup>
                             )}
-                        </tr>
-                        </tbody>
-                    </table>
-                    <Button color="secondary" onClick={this.cancel.bind(this)}>Retour</Button>
-
+                        </form>
+                    </div>
                 </div>
-
             </div>
-        )
-    }
-}
+        </div>
 
+    );
+}
 export default VoirUnRoleComponent

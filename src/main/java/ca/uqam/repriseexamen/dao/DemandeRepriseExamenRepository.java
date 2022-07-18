@@ -12,7 +12,7 @@ import java.util.List;
 @RepositoryRestResource(collectionResourceRel = "demandes", path = "demandes")
 public interface DemandeRepriseExamenRepository extends JpaRepository<DemandeRepriseExamen, Long> {
 
-    List<LigneDRECommisDTO> findLigneDRECommisDTOBy();
+    List<LigneDREPersonnelDTO> findLigneDREPersonnelDTOBy();
     List<LigneDREEnseignantDTO> findLigneDREEnseignantDTOBy();
     List<LigneDREEtudiantDTO> findLigneDREEtudiantDTOBy();
     List<LigneHistoriqueEtudiantDTO> findLigneHistoriqueEtudiantDTOBy();

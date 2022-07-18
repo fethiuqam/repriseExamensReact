@@ -14,7 +14,7 @@ afterAll(() => mockServer.close())
 
 test('devrait rendre une barre de progression avant chargement', () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <ListeDRE/>
         </AuthContext.Provider>
     );
@@ -24,7 +24,7 @@ test('devrait rendre une barre de progression avant chargement', () => {
 
 test('devrait rendre 4 lignes du tableau apres chargement', async () => {
     const {unmount} = render(
-        <AuthContext.Provider value={{role: "commis", id: null}}>
+        <AuthContext.Provider value={{type: "personnel", id: null}}>
             <ListeDRE/>
         </AuthContext.Provider>
     );
@@ -35,7 +35,7 @@ test('devrait rendre 4 lignes du tableau apres chargement', async () => {
 test('devrait enlever une ligne en deselectionnant un statut du filtre',
     async () => {
         const {unmount} = render(
-            <AuthContext.Provider value={{role: "commis", id: null}}>
+            <AuthContext.Provider value={{type: "personnel", id: null}}>
                 <ListeDRE/>
             </AuthContext.Provider>
         );
@@ -51,7 +51,7 @@ test('devrait enlever une ligne en deselectionnant un statut du filtre',
 test('devrait enlever les lignes ne correspondant pas au filtre etudiant',
     async () => {
         const {unmount} = render(
-            <AuthContext.Provider value={{role: "commis", id: null}}>
+            <AuthContext.Provider value={{type: "personnel", id: null}}>
                 <ListeDRE/>
             </AuthContext.Provider>
         );
@@ -65,7 +65,7 @@ test('devrait enlever les lignes ne correspondant pas au filtre etudiant',
 test('devrait enlever les lignes ne correspondant pas au filtre enseignant',
     async () => {
         const {unmount} = render(
-            <AuthContext.Provider value={{role: "commis", id: null}}>
+            <AuthContext.Provider value={{type: "personnel", id: null}}>
                 <ListeDRE/>
             </AuthContext.Provider>
         );
@@ -79,7 +79,7 @@ test('devrait enlever les lignes ne correspondant pas au filtre enseignant',
 test('devrait enlever les lignes ne correspondant pas au filtre cours',
     async () => {
         const {unmount} = render(
-            <AuthContext.Provider value={{role: "commis", id: null}}>
+            <AuthContext.Provider value={{type: "personnel", id: null}}>
                 <ListeDRE/>
             </AuthContext.Provider>
         );

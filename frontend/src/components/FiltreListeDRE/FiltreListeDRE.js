@@ -14,7 +14,7 @@ import AuthContext from "../../context/AuthProvider";
 
 export default function FiltreListeDRE({statuts, filtrer}) {
 
-    const {role} = useContext(AuthContext);
+    const {type} = useContext(AuthContext);
 
     const filtreInitial = {
         statuts: statuts,
@@ -58,7 +58,7 @@ export default function FiltreListeDRE({statuts, filtrer}) {
             </FormControl>
             <Stack spacing={2} justifyContent="space-between">
                 <Stack direction="row" spacing={2}>
-                    {role === "etudiant"
+                    {type === "etudiant"
                         ? null
                         :
                         <TextField
@@ -68,7 +68,7 @@ export default function FiltreListeDRE({statuts, filtrer}) {
                             value={filtre.etudiant}
                         />
                     }
-                    {role === "enseignant"
+                    {type === "enseignant"
                         ? null
                         :
                         <TextField

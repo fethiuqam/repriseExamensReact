@@ -1,7 +1,7 @@
 package ca.uqam.repriseexamen.service;
 
 import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
-import ca.uqam.repriseexamen.dto.LigneDRECommisDTO;
+import ca.uqam.repriseexamen.dto.LigneDREPersonnelDTO;
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
@@ -31,11 +30,11 @@ public class DemandeRepriseExamenServiceImplTest {
     @MockBean
     private DemandeRepriseExamenRepository repository;
     @Mock
-    private LigneDRECommisDTO ligneDRECommisEnregistree;
+    private LigneDREPersonnelDTO ligneDREPersonnelEnregistree;
     @Mock
-    private LigneDRECommisDTO ligneDRECommisSoumise;
+    private LigneDREPersonnelDTO ligneDREPersonnelSoumise;
     @Mock
-    private LigneDRECommisDTO ligneDRECommisAcceptee;
+    private LigneDREPersonnelDTO ligneDREPersonnelAcceptee;
     @Mock
     private LigneDREEnseignantDTO ligneDREEnseignantEnregistree;
     @Mock
@@ -59,15 +58,15 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Before
     public void setUp() {
-        when(ligneDRECommisEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
-        when(ligneDRECommisSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-        when(ligneDRECommisAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
+        when(ligneDREPersonnelEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
+        when(ligneDREPersonnelSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneDREPersonnelAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
 
-        when(repository.findLigneDRECommisDTOBy())
+        when(repository.findLigneDREPersonnelDTOBy())
                 .thenReturn(Arrays.asList(
-                        ligneDRECommisEnregistree,
-                        ligneDRECommisSoumise,
-                        ligneDRECommisAcceptee));
+                        ligneDREPersonnelEnregistree,
+                        ligneDREPersonnelSoumise,
+                        ligneDREPersonnelAcceptee));
 
         when(ligneDREEnseignantEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
         when(ligneDREEnseignantEnregistree.getEnseignantId()).thenReturn(1L);
@@ -113,8 +112,8 @@ public class DemandeRepriseExamenServiceImplTest {
     }
 
     @Test
-    public void devraitRetournerListeDRECommisDTODeLongueurDeux() {
-        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenCommis();
+    public void devraitRetournerListeDREPersonnelDTODeLongueurDeux() {
+        List<LigneDREDTO> result = service.getAllDemandeRepriseExamenPersonnel();
         assertThat(result)
                 .isNotNull()
                 .isNotEmpty()

@@ -1,20 +1,24 @@
 package ca.uqam.repriseexamen.model;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Cours {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String sigle;
     private String nom;
-    @OneToMany (mappedBy = "cours")
+    @OneToMany(mappedBy = "cours")
+    @ToString.Exclude
     private List<CoursGroupe> coursGroupeList;
 
 }

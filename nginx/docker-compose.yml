@@ -9,7 +9,10 @@ services:
       - prod_app_network
     ports:
       - 80:80
+      - 443:443
     restart: unless-stopped
+    volumes:
+      - /etc/letsencrypt/:/etc/nginx/ssl/
 
 networks:
   test_app_network:

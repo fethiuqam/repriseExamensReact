@@ -1,14 +1,14 @@
 import { rest } from 'msw'
 import { setupServer } from 'msw/node'
-import { commisItems} from "./mockData";
+import { personnelItems} from "./mockData";
 
 const handlers = [
   rest.get('/api/demandes', (req, res, ctx) => {
-    const role = req.url.searchParams.get('role');
-    if (role === 'commis')
+    const type = req.url.searchParams.get('type');
+    if (type === 'personnel')
       return res(
         ctx.status(200),
-        ctx.json(commisItems)
+        ctx.json(personnelItems)
       )
     else
       return res(

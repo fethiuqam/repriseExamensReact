@@ -1,7 +1,6 @@
 package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dao.RoleRepository;
-//import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.model.Role;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
