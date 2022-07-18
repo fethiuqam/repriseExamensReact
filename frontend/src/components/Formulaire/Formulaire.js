@@ -1,6 +1,6 @@
 import '../../styles/StyleEtudiant.css'
 import SectionFormulaire from "../SectionFormulaire/SectionFormulaire"
-import { TextField, InputLabel, Select, Container } from "@material-ui/core/";
+import { TextField, InputLabel, Select } from "@material-ui/core/";
 import { Grid, Typography, MenuItem } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import Button from '../BoutonFormulaire/BoutonFormulaire';
@@ -171,7 +171,7 @@ const Formulaire = () => {
                             return (
                                 <Grid container spacing={2} className="affichageInfosTable">
                                     <Grid item xs={3}>
-                                        <Grid container>
+                                        <Grid container className="sectionFormulaireDivContenuRangee">
                                             <Grid item xs={4}>
                                                 <InputLabel id="etiquette-signelCours">Sigle du cours</InputLabel>
                                             </Grid>
@@ -200,11 +200,11 @@ const Formulaire = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={2}>
-                                        <Grid container>
-                                            <Grid item xs={4}>
+                                        <Grid container className="sectionFormulaireDivContenuRangee">
+                                            <Grid item xs={6}>
                                                 <InputLabel id="etiquette-groupeCours">Groupe</InputLabel>
                                             </Grid>
-                                            <Grid item xs={8}>
+                                            <Grid item xs={6}>
                                                 {etudiant.coursGroupes.filter(e => e.id === getValues("sigleCours")).map(coursFiltre => {
                                                     return (
                                                         <TextField
@@ -231,11 +231,11 @@ const Formulaire = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Grid container>
-                                            <Grid item xs={4}>
+                                        <Grid container className="sectionFormulaireDivContenuRangee">
+                                            <Grid item xs={6}>
                                                 <InputLabel id="etiquette-enseignant">Enseignant</InputLabel>
                                             </Grid>
-                                            <Grid item xs={8}>
+                                            <Grid item xs={6}>
                                                 {etudiant.coursGroupes.filter(e => e.id === getValues("sigleCours")).map(coursFiltre => {
                                                     return (
                                                         <TextField
@@ -262,11 +262,11 @@ const Formulaire = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={3}>
-                                        <Grid container>
-                                            <Grid item xs={4}>
+                                        <Grid container className="sectionFormulaireDivContenuRangee">
+                                            <Grid item xs={6}>
                                                 <InputLabel id="etiquette-descriptionExamen">Type d'examen</InputLabel>
                                             </Grid>
-                                            <Grid item xs={8}>
+                                            <Grid item xs={6}>
                                                 <Select
                                                     defaultValue=""
                                                     className="inputStandard"
@@ -291,7 +291,7 @@ const Formulaire = () => {
                         name="dateDebutEtFinAbsence"
                         render={({ field: { onChange } }) => {
                             return (
-                                <Grid container spacing={2} className="affichageInfosTable">
+                                <Grid container spacing={2} className="affichageInfosTable sectionFormulaireDivContenuRangee">
                                     <Grid item xs={3}>
                                         <TextField
                                             id="dateDebut"
@@ -345,29 +345,33 @@ const Formulaire = () => {
                     <br />
                 </SectionFormulaire>
                 <SectionFormulaire title={'JUSTIFICATION DE L\'ABSENCE'}>
-                    <div className="sectionFormulaireDivContenuRangee">
-                        <div>
-                            <InputLabel id="etiquette-motif-absence">Motif</InputLabel>
-                            <Select
-                                data-testid="motifTestId"
-                                defaultValue=""
-                                className="inputStandard"
-                                labelId="etiquette-motif-absence"
-                                id="menu-motif-absence"
-                                name="motifAbsence"
-                                label="Motif"
-                                {...register("motifAbsence", { required: true })}
-                                error={Boolean(errors.motifAbsence)}
-                            >
-                                <MenuItem value={'MEDICAL'}>Hospitalisation</MenuItem>
-                                <MenuItem value={'DECES'}>Décès</MenuItem>
-                                <MenuItem value={'ACCIDENT'}>Accident</MenuItem>
-                                <MenuItem value={'JUDICIAIRE'}>Convocation à un tribunal</MenuItem>
-                                <MenuItem value={'RELIGIEUX'}>Motif religieux</MenuItem>
-                                <MenuItem value={'AUTRE'}>Autre</MenuItem>
-                            </Select>
+                    <div>
+                        <div className="sectionFormulaireDivContenuRangee">
+                            <div style={{marginRight: 10}}>
+                                <InputLabel id="etiquette-motif-absence">Motif</InputLabel>
+                            </div>
+                            <div>
+                                <Select
+                                    data-testid="motifTestId"
+                                    defaultValue=""
+                                    className="inputStandard"
+                                    labelId="etiquette-motif-absence"
+                                    id="menu-motif-absence"
+                                    name="motifAbsence"
+                                    label="Motif"
+                                    {...register("motifAbsence", { required: true })}
+                                    error={Boolean(errors.motifAbsence)}
+                                >
+                                    <MenuItem value={'MEDICAL'}>Hospitalisation</MenuItem>
+                                    <MenuItem value={'DECES'}>Décès</MenuItem>
+                                    <MenuItem value={'ACCIDENT'}>Accident</MenuItem>
+                                    <MenuItem value={'JUDICIAIRE'}>Convocation à un tribunal</MenuItem>
+                                    <MenuItem value={'RELIGIEUX'}>Motif religieux</MenuItem>
+                                    <MenuItem value={'AUTRE'}>Autre</MenuItem>
+                                </Select>
+                            </div>
                         </div>
-                        <div>
+                        <div className="sectionFormulaireDivContenuRangee">
                             <TextField
                                 id="explications-input"
                                 name="absenceDetails"
@@ -381,11 +385,11 @@ const Formulaire = () => {
                                 error={Boolean(errors.absenceDetails)}
                             />
                         </div>
-                        <div className="textColor">
+                        <div className="textColor sectionFormulaireDivContenuRangee">
                             <Typography>Justificatifs</Typography>
                         </div>
-                        <div>Types de fichiers acceptés : JPEG, PNG et PDF </div>
-                        <div>
+                        <div className="sectionFormulaireDivContenuRangee">Types de fichiers acceptés : JPEG, PNG et PDF </div>
+                        <div className="sectionFormulaireDivContenuRangee">
                             <FileUploader
                                 multiple={true}
                                 handleChange={handleChangeFile}
@@ -439,7 +443,7 @@ const Formulaire = () => {
                         </div>
                     </div>
                 </SectionFormulaire>
-                <Container>
+                <div>
                     <div className="boutonsFormulaire">
                         <Button
                             variant="outlined"
@@ -459,7 +463,7 @@ const Formulaire = () => {
                             Soumettre
                         </Button>
                     </div>
-                </Container>
+                </div>
             </form>
         </MiseEnPage >
     );
