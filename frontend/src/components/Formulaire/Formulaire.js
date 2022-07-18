@@ -1,6 +1,6 @@
 import '../../styles/StyleEtudiant.css'
 import SectionFormulaire from "../SectionFormulaire/SectionFormulaire"
-import { TextField, InputLabel, Select } from "@material-ui/core/";
+import { TextField, InputLabel, Select } from "@mui/material";
 import { Grid, Typography, MenuItem } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import Button from '../BoutonFormulaire/BoutonFormulaire';
