@@ -1,14 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Formulaire affiché correctement 1`] = `
-<div
-  className="miseEnPage"
->
+<div>
   <div
     className="corpsPage"
   >
     <div
-      className="MuiContainer-root MuiContainer-maxWidthLg"
+      className="divTitre"
     >
       <h4
         className="MuiTypography-root titre MuiTypography-h4"
@@ -89,7 +87,7 @@ exports[`Formulaire affiché correctement 1`] = `
                 className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
               >
                 <div
-                  className="MuiGrid-root MuiGrid-container css-11lq3yg-MuiGrid-root"
+                  className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
                     className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 css-gj1fbr-MuiGrid-root"
@@ -161,10 +159,10 @@ exports[`Formulaire affiché correctement 1`] = `
                 className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
               >
                 <div
-                  className="MuiGrid-root MuiGrid-container css-11lq3yg-MuiGrid-root"
+                  className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 css-gj1fbr-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
                   >
                     <label
                       className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated"
@@ -174,7 +172,7 @@ exports[`Formulaire affiché correctement 1`] = `
                     </label>
                   </div>
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vok43g-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
                   />
                 </div>
               </div>
@@ -182,10 +180,10 @@ exports[`Formulaire affiché correctement 1`] = `
                 className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
               >
                 <div
-                  className="MuiGrid-root MuiGrid-container css-11lq3yg-MuiGrid-root"
+                  className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 css-gj1fbr-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
                   >
                     <label
                       className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated"
@@ -195,7 +193,7 @@ exports[`Formulaire affiché correctement 1`] = `
                     </label>
                   </div>
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vok43g-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
                   />
                 </div>
               </div>
@@ -203,10 +201,10 @@ exports[`Formulaire affiché correctement 1`] = `
                 className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
               >
                 <div
-                  className="MuiGrid-root MuiGrid-container css-11lq3yg-MuiGrid-root"
+                  className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 css-gj1fbr-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
                   >
                     <label
                       className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated"
@@ -216,7 +214,7 @@ exports[`Formulaire affiché correctement 1`] = `
                     </label>
                   </div>
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vok43g-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
                   >
                     <div
                       className="MuiInputBase-root MuiInput-root MuiInput-underline inputStandard"
@@ -272,7 +270,7 @@ exports[`Formulaire affiché correctement 1`] = `
               </div>
             </div>
             <div
-              className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 affichageInfosTable css-mhc70k-MuiGrid-root"
+              className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 affichageInfosTable sectionFormulaireDivContenuRangee css-mhc70k-MuiGrid-root"
             >
               <div
                 className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
@@ -370,63 +368,75 @@ exports[`Formulaire affiché correctement 1`] = `
           <div
             className="sectionFormulaireDivContenu"
           >
-            <div
-              className="sectionFormulaireDivContenuRangee"
-            >
-              <div>
-                <label
-                  className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated"
-                  id="etiquette-motif-absence"
-                >
-                  Motif
-                </label>
+            <div>
+              <div
+                className="sectionFormulaireDivContenuRangee"
+              >
                 <div
-                  className="MuiInputBase-root MuiInput-root MuiInput-underline inputStandard"
-                  data-testid="motifTestId"
-                  onClick={[Function]}
+                  style={
+                    Object {
+                      "marginRight": 10,
+                    }
+                  }
                 >
+                  <label
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated"
+                    id="etiquette-motif-absence"
+                  >
+                    Motif
+                  </label>
+                </div>
+                <div>
                   <div
-                    aria-haspopup="listbox"
-                    aria-labelledby="etiquette-motif-absence menu-motif-absence"
-                    className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
-                    id="menu-motif-absence"
-                    onBlur={[Function]}
-                    onFocus={[Function]}
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    role="button"
-                    tabIndex={0}
+                    className="MuiInputBase-root MuiInput-root MuiInput-underline inputStandard"
+                    data-testid="motifTestId"
+                    onClick={[Function]}
                   >
-                    <span
-                      dangerouslySetInnerHTML={
-                        Object {
-                          "__html": "&#8203;",
+                    <div
+                      aria-haspopup="listbox"
+                      aria-labelledby="etiquette-motif-absence menu-motif-absence"
+                      className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+                      id="menu-motif-absence"
+                      onBlur={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      <span
+                        dangerouslySetInnerHTML={
+                          Object {
+                            "__html": "&#8203;",
+                          }
                         }
-                      }
+                      />
+                    </div>
+                    <input
+                      aria-hidden={true}
+                      className="MuiSelect-nativeInput"
+                      name="motifAbsence"
+                      onAnimationStart={[Function]}
+                      onChange={[Function]}
+                      tabIndex={-1}
+                      value=""
                     />
+                    <svg
+                      aria-hidden={true}
+                      className="MuiSvgIcon-root MuiSelect-icon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M7 10l5 5 5-5z"
+                      />
+                    </svg>
                   </div>
-                  <input
-                    aria-hidden={true}
-                    className="MuiSelect-nativeInput"
-                    name="motifAbsence"
-                    onAnimationStart={[Function]}
-                    onChange={[Function]}
-                    tabIndex={-1}
-                    value=""
-                  />
-                  <svg
-                    aria-hidden={true}
-                    className="MuiSvgIcon-root MuiSelect-icon"
-                    focusable="false"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M7 10l5 5 5-5z"
-                    />
-                  </svg>
                 </div>
               </div>
-              <div>
+              <div
+                className="sectionFormulaireDivContenuRangee"
+              >
                 <div
                   className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
                 >
@@ -495,7 +505,7 @@ exports[`Formulaire affiché correctement 1`] = `
                 </div>
               </div>
               <div
-                className="textColor"
+                className="textColor sectionFormulaireDivContenuRangee"
               >
                 <p
                   className="MuiTypography-root MuiTypography-body1 css-ahj2mt-MuiTypography-root"
@@ -503,10 +513,14 @@ exports[`Formulaire affiché correctement 1`] = `
                   Justificatifs
                 </p>
               </div>
-              <div>
+              <div
+                className="sectionFormulaireDivContenuRangee"
+              >
                 Types de fichiers acceptés : JPEG, PNG et PDF 
               </div>
-              <div>
+              <div
+                className="sectionFormulaireDivContenuRangee"
+              >
                 <label
                   className="sc-bczRLJ bMBuBa  "
                   htmlFor="file"
@@ -542,9 +556,7 @@ exports[`Formulaire affiché correctement 1`] = `
           </div>
         </div>
       </div>
-      <div
-        className="MuiContainer-root MuiContainer-maxWidthLg"
-      >
+      <div>
         <div
           className="boutonsFormulaire"
         >
