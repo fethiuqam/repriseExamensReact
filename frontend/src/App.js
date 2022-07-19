@@ -9,11 +9,10 @@ import Connexion from "./components/Connexion/Connexion";
 import {Routes} from "react-router";
 import AuthRequise from "./components/AuthRequise/AuthRequise";
 import NonAutorise from "./components/NonAutorise/NonAutorise";
-//import NonTrouve from "./components/NonTrouve/NonTrouve";
 import Formulaire from "./components/Formulaire/Formulaire";
-//import CreerRoleComponent from "./components/CreerRoleComponent";
-//import VoirUnRoleComponent from "./components/VoirUnRoleComponent";
-import ListRoleComponent from "./components/ListRoleComponent";
+import ListRole from "./components/Role/ListerRole";
+import VoirUnRole from "./components/Role/VoirUnRole";
+import CreerModifierRole from "./components/Role/CreerModifierRole";
 
 function App() {
 
@@ -35,19 +34,12 @@ function App() {
                     </Route>
 
 
-                    <Route exact path="/roles" element={<ListRoleComponent/>} />
+                    <Route exact path="/roles" element={<ListRole/>} />
+                    <Route exact path="/roles/:id" element={<CreerModifierRole/>} />
+                    <Route exact path="/voir-roles/:id" element={<VoirUnRole/>}/>
 
 
                     <Route path="/non-autorise" element={<NonAutorise/>} />
-
-
-                    {/*<Route path="/roles" element={<ListRoleComponent/>}/>*/}
-                    {/*<Route path="/roles/:id" element={<CreerRoleComponent/>}/>*/}
-                    {/*<Route path = "/roles/voir/:id" element={<VoirUnRoleComponent/>}/>*/}
-                    {/*<Route path="/voir-roles/:id" render={(props) => <VoirUnRoleComponent {...props}/>}/>*/}
-
-                    {/*<Route path = "/voir-roles/:id" component = {VoirUnRoleComponent}></Route>*/}
-
 
                 </Routes>
                 <PiedPage/>
