@@ -1,19 +1,17 @@
 package ca.uqam.repriseexamen.controller;
 
-import ca.uqam.repriseexamen.dto.LigneHistoriqueEtudiantDTO;
 import ca.uqam.repriseexamen.model.Etudiant;
-import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
+import ca.uqam.repriseexamen.model.Utilisateur;
+import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
 import ca.uqam.repriseexamen.service.EtudiantService;
-
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,11 +19,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class EtudiantController {
 
-    @Autowired
     private EtudiantService etudiantService;
-
-    @Autowired
-    private DemandeRepriseExamenService demandeRepriseExamenService;
+    private UtilisateurAuthentifieService authentifieService;
 
     @RequestMapping(value = "/{idEtudiant}", method = RequestMethod.GET)
     public Optional<Etudiant> getEtudiant(@PathVariable Long idEtudiant){
@@ -33,10 +28,12 @@ public class EtudiantController {
     }
 
     @RequestMapping(value = "/{idEtudiant}/historique", method = RequestMethod.GET)
-    public List<LigneHistoriqueEtudiantDTO> getHistorique(@PathVariable Long idEtudiant, @RequestParam String type) {
-        if(!type.equals("personnel"))
-            throw new IllegalArgumentException();
+    public ResponseEntity<?> getHistorique(@PathVariable Long idEtudiant) throws Exception {
 
-        return demandeRepriseExamenService.getHistoriqueEtudiant(idEtudiant);
+        Utilisateur authentifie = authentifieService.GetAuthentifie();
+        if(!authentifie.getType().equals("personnel"))
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        return new ResponseEntity<>(etudiantService.getHistoriqueEtudiant(idEtudiant), HttpStatus.OK);
     }
 }

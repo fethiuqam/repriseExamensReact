@@ -1,18 +1,26 @@
 package ca.uqam.repriseexamen.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import ca.uqam.repriseexamen.dao.DemandeRepriseExamenRepository;
 import ca.uqam.repriseexamen.dao.EtudiantRepository;
+import ca.uqam.repriseexamen.dto.LigneHistoriqueEtudiantDTO;
 import ca.uqam.repriseexamen.model.Etudiant;
+import ca.uqam.repriseexamen.model.TypeStatut;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
+@AllArgsConstructor
 public class EtudiantServiceImpl implements EtudiantService {
 
-    @Autowired
     private EtudiantRepository etudiantRepository;
+
+    private DemandeRepriseExamenRepository demandeRepository;
 
     /**
      * Getter d'étudiant par le Repository
@@ -21,5 +29,15 @@ public class EtudiantServiceImpl implements EtudiantService {
      */
     public Optional<Etudiant> getEtudiant(Long idEtudiant) {
         return etudiantRepository.findById(idEtudiant);
+    }
+
+    @Override
+    public List<LigneHistoriqueEtudiantDTO> getHistoriqueEtudiant(long id) {
+        List<LigneHistoriqueEtudiantDTO> listeLigneHistorique = demandeRepository
+                .findLigneHistoriqueEtudiantDTOByEtudiantId(id);
+
+        return listeLigneHistorique.stream()
+                .filter(dre -> !dre.getStatutCourant().equals(TypeStatut.ENREGISTREE))
+                .collect(Collectors.toList());
     }
 }

@@ -12,14 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Role {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
     private String nom;
 
-    @ElementCollection(targetClass = Permission.class,fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Permission.class, fetch = FetchType.EAGER)
     private List<Permission> permissions;
 
     public Role(String nom, List<Permission> permissions) {

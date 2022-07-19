@@ -14,7 +14,7 @@ import {connectionUtilisateur} from "../../api/AuthentificationService";
 
 export default function Connexion() {
 
-    const {setAuth, setType, setId, setJwt} = useContext(AuthContext);
+    const {setAuth, setType, setId, setJwt, setPermissions} = useContext(AuthContext);
 
     const [valAuth, setValAuth] = useState({
         codeMs: '',
@@ -40,6 +40,7 @@ export default function Connexion() {
              setType(response.type);
              setId(response.id);
              setJwt(response.token);
+             setPermissions(response.permissions);
              navigate(from, {replace: true});
         }).catch(()=>{
             setErrConnectMessage("Échec, mauvaises informations d'identification");

@@ -1,50 +1,60 @@
 import React, {useContext} from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import {Button, Chip, ListItemText} from "@mui/material";
+import {Badge, Button, Chip, ListItemText} from "@mui/material";
 import LoupeRoundedIcon from '@mui/icons-material/LoupeRounded';
 import AuthContext from "../../context/AuthProvider";
-import {format} from "date-fns";
-import locale from "date-fns/locale/fr-CA"
+import {Link} from "react-router-dom";
+import {afficherDate} from "../../utils/utils";
+import {DECISION_AFFICHAGE, SESSION_AFFICHAGE, STATUT_AFFICHAGE} from "../../utils/const";
 
-const FORMAT_DATE = 'dd MMMM yyyy';
-
-export default function LigneDRE({item}) {
+function LigneDRE({item}) {
 
     const {type} = useContext(AuthContext);
 
     return (
         <TableRow key={item.id}>
-            <TableCell>{format(new Date(item.dateHeureSoumission), FORMAT_DATE, {locale})}</TableCell>
+            <TableCell>{afficherDate(item.dateHeureSoumission)}</TableCell>
             {type === "etudiant"
                 ? null
                 : <TableCell>
-                    <ListItemText primary={item.nomEtudiant} secondary={item.codePermanentEtudiant}/>
+                    <ListItemText primary={`${item.etudiant.prenom} ${item.etudiant.nom}`}
+                                  secondary={item.etudiant.codePermanent}/>
                 </TableCell>
             }
             {type === "enseignant"
                 ? null
                 : <TableCell>
                     <ListItemText
-                        primary={item.nomEnseignant}
-                        secondary={type === 'personnel' && item.matriculeEnseignant}/>
+                        primary={`${item.enseignant.prenom} ${item.enseignant.nom}`}
+                        secondary={type === 'personnel' && item.enseignant.matricule}/>
                 </TableCell>
             }
-            <TableCell>{item.sigleCours} - {item.groupe}</TableCell>
-            <TableCell>{item.session}</TableCell>
+            <TableCell>{item.coursGroupe.cours.sigle} - {item.coursGroupe.groupe}</TableCell>
+            <TableCell>{SESSION_AFFICHAGE[item.coursGroupe.session]}</TableCell>
             <TableCell>
-                <Chip label={item.statutCourant}/>
+                <Chip label={STATUT_AFFICHAGE[item.statutCourant]}/>
             </TableCell>
+            {type === "personnel" &&
+                <TableCell>
+                    <Chip label={item.decisionCourante ? DECISION_AFFICHAGE[item.decisionCourante] : "Aucune"}/>
+                </TableCell>
+            }
             <TableCell>
-                <Button
-                    size="small"
-                    variant="contained"
-                    endIcon={<LoupeRoundedIcon/>}
-                    href={`/demandes/${item.id}`}
-                >
-                    Consulter
-                </Button>
+                <Badge color="error" invisible={true} badgeContent={<h3>!</h3>}>
+                    <Button
+                        size="small"
+                        variant="contained"
+                        component={Link}
+                        endIcon={<LoupeRoundedIcon/>}
+                        to={`/details/${item.id}`}
+                    >
+                        Consulter
+                    </Button>
+                </Badge>
             </TableCell>
         </TableRow>
     );
 }
+
+export default LigneDRE;

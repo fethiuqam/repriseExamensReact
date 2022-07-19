@@ -27,10 +27,11 @@ body {
   padding: 1rem;
 }
 
-.sectionFormulaireDivContenuRangee > div {
+.sectionFormulaireDivContenuRangee {
   display: flex;
   justify-content: flex-start;
 	flex-direction: row;
+  align-items: center;
   padding: 0.625rem;
   width: 100%;
 }
@@ -89,6 +90,10 @@ footer {
   overflow-x: hidden;
 }
 
+.divTitre {
+  margin-left: 2.75rem;
+}
+
 .titre {
   padding-top: 5rem;
   padding-bottom: 2rem;
@@ -117,6 +122,17 @@ footer {
   justify-content: center;
   align-items: center;
   font-weight: bold;
+}
+
+.errTypeFichier {
+  color:red;
+  font-weight: bold;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 

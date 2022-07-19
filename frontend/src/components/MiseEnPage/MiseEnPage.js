@@ -4,7 +4,7 @@ import '../../styles/StyleEtudiant.css'
 
 const MiseEnPage = (props) => {
     return (
-        <div className="miseEnPage">
+        <div>
             <div className='corpsPage'>
                 <Titre titre={props.titre}/>
                 {props.children}

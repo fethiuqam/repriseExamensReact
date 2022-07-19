@@ -2,22 +2,12 @@ import {render, screen, fireEvent, within} from "@testing-library/react";
 import user from "@testing-library/user-event"
 import FiltreListeDRE from "./FiltreListeDRE"
 import AuthContext from "../../context/AuthProvider";
-
-const STATUTS = [
-    'ENREGISTREE',
-    'SOUMISE',
-    'EN_TRAITEMENT',
-    'ACCEPTEE',
-    'VALIDEE',
-    'REJETEE',
-    'ANNULEE',
-    'COMPLETEE'
-];
+import {STATUTS} from "../../utils/const";
 
 const mockFiltrer = jest.fn();
 
 test("devrait rendre 3 champs de texte et 2 boutons pour le personnel", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -27,11 +17,10 @@ test("devrait rendre 3 champs de texte et 2 boutons pour le personnel", () => {
     );
     expect(screen.getAllByRole("textbox")).toHaveLength(3);
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    unmount();
 });
 
 test("devrait rendre 2 champs de texte et 2 boutons pour l'enseignat'", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "enseignant", id: 1}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -41,11 +30,10 @@ test("devrait rendre 2 champs de texte et 2 boutons pour l'enseignat'", () => {
     );
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    unmount();
 });
 
 test("devrait rendre 2 champs de texte et 2 boutons pour l'etudiant", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "etudiant", id: 1}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -55,12 +43,11 @@ test("devrait rendre 2 champs de texte et 2 boutons pour l'etudiant", () => {
     );
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    unmount();
 });
 
 
 test("tous les champs de texte devraient etre vides", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -70,11 +57,10 @@ test("tous les champs de texte devraient etre vides", () => {
     );
     const textboxes = screen.getAllByRole("textbox");
     textboxes.forEach(textbox => expect(textbox).toBeEmptyDOMElement());
-    unmount();
 });
 
 test("tous les statuts devraient etre selectionnes au debut", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -83,12 +69,11 @@ test("tous les statuts devraient etre selectionnes au debut", () => {
         </AuthContext.Provider>
     );
     const filtreStatut = screen.getByTestId("filtre-statut");
-    expect(filtreStatut).toHaveTextContent("ENREGISTREESOUMISEEN_TRAITEMENTACCEPTEEVALIDEEREJETEEANNULEECOMPLETEE");
-    unmount();
+    expect(filtreStatut).toHaveTextContent("EnregistréeSoumiseEn traitementAcceptéeRejetéeAnnuléePlanifiéeAbsenceComplétée");
 });
 
 test("devrait enlever puis ajouter une option au filtre statut en cliquant sur une option", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -98,15 +83,14 @@ test("devrait enlever puis ajouter une option au filtre statut en cliquant sur u
     );
     const filtreStatut = screen.getByTestId("filtre-statut");
     fireEvent.mouseDown(screen.getAllByRole("button")[0]);
-    fireEvent.click(within(screen.getByRole('listbox')).getByText(/ENREGISTREE/i));
-    expect(filtreStatut).toHaveTextContent("SOUMISEEN_TRAITEMENTACCEPTEEVALIDEEREJETEEANNULEECOMPLETEE");
-    fireEvent.click(within(screen.getByRole('listbox')).getByText(/ENREGISTREE/i));
-    expect(filtreStatut).toHaveTextContent("SOUMISEEN_TRAITEMENTACCEPTEEVALIDEEREJETEEANNULEECOMPLETEEENREGISTREE");
-    unmount();
+    fireEvent.click(within(screen.getByRole('listbox')).getByText(/Enregistrée/i));
+    expect(filtreStatut).toHaveTextContent("SoumiseEn traitementAcceptéeRejetéeAnnuléePlanifiéeAbsenceComplétée");
+    fireEvent.click(within(screen.getByRole('listbox')).getByText(/Enregistrée/i));
+    expect(filtreStatut).toHaveTextContent("SoumiseEn traitementAcceptéeRejetéeAnnuléePlanifiéeAbsenceComplétéeEnregistrée");
 });
 
 test("devrait reinitialiser les champs avec le bouton reinitialiser", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -119,11 +103,10 @@ test("devrait reinitialiser les champs avec le bouton reinitialiser", () => {
     textboxes.forEach(textbox => expect(textbox).toHaveValue("texte"));
     fireEvent.click(screen.getByRole("button", {name: "Réinitialiser le filtre"}));
     textboxes.forEach(textbox => expect(textbox).toBeEmptyDOMElement());
-    unmount();
 });
 
 test("devrait reinitialiser le filtre statut avec le bouton reinitialiser", () => {
-    const {unmount} = render(
+    render(
         <AuthContext.Provider value={{type: "personnel", id: null}}>
             <FiltreListeDRE
                 statuts={STATUTS}
@@ -134,10 +117,9 @@ test("devrait reinitialiser le filtre statut avec le bouton reinitialiser", () =
     const filtreStatut = screen.getByTestId("filtre-statut");
     const boutonReinitialiser = screen.getByRole("button", {name: "Réinitialiser le filtre"});
     fireEvent.mouseDown(screen.getAllByRole("button")[0]);
-    fireEvent.click(within(screen.getByRole('listbox')).getByText(/ENREGISTREE/i));
-    fireEvent.click(within(screen.getByRole('listbox')).getByText(/REJETEE/i));
-    expect(filtreStatut).toHaveTextContent("SOUMISEEN_TRAITEMENTACCEPTEEVALIDEEANNULEECOMPLETEE");
+    fireEvent.click(within(screen.getByRole('listbox')).getByText(/Enregistrée/i));
+    fireEvent.click(within(screen.getByRole('listbox')).getByText(/Rejetée/i));
+    expect(filtreStatut).toHaveTextContent("SoumiseEn traitementAcceptéeAnnuléePlanifiéeAbsenceComplétée");
     fireEvent.click(boutonReinitialiser);
-    expect(filtreStatut).toHaveTextContent("ENREGISTREESOUMISEEN_TRAITEMENTACCEPTEEVALIDEEREJETEEANNULEECOMPLETEE");
-    unmount();
+    expect(filtreStatut).toHaveTextContent("EnregistréeSoumiseEn traitementAcceptéeRejetéeAnnuléePlanifiéeAbsenceComplétée");
 });
