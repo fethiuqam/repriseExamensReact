@@ -17,7 +17,7 @@ values
     ('etudiant2','BEAJ69326598', 'beaudry', 'jean', 'beaudry.jean.courrier.uqam.ca', '5145553333', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','etudiant'),
     ('etudiant3','LESB12544688', 'lestrange', 'beatrice', 'lestrange.beatrice.courrier.uqam.ca', '4508569999', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','etudiant');
 
-insert into utilisateur (code_ms, nom, prenom, mot_de_passe, employe_id, dtype)
+insert into utilisateur (code_ms, nom, prenom, mot_de_passe, matricule, dtype)
 values
     ('commis','lauzon', 'manon', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW', '1', 'personnel' );
 
