@@ -8,8 +8,8 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -28,7 +28,7 @@ public class Enseignant extends Utilisateur {
 
     // Méthodes publiques
 
-    public Enseignant(String nom, String prenom, String codeMs, String motDePasse, Collection<Role> roles, String matricule) {
+    public Enseignant(String nom, String prenom, String codeMs, String motDePasse, Set<Role> roles, String matricule) {
         super(nom, prenom, codeMs, motDePasse, roles);
         this.matricule = matricule;
     }

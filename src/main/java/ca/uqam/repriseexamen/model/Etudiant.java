@@ -13,8 +13,8 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -41,7 +41,7 @@ public class Etudiant extends Utilisateur {
     private String email;
     private String telephone;
 
-    public Etudiant(String nom, String prenom, String codeMs, String motDePasse, Collection<Role> roles, String codePermanent, String telephone) {
+    public Etudiant(String nom, String prenom, String codeMs, String motDePasse, Set<Role> roles, String codePermanent, String telephone) {
         super(nom, prenom, codeMs, motDePasse, roles);
         this.codePermanent = codePermanent;
         this.telephone = telephone;

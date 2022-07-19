@@ -37,34 +37,47 @@ values
     ('systemes decisionels et intelligence d affaires','AOT5321'),
     ('collaboration a l ere du travail hybride','AOT5341');
 
-insert into role (nom)
-values
-    ('commis'),
-    ('directeur');
-
-insert into role_permissions (role_id, permissions)
-values
-    (1,3),
-    (2,4);
-
-insert into utilisateur ( code_ms,nom, prenom, matricule , email, mot_de_passe,dtype)
+insert into utilisateur ( code_ms,nom, prenom, matricule , email, mot_de_passe, dtype)
 values
     ('enseignant1','lord', 'melanie', 'LORM45698732', 'lord.melanie.courrier.uqam.ca', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant' ),
     ('enseignant2','jack', 'berger', 'BERJ32695723', 'berger.jack.courrier.uqam.ca',  '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','enseignant' );
 
-insert into utilisateur (code_ms,code_permanent, nom, prenom, email, telephone, mot_de_passe,dtype)
+insert into utilisateur (code_ms,code_permanent, nom, prenom, email, telephone, mot_de_passe, dtype)
 values
     ('etudiant1','TREM23146985', 'tremblay', 'marc', 'tremblay.marc.courrier.uqam.ca', '5146667777', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','etudiant'),
     ('etudiant2','BEAJ69326598', 'beaudry', 'jean', 'beaudry.jean.courrier.uqam.ca', '5145553333', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW','etudiant');
 
-insert into utilisateur (code_ms, nom, prenom, mot_de_passe, employe_id, dtype)
+insert into utilisateur (code_ms, nom, prenom, mot_de_passe, matricule, dtype)
 values
-    ('commis','lauzon', 'manon', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW', '1', 'personnel' ),
-    ('directeur','beaudry', 'éric', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW', '2', 'personnel' );
+    ('commis','lauzon', 'manon', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW', '1', 'personnel'),
+    ('directeur','beaudry', 'eric', '$2a$10$zNrHpjFWBtIYMAQUhtN9pejTJxlJ/tU7pt4SO1tIUeITtveWpU4nW', '2', 'personnel');
+
+insert into role (nom)
+values
+    ('commis'),
+    ('directeur'),
+    ('admin');
+
+insert into role_permissions (role_id, permissions)
+values
+    (1, 0),
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4),
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (1, 8),
+    (2, 0),
+    (2, 1),
+    (2, 2),
+    (2, 3);
 
 insert into utilisateurs_roles (utilisateurs_id, roles_id)
 values
     (5,1),
+    (5,3),
     (6,2);
 
 insert into cours_groupe (groupe, session, cours_id, enseignant_id)
