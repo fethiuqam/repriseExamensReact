@@ -47,11 +47,13 @@ const ListerRole = () => {
     const handleDeleteClick = (rolesId) => {
         const supprimerRoles = async () => {
             try {
-                const reponse = await fetch(API_URL + rolesId,
+                const reponse = await fetch(`/api/roles/${rolesId}`,
                     {
-                        method: 'delete'
+                        method: 'delete',
+                        headers: { 'Authorization': 'Bearer ' + jwt }
+
                     });
-                if (!reponse.ok) throw Error('Un problème est survenu lors du suppressions des cours.');
+                if (!reponse.ok) throw Error('Un problème est survenu lors de la suppression du role.');
                 setFetchError(null);
             } catch (err) {
                 setFetchError(err.message);
@@ -66,10 +68,19 @@ const ListerRole = () => {
         supprimerRoles();
     }
 
-    const routeChange = (id) =>{
+    const routeChangeVoirRole = (id) =>{
         let path = `/voir-roles/${id}`;
         navigate(path);
     }
+    const routeChangeCreerRole = () =>{
+        let path = `/new-roles`;
+        navigate(path);
+    }
+    const routeChangeUpdateRole = (id) =>{
+        let path = `/update-roles/${id}`;
+        navigate(path);
+    }
+
 
     return (
         <MiseEnPage>
@@ -78,6 +89,7 @@ const ListerRole = () => {
                 <Button
                     size="small"
                     variant="contained"
+                    onClick={() => routeChangeCreerRole()}
                 >
                     Ajouter
                 </Button>
@@ -122,6 +134,7 @@ const ListerRole = () => {
                                                     <Button
                                                         size="small"
                                                         variant="contained"
+                                                        onClick={() => routeChangeUpdateRole(roles.id)}
                                                     >
                                                         Modifier
                                                     </Button>
@@ -138,7 +151,7 @@ const ListerRole = () => {
                                                     <Button
                                                         size="small"
                                                         variant="contained"
-                                                        onClick={() => routeChange(roles.id)}
+                                                        onClick={() => routeChangeVoirRole(roles.id)}
                                                     >
                                                         Voir
                                                     </Button>

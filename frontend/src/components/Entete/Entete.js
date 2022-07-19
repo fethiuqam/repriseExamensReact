@@ -107,6 +107,13 @@ const Entete = () => {
                     component={Link}
                   />
                 )}
+                {permissions.includes(Permission.GererUsagers) && (
+                    <StyledTab
+                        label="Roles"
+                        to="/roles"
+                        component={Link}
+                    />
+                )}
               </StyledTabs>
             </Box>
 

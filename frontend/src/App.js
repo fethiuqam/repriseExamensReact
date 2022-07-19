@@ -12,7 +12,8 @@ import NonAutorise from "./components/NonAutorise/NonAutorise";
 import Formulaire from "./components/Formulaire/Formulaire";
 import ListRole from "./components/Role/ListerRole";
 import VoirUnRole from "./components/Role/VoirUnRole";
-import CreerModifierRole from "./components/Role/CreerModifierRole";
+import CreerRole from "./components/Role/CreerRole";
+import ModifierRole from "./components/Role/ModifierRole";
 import { Permission, TypeId } from "./shared/constants";
 import ListeUtilisateurs from "./components/ListeUtilisateurs/ListeUtilisateurs"
 import DetailsDRE from "./components/DetailsDRE/DetailsDRE";
@@ -47,10 +48,12 @@ function App() {
 
                     <Route path="/non-autorise" element={<NonAutorise/>} />
 
-
-                    <Route exact path="/roles" element={<ListRole/>} />
-                    <Route exact path="/roles/:id" element={<CreerModifierRole/>} />
-                    <Route exact path="/voir-roles/:id" element={<VoirUnRole/>}/>
+                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} permissionsRequises={[Permission.GererUsagers]}/>}>
+                        <Route exact path="/roles" element={<ListRole/>} />
+                        <Route exact path="/new-roles" element={<CreerRole/>} />
+                        <Route exact path="/update-roles/:id" element={<ModifierRole/>} />
+                        <Route exact path="/voir-roles/:id" element={<VoirUnRole/>}/>
+                    </Route>
 
                     <Route path="/non-autorise" element={<NonAutorise/>} />
 
