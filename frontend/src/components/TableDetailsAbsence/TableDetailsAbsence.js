@@ -1,5 +1,6 @@
 import '../../styles/StyleEtudiant.css'
 import React from 'react';
+import {MOTIF_AFFICHAGE} from "../../utils/const";
 
 export default function TableDetailsAbsence(props) {
 
@@ -25,12 +26,12 @@ export default function TableDetailsAbsence(props) {
                 <tbody>
                 <tr>
                     <th>Motif</th>
-                    <th>{dre.motifAbsence != null ? dre.motifAbsence : ""}</th>
+                    <td>{dre.motifAbsence != null ? MOTIF_AFFICHAGE[dre.motifAbsence] : ""}</td>
                 </tr>
                 {dre.absenceDetails
                     ? <tr>
                         <th>Détails motif</th>
-                        <th> {dre.absenceDetails}</th>
+                        <td> {dre.absenceDetails}</td>
                     </tr>
                     : null
                 }

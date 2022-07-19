@@ -1,17 +1,12 @@
 package ca.uqam.repriseexamen.controller;
 
 import ca.uqam.repriseexamen.dto.LigneDREDTO;
-import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
-import ca.uqam.repriseexamen.model.TypeDecision;
-import ca.uqam.repriseexamen.model.TypeMessage;
-import ca.uqam.repriseexamen.model.TypeStatut;
-import ca.uqam.repriseexamen.model.Utilisateur;
+import ca.uqam.repriseexamen.model.*;
 import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
 import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import ca.uqam.repriseexamen.service.JustificationService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +23,8 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class DemandeRepriseExamenController {
 
-    @Autowired
     private DemandeRepriseExamenService demandeRepriseExamenService;
-
-    @Autowired
     private JustificationService justificationService;
-
     private UtilisateurAuthentifieService authentifieService;
 
     /**
@@ -59,9 +50,7 @@ public class DemandeRepriseExamenController {
                 demandes = demandeRepriseExamenService.getAllDemandeRepriseExamenEtudiant(authentifie.getId());
                 break;
             default:
-                return ResponseEntity
-                        .status(HttpStatus.UNAUTHORIZED)
-                        .body("{\"error\":\"acces non autorisé.\"}");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return new ResponseEntity<>(demandes, HttpStatus.OK);
     }

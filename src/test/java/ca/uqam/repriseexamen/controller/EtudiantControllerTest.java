@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -34,9 +35,10 @@ public class EtudiantControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
+    @WithMockUser(username="commis")
     @Test
     public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurDeuxAvecStatutOk() throws Exception {
-        this.mockMvc.perform(get("/api/etudiants/3/historique?type=personnel").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/etudiants/3/historique").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
@@ -47,18 +49,20 @@ public class EtudiantControllerTest {
                 .andExpect(jsonPath("$[1].motifAbsence", is("AUTRE")));
     }
 
+    @WithMockUser(username="commis")
     @Test
     public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurUneAvecStatutOk() throws Exception {
-        this.mockMvc.perform(get("/api/etudiants/4/historique?type=personnel").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/etudiants/4/historique").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
+    @WithMockUser(username="enseignant1")
     @Test
     public void devraitRetournerStatutMauvaiseRequete()
             throws Exception {
 
         this.mockMvc.perform(get("/api/etudiants/1/historique").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnauthorized());
     }
 }

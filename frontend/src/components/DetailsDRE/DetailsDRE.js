@@ -5,15 +5,15 @@ import {Link, useParams} from "react-router-dom";
 import MiseEnPage from "../MiseEnPage/MiseEnPage";
 import SectionFormulaire from '../SectionFormulaire/SectionFormulaire';
 import Box from "@mui/material/Box";
-import {Button, CircularProgress, Stack} from "@mui/material";
+import {Button, CircularProgress, Container, Stack} from "@mui/material";
 import JugerDRE from "../JugerDRE/JugerDRE";
 import TableInfosEnseignant from '../TableInfoEnseignant/TableInforEnseignant';
 import TableDetailsAbsence from '../TableDetailsAbsence/TableDetailsAbsence';
 import TableInfosEtudiant from '../TableInfosEtudiant/TableInfosEtudiant';
 import TableInfosDemande from '../TableInfosDemande/TableInfosDemande';
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import {Container} from "@mui/material";
 import MessagesDRE from "../MessagesDRE/MessagesDRE";
+import HistoriqueEtudiant from "../HistoriqueEtudiant/HistoriqueEtudiant";
 
 export default function DetailsDRE() {
 
@@ -70,28 +70,33 @@ export default function DetailsDRE() {
                 : <>
                     {dre.etudiant
                         ? <SectionFormulaire title={'INFORMATIONS PERSONNELLES'}>
-                            <TableInfosEtudiant etudiant={dre.etudiant} />
+                            <TableInfosEtudiant etudiant={dre.etudiant}/>
                         </SectionFormulaire>
                         : null
                     }
                     {dre.enseignant
                         ? <SectionFormulaire title={'INFORMATIONS ENSEIGNANT'}>
-                            <TableInfosEnseignant enseignant={dre.enseignant} />
+                            <TableInfosEnseignant enseignant={dre.enseignant}/>
                         </SectionFormulaire>
                         : null
                     }
 
                     <SectionFormulaire title={'INFORMATIONS DEMANDE'}>
-                        <TableInfosDemande dre={dre} />
+                        <TableInfosDemande dre={dre}/>
                     </SectionFormulaire>
 
                     {type === "enseignant"
                         ? null
                         : <SectionFormulaire title={'DETAILS'}>
-                            <TableDetailsAbsence dre={dre} />
+                            <TableDetailsAbsence dre={dre}/>
                         </SectionFormulaire>
-
                     }
+
+                    {type === "personnel"
+                        ? <HistoriqueEtudiant idEtudiant={dre.etudiant.id}/>
+                        : null
+                    }
+
                     {dre.listeMessage
                         ? <MessagesDRE
                             messages={dre.listeMessage}
