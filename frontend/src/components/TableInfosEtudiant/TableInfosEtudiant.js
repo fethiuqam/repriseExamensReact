@@ -10,15 +10,15 @@ export default function TableInfosEtudiant(props) {
             <tbody>
             <tr>
                 <th>Nom</th>
-                <th>{etudiant.nom}</th>
+                <td>{etudiant.nom}</td>
             </tr>
             <tr>
                 <th>Prénom</th>
-                <th>{etudiant.prenom}</th>
+                <td>{etudiant.prenom}</td>
             </tr>
             <tr>
                 <th>Code permanent</th>
-                <th>{etudiant.codePermanent}</th>
+                <td>{etudiant.codePermanent}</td>
             </tr>
             </tbody>
         </table>

@@ -1,5 +1,7 @@
 import '../../styles/StyleEtudiant.css'
 import React from 'react';
+import {afficherDate} from "../../utils/utils";
+import {DECISION_AFFICHAGE, STATUT_AFFICHAGE} from "../../utils/const";
 
 export default function TableInfosDemande(props) {
 
@@ -10,27 +12,27 @@ export default function TableInfosDemande(props) {
             <tbody>
                 <tr>
                     <th>Date de début d'absence</th>
-                    <th>{dre.absenceDateDebut != null ? dre.absenceDateDebut : ""}</th>
+                    <td>{dre.absenceDateDebut != null ? afficherDate(dre.absenceDateDebut) : ""}</td>
                 </tr>
                 <tr>
                     <th>Date de fin d'absence</th>
-                    <th>{dre.absenceDateFin != null ? dre.absenceDateFin : ""}</th>
+                    <td>{dre.absenceDateFin != null ? afficherDate(dre.absenceDateFin) : ""}</td>
                 </tr>
                 <tr>
                     <th>Date de soumission</th>
-                    <th>{dre.dateHeureSoumission != null ? dre.dateHeureSoumission.slice(0, 10) : "N/A"}</th>
+                    <td>{dre.dateHeureSoumission != null ? afficherDate(dre.dateHeureSoumission) : "Non soumise"}</td>
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <th>{dre.statutCourant != null ? dre.statutCourant : ""}</th>
+                    <td>{dre.statutCourant != null ? STATUT_AFFICHAGE[dre.statutCourant] : ""}</td>
                 </tr>
                 <tr>
                     <th>Décision</th>
-                    <th>{dre.decisionCourante != null ? dre.decisionCourante : "AUCUNE"}</th>
+                    <td>{dre.decisionCourante != null ? DECISION_AFFICHAGE[dre.decisionCourante] : "Aucune"}</td>
                 </tr>
                 <tr>
                     <th>Type d'évaluation</th>
-                    <th>{dre.examen != null ? dre.examen : ""}</th>
+                    <td>{dre.examen != null ? dre.examen : ""}</td>
                 </tr>
             </tbody>
         </table>

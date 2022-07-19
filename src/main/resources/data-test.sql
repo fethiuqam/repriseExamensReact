@@ -55,7 +55,7 @@ values
 insert into demande_reprise_examen (absence_date_debut , absence_date_fin , motif_absence , absence_details , description_examen , cours_groupe_id , etudiant_id )
 values
     ('2022-03-01', '2022-03-10', 0, 'intervention chirurgicale programmee', 'examen intra', 1, 3),
-    ('2022-04-30', '2022-04-20', 5, 'autre motif', 'examen final', 3, 3),
+    ('2022-04-20', '2022-04-30', 5, 'autre motif', 'examen final', 3, 3),
     ('2022-04-25', '2022-04-26', 3, 'convocation au tribunal pour temoignage', 'examen final', 2, 4);
 
 insert into justification (description , url , demande_reprise_examen_id )

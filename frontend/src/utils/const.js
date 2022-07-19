@@ -12,7 +12,7 @@ export const STATUTS = [
 ];
 
 export const STATUT_AFFICHAGE = {
-    ENREGISTREE : "Enregistrée",
+    ENREGISTREE: "Enregistrée",
     SOUMISE: "Soumise",
     EN_TRAITEMENT: "En traitement",
     ACCEPTEE: "Acceptée",
@@ -24,20 +24,29 @@ export const STATUT_AFFICHAGE = {
 }
 
 export const DECISION_AFFICHAGE = {
-    ACCEPTEE_COMMIS : "Acceptée par le commis",
+    ACCEPTEE_COMMIS: "Acceptée par le commis",
     ACCEPTEE_DIRECTEUR: "Acceptée par le directeur",
     ACCEPTEE_ENSEIGNANT: "Acceptée par l'enseignant",
-    REJETEE_COMMIS : "Rejetée par le commis",
+    REJETEE_COMMIS: "Rejetée par le commis",
     REJETEE_DIRECTEUR: "Rejetée par le directeur",
     REJETEE_ENSEIGNANT: "Rejetée par l'enseignant",
 
 }
 
 export const SESSION_AFFICHAGE = {
-    HIVER : "Hiver",
+    HIVER: "Hiver",
     AUTOMNE: "Automne",
     ETE: "été"
-}
+};
+
+export const MOTIF_AFFICHAGE = {
+    MEDICAL: "Hospitalisation",
+    DECES: "Décès",
+    ACCIDENT: "Accident",
+    JUDICIAIRE: "Convocation à un tribunal",
+    RELIGIEUX: "Motif religieux",
+    AUTRE: "Autre"
+};
 
 export const STYLE_MESSAGE_RECU = {
     borderRadius: '10px',
