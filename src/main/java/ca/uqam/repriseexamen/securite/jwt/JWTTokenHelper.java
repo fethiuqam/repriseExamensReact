@@ -2,8 +2,10 @@ package ca.uqam.repriseexamen.securite.jwt;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
 import java.util.Date;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -74,11 +76,11 @@ public class JWTTokenHelper {
                 username != null &&
                         username.equals(userDetails.getUsername()) &&
                         !tokenEstExpiree(token)
-        ;
+                ;
     }
 
     public boolean tokenEstExpiree(String token) {
-        Date expireDate= getDateExpiration(token);
+        Date expireDate = getDateExpiration(token);
         return expireDate.before(new Date());
     }
 
@@ -104,18 +106,25 @@ public class JWTTokenHelper {
         return issueAt;
     }
 
-    public String getToken( HttpServletRequest request ) {
-
-        String authHeader = getAuthHeaderFromHeader( request );
-        if ( authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7);
+    public String getToken(HttpServletRequest request) {
+        String auth = getAuthFromCookies(request);
+        if (auth != null){
+            return auth;
         }
-
         return null;
     }
 
-    public String getAuthHeaderFromHeader( HttpServletRequest request ) {
-        return request.getHeader("Authorization");
+    public String getAuthFromCookies(HttpServletRequest request) {
+        if (request.getCookies() != null){
+            return Arrays.stream(request.getCookies())
+                    .filter(c -> c.getName().equals("token"))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse(null);
+        }
+        else {
+            return null;
+        }
     }
-}
 
+}

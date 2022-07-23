@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import {
     Alert,
     Button,
@@ -13,11 +13,9 @@ import {
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from '@mui/icons-material/Clear';
 import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
-import AuthContext from "../../context/AuthProvider";
 
 const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
 
-    const {jwt} = useContext(AuthContext);
 
     const [details, setDetails] = useState("");
     const [jugement, setJugement] = useState("");
@@ -89,9 +87,9 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
                         method: 'PATCH',
                         body: JSON.stringify(patch),
                         headers: {
-                            'Authorization': 'Bearer ' + jwt,
                             'Content-type': 'application/json; charset=UTF-8'
-                        }
+                        },
+                        credentials: 'include'
                     });
                 if (reponse.status === 406) {
                     setSnackBarSeverity("error");

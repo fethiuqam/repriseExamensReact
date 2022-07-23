@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SectionFormulaire from "../SectionFormulaire/SectionFormulaire";
 import MiseEnPage from "../MiseEnPage/MiseEnPage";
-import AuthContext from "../../context/AuthProvider";
+
 import {
     Accordion,
     AccordionDetails,
@@ -59,7 +59,6 @@ export const compterValides = (demandes) =>
  *            (fetched) data state
  */
 export const useAPI = (url) => {
-    const {jwt} = useContext(AuthContext);
 
     const [hasError, setHasError] = useState(false);
     const [data, setData] = useState([]);
@@ -76,7 +75,7 @@ export const useAPI = (url) => {
             return fetch(url,
                 {
                     method: 'get',
-                    headers: {'Authorization': 'Bearer ' + jwt}
+                    credentials: 'include'
                 })
                 .then(handleResponse)
                 .catch(handleResponse);
@@ -85,7 +84,7 @@ export const useAPI = (url) => {
         if (!unmounted)
             fetchData().then(data => setData(data));
 
-    }, [url, jwt]);
+    }, [url]);
 
     return {hasError, data};
 };

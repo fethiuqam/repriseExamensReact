@@ -13,6 +13,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
@@ -27,7 +31,7 @@ public class AuthentificationController {
     JWTTokenHelper jWTTokenHelper;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse res) throws Exception {
 
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 authenticationRequest.getCodeMs(), authenticationRequest.getMotDePasse()));
@@ -35,15 +39,36 @@ public class AuthentificationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         User user= (User) authentication.getPrincipal();
-        String jwtToken=jWTTokenHelper.genererToken(user.getUsername());
+        String jwtToken = jWTTokenHelper.genererToken(user.getUsername());
 
         AuthenticationResponse response= new AuthenticationResponse();
-        response.setToken(jwtToken);
         response.setId(authentifieService.GetAuthentifie().getId());
         response.setType(authentifieService.GetAuthentifie().getType());
         response.setPermissions(authentifieService.GetAuthentifie().getPermissions());
 
-        return ResponseEntity.ok(response);
+        Cookie cookie = new Cookie("token", jwtToken);
+        cookie.setMaxAge(60*60);
+        cookie.setPath("/");
+        cookie.setSecure(false);
+        cookie.setHttpOnly(true);
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.addCookie(cookie);
+        return ResponseEntity.ok().body(response);
+    }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse res) throws Exception {
+
+        Cookie supprimerTokenCookie = new Cookie("token", "");
+        supprimerTokenCookie.setMaxAge(0);
+        supprimerTokenCookie.setPath("/");
+        supprimerTokenCookie.setSecure(false);
+        supprimerTokenCookie.setHttpOnly(true);
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.addCookie(supprimerTokenCookie);
+
+        return ResponseEntity.ok().body("");
     }
 }
 

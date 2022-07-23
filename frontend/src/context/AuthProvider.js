@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [type, setType] = useState(null);
     const [id, setId] = useState(null);
     const [permissions, setPermissions] = useState([]);
-    const [jwt, setJwt] = useState(null);
 
     return (
         <AuthContext.Provider value={{
@@ -15,7 +14,6 @@ export const AuthProvider = ({ children }) => {
             type, setType,
             id, setId,
             permissions, setPermissions,
-            jwt, setJwt
         }}>
             {children}
         </AuthContext.Provider>

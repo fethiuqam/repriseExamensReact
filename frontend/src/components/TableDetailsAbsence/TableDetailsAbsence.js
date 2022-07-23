@@ -1,12 +1,8 @@
 import '../../styles/StyleEtudiant.css'
-import React, { useContext } from 'react';
 import {MOTIF_AFFICHAGE} from "../../utils/const";
-import AuthContext from '../../context/AuthProvider';
 import { Link } from '@mui/material';
 
 export default function TableDetailsAbsence(props) {
-
-    const {jwt} = useContext(AuthContext);
 
     const {dre} = props;
 
@@ -20,7 +16,7 @@ export default function TableDetailsAbsence(props) {
                     variant="body1"
                     onClick={() =>
                         fetch(`/api/justifications/${piece.id}/preview`, {
-                        headers: { Authorization: "Bearer " + jwt },
+                            credentials: 'include'
                       })
                         .then((r) => r.blob())
                         .then(
