@@ -1,11 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import AuthContext from "../../context/AuthProvider";
+import { useEffect, useState } from "react";
 import { TypeId, types } from "../../shared/constants";
 import { DataGrid, frFR } from "@mui/x-data-grid";
 import { Chip, Container, Paper, Typography } from "@mui/material";
 
 export default function ListeUtilisateurs() {
-  const { jwt } = useContext(AuthContext);
 
   const [rangees, setRangees] = useState([]);
 
@@ -47,7 +45,7 @@ export default function ListeUtilisateurs() {
   useEffect(() => {
     function fetchSet(endpoint, setter) {
       return fetch("/api/" + endpoint, {
-        headers: { Authorization: "Bearer " + jwt },
+          credentials: 'include',
       })
         .then((reponse) => reponse.json())
         .then(
@@ -77,7 +75,7 @@ export default function ListeUtilisateurs() {
         setRangees(parseUtilisateurs(utilisateurs))
       ),
     ]);
-  }, [jwt]);
+  }, []);
 
   return (
     <Container sx={{ p: 3 }}>

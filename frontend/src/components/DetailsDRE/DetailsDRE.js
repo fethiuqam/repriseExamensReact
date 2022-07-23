@@ -17,7 +17,7 @@ import HistoriqueEtudiant from "../HistoriqueEtudiant/HistoriqueEtudiant";
 
 export default function DetailsDRE() {
 
-    const {type, permissions, jwt} = useContext(AuthContext);
+    const {type, permissions} = useContext(AuthContext);
     const [enChargement, setEnChargement] = useState(true);
     const [dre, setDre] = useState(null);
     const {idDRE} = useParams();
@@ -43,7 +43,7 @@ export default function DetailsDRE() {
             const reponse = await fetch(API_URL,
                 {
                     method: 'get',
-                    headers: {'Authorization': 'Bearer ' + jwt}
+                    credentials: 'include'
                 });
             if (!reponse.ok) throw Error('Un problème est survenu lors du chargement des données.');
             const dre = await reponse.json();
@@ -59,7 +59,7 @@ export default function DetailsDRE() {
         window.scrollTo(0, 0);
         checherDRE();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [idDRE, jwt]);
+    }, [idDRE]);
 
     return (
         <MiseEnPage titre={"Détails d'une demande"}>
