@@ -18,7 +18,7 @@ import { FileUploader } from "react-drag-drop-files";
 
 const Formulaire = () => {
 
-    const { id, jwt } = useContext(AuthContext);
+    const { id } = useContext(AuthContext);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
     const [error, setError] = useState();
@@ -47,7 +47,7 @@ const Formulaire = () => {
                 const reponse = await fetch(API_URL,
                     {
                         method: 'get',
-                        headers: { 'Authorization': 'Bearer ' + jwt }
+                        credentials: 'include'
                     });
                 const data = await reponse.json();
                 // On place les données reçues dans le state
@@ -58,7 +58,7 @@ const Formulaire = () => {
         }
         // Appel de la fonction pour récupérer un étudiant
         fetchItems().catch(console.error);
-    }, [id, jwt])
+    }, [id])
 
     let formData = new FormData();
 
@@ -124,7 +124,7 @@ const Formulaire = () => {
             var response = await fetch("/api/demandes", {
                 method: "POST",
                 body: formData,
-                headers: { 'Authorization': 'Bearer ' + jwt }
+                credentials: 'include'
             });
 
             if (!response.ok) {

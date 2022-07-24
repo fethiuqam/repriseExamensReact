@@ -1,6 +1,6 @@
 import '../../styles/StyleEtudiant.css'
-import React from 'react';
 import {MOTIF_AFFICHAGE} from "../../utils/const";
+import { Link } from '@mui/material';
 
 export default function TableDetailsAbsence(props) {
 
@@ -10,11 +10,24 @@ export default function TableDetailsAbsence(props) {
         return (
             <ul>
                 {pieces.map((piece) => (
-                    <li key={piece.url}>
-                        <a href={`\\${piece.url}`}>
-                            {piece.description}
-                        </a>
-                    </li>
+                <li key={piece.id}>
+                  <Link
+                    component="button"
+                    variant="body1"
+                    onClick={() =>
+                        fetch(`/api/justifications/${piece.id}/preview`, {
+                            credentials: 'include'
+                      })
+                        .then((r) => r.blob())
+                        .then(
+                          (blob) =>
+                            (window.open(window.URL.createObjectURL(blob), "_blank"))
+                        )
+                    }
+                  >
+                    {piece.description ?? piece.nomFichier}
+                  </Link>
+                </li>
                 ))}
             </ul>
         )

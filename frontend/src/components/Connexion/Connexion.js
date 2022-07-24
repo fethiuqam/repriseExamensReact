@@ -14,7 +14,7 @@ import {connectionUtilisateur} from "../../api/AuthentificationService";
 
 export default function Connexion() {
 
-    const {setAuth, setType, setId, setJwt, setPermissions} = useContext(AuthContext);
+    const {setAuth, setType, setId, setPermissions} = useContext(AuthContext);
 
     const [valAuth, setValAuth] = useState({
         codeMs: '',
@@ -35,7 +35,6 @@ export default function Connexion() {
              setAuth(true);
              setType(response.type);
              setId(response.id);
-             setJwt(response.token);
              setPermissions(response.permissions);
              navigate(from, {replace: true});
         }).catch(()=>{

@@ -1,5 +1,5 @@
 import SectionFormulaire from "../SectionFormulaire/SectionFormulaire";
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import Grid from "@mui/material/Grid";
 import {
     Alert,
@@ -17,14 +17,11 @@ import {
     TextField
 } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import AuthContext from "../../context/AuthProvider";
 import {afficherDateHeure} from "../../utils/utils";
 import {STYLE_MESSAGE_ENVOYE, STYLE_MESSAGE_RECU} from "../../utils/const";
 
 
 const MessagesDRE = ({messages, typeUtilisateur, idDRE, actualiserDRE}) => {
-
-    const {jwt} = useContext(AuthContext);
 
     const [message, setMessage] = useState("");
     const [messageDialogOpen, setmessageDialogOpen] = useState(false);
@@ -44,9 +41,9 @@ const MessagesDRE = ({messages, typeUtilisateur, idDRE, actualiserDRE}) => {
                         method: 'POST',
                         body: JSON.stringify(patch),
                         headers: {
-                            'Authorization': 'Bearer ' + jwt,
                             'Content-type': 'application/json; charset=UTF-8'
-                        }
+                        },
+                        credentials: 'include'
                     });
                 if (reponse.status === 401) {
                     setSnackBarSeverity("error");

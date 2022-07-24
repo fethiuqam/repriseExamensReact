@@ -12,6 +12,7 @@ import { Navigate } from "react-router";
 import { Stack } from "@mui/material";
 import "../../styles/StyleEtudiant.css";
 import AuthContext from "../../context/AuthProvider";
+import {deconnecterUtilisateur} from "../../api/AuthentificationService";
 import { Permission } from "../../shared/constants";
 
 const entete = "UQÀM | Demandes de reprises d'examens";
@@ -47,7 +48,6 @@ const Entete = () => {
     setAuth,
     setType,
     setId,
-    setJwt,
     auth,
     type,
     permissions,
@@ -64,8 +64,11 @@ const Entete = () => {
     setAuth(false);
     setType(null);
     setId(null);
-    setJwt(null);
     setPermissions([]);
+    deconnecterUtilisateur().then(()=>{
+    }).catch(()=>{
+      throw new Error("Une erreur s'est produite lors de la déconnexion");
+    });
     return <Navigate to="/" />;
   };
 
@@ -89,7 +92,6 @@ const Entete = () => {
                   to="/"
                   component={Link}
                 />
-
                 {type === "etudiant" && (
                   <StyledTab
                     label="Faire une demande"

@@ -11,7 +11,7 @@ import {STATUTS} from "../../utils/const";
 
 export default function ListeDRE() {
 
-    const {type, id, jwt} = useContext(AuthContext);
+    const {type, id} = useContext(AuthContext);
 
     const [listeDRE, setListeDRE] = useState([]);
     const [listeDREFiltree, setListeDREFiltree] = useState([]);
@@ -34,7 +34,7 @@ export default function ListeDRE() {
                 const reponse = await fetch(API_URL,
                     {
                         method: 'get',
-                        headers: {'Authorization':'Bearer ' + jwt}
+                        credentials: 'include'
                     });
                 if (!reponse.ok) throw Error('Un problème est survenu lors du chargement des données.');
                 const listedre = await reponse.json();
@@ -48,7 +48,7 @@ export default function ListeDRE() {
             }
         }
         fetchItems();
-    }, [type, id, jwt]);
+    }, [type, id]);
 
 
     const filtrer = useCallback((filtre) => {
