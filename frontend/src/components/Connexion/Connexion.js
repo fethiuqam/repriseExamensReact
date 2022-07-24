@@ -27,16 +27,15 @@ export default function Connexion() {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-
     const handleSubmit = (event) => {
         event.preventDefault();
 
         connectionUtilisateur(valAuth).then((response)=>{
-             setAuth(true);
-             setType(response.type);
-             setId(response.id);
-             setPermissions(response.permissions);
-             navigate(from, {replace: true});
+            setAuth(true);
+            setType(response.type);
+            setId(response.id);
+            setPermissions(response.permissions);
+            navigate(from, {replace: true});
         }).catch(()=>{
             setErrConnectMessage("Échec, mauvaises informations d'identification");
         });
@@ -52,12 +51,6 @@ export default function Connexion() {
 
     return (
         <>
-
-            <p>Utilisateurs pour tester : commis - etudiant - enseignant</p>
-            <p>Le id de l'etudiant et l'enseignant : 1</p>
-            <p>Le mot de passe est facultatif</p>
-
-
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <Box
