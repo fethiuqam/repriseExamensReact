@@ -81,7 +81,6 @@ const ListerRole = () => {
         navigate(path);
     }
 
-
     return (
         <MiseEnPage>
             <SectionFormulaire
@@ -103,7 +102,6 @@ const ListerRole = () => {
                         </Box>
                         : Object.keys(listeRoles).length > 0
                             ?
-                            //<div className="sectionFormulaireDivContenu">
                             <Table className="tableDRE-style" style={{ marginTop: '10px', marginBottom: 'auto' }}>
                                 <TableHead>
                                     <TableRow>
@@ -133,7 +131,7 @@ const ListerRole = () => {
                                                 <Box display="flex" justify='space-between'>
                                                     <Button
                                                         size="small"
-                                                        variant="contained"
+                                                        variant="outlined"
                                                         onClick={() => routeChangeUpdateRole(roles.id)}
                                                     >
                                                         Modifier
@@ -150,23 +148,11 @@ const ListerRole = () => {
 
                                                     <Button
                                                         size="small"
-                                                        variant="contained"
+                                                        variant="outlined"
                                                         onClick={() => routeChangeVoirRole(roles.id)}
                                                     >
                                                         Voir
                                                     </Button>
-
-
-                                                    {/*<Icon*/}
-                                                    {/*    name = "delete"*/}
-                                                    {/*    tooltip = "Delete"*/}
-                                                    {/*    theme = "light"*/}
-                                                    {/*    size = "tiny"*/}
-                                                    {/*    onClick={() => handleDeleteClick(roles.id)}*/}
-                                                    {/*/>*/}
-                                                    {/*<Grid item xs={8}>*/}
-                                                    {/*    <DeleteIcon onClick={() => handleDeleteClick(roles.id)}/>*/}
-                                                    {/*</Grid>*/}
 
                                                 </Box>
                                             </TableCell>
@@ -175,11 +161,8 @@ const ListerRole = () => {
                                 </TableBody>
                             </Table>
 
-
-                            //</div>
-
                             : <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <h3>Aucune demande à afficher.</h3>
+                                <h3>Aucun role à afficher.</h3>
                             </Box>
                 }
             </SectionFormulaire>

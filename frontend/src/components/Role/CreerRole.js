@@ -1,13 +1,8 @@
 import React, {useContext, useState} from "react";
-//import TutorialDataService from "../services/TutorialService";
-//import axios from 'axios';
-//import FormGroup from '@mui/material/FormGroup';
-//import FormControlLabel from '@mui/material/FormControlLabel';
-//import Checkbox from '@mui/material/Checkbox';
 import {useNavigate} from "react-router";
 import {Button, Checkbox, FormControlLabel, FormGroup} from "@mui/material";
 import AuthContext from "../../context/AuthProvider";
-
+import Box from "@mui/material/Box";
 
 const CreerRole = () => {
 
@@ -16,7 +11,6 @@ const CreerRole = () => {
         const [nom, setNom] = useState('');
         const [permissions, setPermissions] = useState([]);
         const [fetchError, setFetchError] = useState(null);
-        //const [checkbox, setCheckbox] = useState(false);
 
 
         const handleCreateClick = (event) => {
@@ -53,6 +47,12 @@ const CreerRole = () => {
             setPermissions(perm => [event.target.value, ...perm])
         }
 
+
+        const routeChangeCancel = () => {
+            let path = `/roles`;
+            navigate(path);
+        }
+
         return (
             <div className="container center2 mt-5">
                 <div className="row">
@@ -65,6 +65,9 @@ const CreerRole = () => {
                                     <input placeholder="Nom du role" name="nom" className="form-control"
                                            value={nom} onChange={updateNom}/>
                                 </div>
+                                {fetchError && <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                                    <h3 style={{color: 'red'}}>{fetchError}</h3>
+                                </Box>}
                                 <div className="form-group">
                                     <label> Permissions: </label>
                                 </div>
@@ -83,8 +86,18 @@ const CreerRole = () => {
                                 </FormGroup>
                                 <FormGroup>
                                     <FormControlLabel
-                                        control={<Checkbox value="JugerRecevabilite" onClick={permissionsHandler}/>}
-                                        label="JugerRecevabilite"/>
+                                        control={<Checkbox value=" JugerCommis" onClick={permissionsHandler}/>}
+                                        label="JugerCommis"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Checkbox value=" JugerDirecteur" onClick={permissionsHandler}/>}
+                                        label="JugerDirecteur"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Checkbox value="JugerEnseignant" onClick={permissionsHandler}/>}
+                                        label="JugerEnseignant"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <FormControlLabel
@@ -103,8 +116,8 @@ const CreerRole = () => {
 
 
                                 <FormGroup>
-                                    <Button color="primary" type="submit">Sauvegarder</Button>{' '}
-                                    <Button color="secondary">Annuler</Button>
+                                    <Button color="primary" type="submit" variant="outlined">Sauvegarder</Button>{' '}
+                                    <Button color="secondary" variant="outlined" onClick={routeChangeCancel}>Annuler</Button>
                                 </FormGroup>
                             </form>
                         </div>

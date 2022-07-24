@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import { useParams} from "react-router-dom";
-import {FormGroup} from "@mui/material";
-
+import React, {useContext, useEffect, useState} from 'react'
+import {useNavigate, useParams} from "react-router-dom";
+import {Button, FormGroup} from "@mui/material";
+import Box from "@mui/material/Box";
+import AuthContext from "../../context/AuthProvider";
 
 const VoirUnRole = props => {
-    const {id} = useParams();
-    //let navigate = useNavigate();
 
+    const {id} = useParams();
+    let navigate = useNavigate();
+    const {jwt} = useContext(AuthContext);
     const [nom, setNom] = useState('');
     const [permissions, setPermissions] = useState([]);
     const [fetchError, setFetchError] = useState(null);
@@ -16,7 +18,8 @@ const VoirUnRole = props => {
             try {
                 const reponse = await fetch(`/roles/${id}`,
                     {
-                        method: 'get'
+                        method: 'get',
+                        headers: { 'Authorization': 'Bearer ' + jwt }
                     });
                 const rolesList = await reponse.json();
                 setNom(rolesList.nom);
@@ -26,8 +29,13 @@ const VoirUnRole = props => {
             }
         }
         fetchItems();
-    },[]);
+    }, []);
 
+
+    const routeChangeCancel = () => {
+        let path = `/roles`;
+        navigate(path);
+    }
 
     return (
         <div className="container center2 mt-5">
@@ -40,6 +48,9 @@ const VoirUnRole = props => {
                             <div className="form-group">
                                 <h2> {nom} </h2>
                             </div>
+                            {fetchError && <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                                <h3 style={{color: 'red'}}>{fetchError}</h3>
+                            </Box>}
                             <div className="form-group">
                                 <label> Permissions: </label>
                             </div>
@@ -48,6 +59,10 @@ const VoirUnRole = props => {
                                     {perm}
                                 </FormGroup>
                             )}
+
+                            <FormGroup>
+                                <Button color="secondary" variant="outlined" onClick={routeChangeCancel}>Retour</Button>
+                            </FormGroup>
                         </form>
                     </div>
                 </div>

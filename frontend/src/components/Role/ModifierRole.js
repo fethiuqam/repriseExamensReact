@@ -2,40 +2,56 @@ import React, {useContext, useEffect, useState} from "react";
 import {useNavigate} from "react-router";
 import {Button, Checkbox, FormControlLabel, FormGroup} from "@mui/material";
 import AuthContext from "../../context/AuthProvider";
+import Box from "@mui/material/Box";
 import {useParams} from "react-router-dom";
 
 
-const CreerRole = () => {
+const ModifierRole = () => {
 
         let navigate = useNavigate();
+        const {id} = useParams();
         const {jwt} = useContext(AuthContext);
-        // const [id, setID] = useState(null);
-        // const [nom, setNom] = useState('');
-        // const [permissions, setPermissions] = useState([]);
-        // const [fetchError, setFetchError] = useState(null);
-        //let navigate = useNavigate();
-
         const [nom, setNom] = useState('');
         const [permissions, setPermissions] = useState([]);
         const [fetchError, setFetchError] = useState(null);
         //const [checkbox, setCheckbox] = useState(false);
 
-        const handleCreateClick = (event) => {
+
+        useEffect(() => {
+            const fetchItems = async () => {
+                try {
+                    const reponse = await fetch(`/roles/${id}`,
+                        {
+                            method: 'get'
+                        });
+                    const rolesList = await reponse.json();
+                    setNom(rolesList.nom);
+                    setPermissions(rolesList.permissions);
+                } catch (err) {
+                    setFetchError(err.message);
+                }
+            }
+            fetchItems();
+        }, []);
+
+
+        const handleUpdateClick = (event) => {
             event.preventDefault();
             let role = {nom, permissions};
             console.log('role => ' + JSON.stringify(role));
 
             const updateRole = async () => {
                 try {
-                    const reponse = await fetch(`/roles/${role.id}`,
+                    const reponse = await fetch(`/roles/${id}`,
                         {
                             method: 'put',
-                            headers: {'Authorization': 'Bearer ' + jwt}
+                            headers: {"Content-Type": "application/json", 'Authorization': 'Bearer ' + jwt},
+                            body: JSON.stringify(role)
                         }).then(() => {
-                            navigate(`/voir-roles/${role.id}`);
+                            navigate(`/roles`);
                         }
                     );
-                    if (!reponse.ok) throw Error('Un problème est survenu lors de la creation du role.');
+                    if (!reponse.ok) throw Error('Un problème est survenu lors de la modification du role.');
                     setFetchError(null);
                 } catch (err) {
                     setFetchError(err.message);
@@ -53,18 +69,27 @@ const CreerRole = () => {
             setPermissions(perm => [event.target.value, ...perm])
         }
 
+
+        const routeChangeCancel = () => {
+            let path = `/roles`;
+            navigate(path);
+        }
+
         return (
             <div className="container center2 mt-5">
                 <div className="row">
 
                     <div className="card col-md-6 offset-md-3 offset-md-3 center3">
                         <div className="card-body">
-                            <form onSubmit={handleCreateClick}>
+                            <form onSubmit={handleUpdateClick}>
                                 <div className="form-group">
                                     <label>Nom</label>
                                     <input placeholder="Nom" name="nom" className="form-control"
                                            value={nom} onChange={updateNom}/>
                                 </div>
+                                {fetchError && <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                                    <h3 style={{color: 'red'}}>{fetchError}</h3>
+                                </Box>}
                                 <div className="form-group">
                                     <label>Permissions</label>
                                 </div>
@@ -83,8 +108,18 @@ const CreerRole = () => {
                                 </FormGroup>
                                 <FormGroup>
                                     <FormControlLabel
-                                        control={<Checkbox value="JugerRecevabilite" onClick={permissionsHandler}/>}
-                                        label="JugerRecevabilite"/>
+                                        control={<Checkbox value=" JugerCommis" onClick={permissionsHandler}/>}
+                                        label="JugerCommis"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Checkbox value=" JugerDirecteur" onClick={permissionsHandler}/>}
+                                        label="JugerDirecteur"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={<Checkbox value="JugerEnseignant" onClick={permissionsHandler}/>}
+                                        label="JugerEnseignant"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <FormControlLabel
@@ -104,7 +139,7 @@ const CreerRole = () => {
 
                                 <FormGroup>
                                     <Button color="primary" type="submit">Sauvegarder</Button>{' '}
-                                    <Button color="secondary">Annuler</Button>
+                                    <Button color="secondary" onClick={routeChangeCancel}>Annuler</Button>
                                 </FormGroup>
                             </form>
                         </div>
@@ -116,4 +151,4 @@ const CreerRole = () => {
     }
 ;
 
-export default CreerRole;
+export default ModifierRole;
