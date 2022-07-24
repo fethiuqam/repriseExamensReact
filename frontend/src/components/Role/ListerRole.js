@@ -15,7 +15,6 @@ import {useNavigate} from "react-router-dom";
 
 const ListerRole = () => {
 
-    const API_URL = `/api/roles`;
     const {id, jwt} = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const ListerRole = () => {
     useEffect(() => {
         const fetchItems = async () => {
             try {
-                const reponse = await fetch(API_URL,
+                const reponse = await fetch(`/api/roles`,
                     {
                         method: 'get',
                         headers: { 'Authorization': 'Bearer ' + jwt }
