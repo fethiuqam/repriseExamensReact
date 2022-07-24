@@ -22,7 +22,8 @@ const ModifierRole = () => {
                 try {
                     const reponse = await fetch(`/roles/${id}`,
                         {
-                            method: 'get'
+                            method: 'get',
+                            headers: { 'Authorization': 'Bearer ' + jwt }
                         });
                     const rolesList = await reponse.json();
                     setNom(rolesList.nom);
@@ -32,7 +33,7 @@ const ModifierRole = () => {
                 }
             }
             fetchItems();
-        }, []);
+        }, [id, jwt]);
 
 
         const handleUpdateClick = (event) => {

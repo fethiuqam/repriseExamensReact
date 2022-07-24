@@ -16,7 +16,7 @@ import {useNavigate} from "react-router-dom";
 const ListerRole = () => {
 
     const API_URL = `/api/roles`;
-    const { type, id, jwt } = useContext(AuthContext);
+    const {id, jwt} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [listeRoles, setListeRoles] = useState([]);
@@ -42,7 +42,7 @@ const ListerRole = () => {
             }
         }
         fetchItems();
-    }, [type, id, jwt]);
+    }, [id, jwt]);
 
     const handleDeleteClick = (rolesId) => {
         const supprimerRoles = async () => {
