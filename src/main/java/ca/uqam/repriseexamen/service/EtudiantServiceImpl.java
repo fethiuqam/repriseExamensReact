@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,6 +39,7 @@ public class EtudiantServiceImpl implements EtudiantService {
 
         return listeLigneHistorique.stream()
                 .filter(dre -> !dre.getStatutCourant().equals(TypeStatut.ENREGISTREE))
+                .filter(dre -> dre.getDateHeureSoumission().isAfter(LocalDateTime.now().minusYears(3)))
                 .collect(Collectors.toList());
     }
 }

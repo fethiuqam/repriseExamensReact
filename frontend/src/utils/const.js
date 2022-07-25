@@ -36,7 +36,7 @@ export const DECISION_AFFICHAGE = {
 export const SESSION_AFFICHAGE = {
     HIVER: "Hiver",
     AUTOMNE: "Automne",
-    ETE: "été"
+    ETE: "Été"
 };
 
 export const MOTIF_AFFICHAGE = {
