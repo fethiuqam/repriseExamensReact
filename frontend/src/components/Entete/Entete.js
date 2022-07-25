@@ -99,9 +99,6 @@ const Entete = () => {
                     component={Link}
                   />
                 )}
-                {type === "personnel" && (
-                  <StyledTab label="Planifier les reprises d'examen" />
-                )}
                 {permissions.includes(Permission.GererUsagers) && (
                   <StyledTab
                     label="Utilisateurs"
