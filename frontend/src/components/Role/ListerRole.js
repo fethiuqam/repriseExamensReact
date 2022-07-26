@@ -17,7 +17,6 @@ const ListerRole = () => {
 
     const {id, jwt} = useContext(AuthContext);
     const navigate = useNavigate();
-
     const [listeRoles, setListeRoles] = useState([]);
     const [fetchError, setFetchError] = useState(null);
     const [enChargement, setEnChargement] = useState(true);
@@ -52,7 +51,7 @@ const ListerRole = () => {
                         headers: { 'Authorization': 'Bearer ' + jwt }
 
                     });
-                if (!reponse.ok) throw Error('Un problème est survenu lors de la suppression du role.');
+                if (!reponse.ok) throw Error('Un problème est survenu lors de la suppression du rôle.');
                 setFetchError(null);
             } catch (err) {
                 setFetchError(err.message);

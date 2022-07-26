@@ -12,11 +12,9 @@ const CreerRole = () => {
         const [permissions, setPermissions] = useState([]);
         const [fetchError, setFetchError] = useState(null);
 
-
         const handleCreateClick = (event) => {
             event.preventDefault();
             let role = {nom, permissions};
-            console.log('role => ' + JSON.stringify(role));
 
             const creerRole = async () => {
                 try {
@@ -29,7 +27,7 @@ const CreerRole = () => {
                             navigate('/roles');
                         }
                     );
-                    if (!reponse.ok) throw Error('Un problème est survenu lors de la creation du role.');
+                    if (!reponse.ok) throw Error('Un problème est survenu lors de la creation du rôle.');
                     setFetchError(null);
                 } catch (err) {
                     setFetchError(err.message);
@@ -117,7 +115,8 @@ const CreerRole = () => {
 
                                 <FormGroup>
                                     <Button color="primary" type="submit" variant="outlined">Sauvegarder</Button>{' '}
-                                    <Button color="secondary" variant="outlined" onClick={routeChangeCancel}>Annuler</Button>
+                                    <Button color="secondary" variant="outlined"
+                                            onClick={routeChangeCancel}>Annuler</Button>
                                 </FormGroup>
                             </form>
                         </div>

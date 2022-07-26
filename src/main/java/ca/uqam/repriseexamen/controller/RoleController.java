@@ -14,13 +14,11 @@ import java.util.Map;
 
 @RestController
 public class RoleController {
-
     private final RoleRepository roleRepository;
 
     public RoleController(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-
 
     @GetMapping("/roles")
     public List<Role> getRoles() {
@@ -31,10 +29,9 @@ public class RoleController {
     @GetMapping("/roles/{id}")
     public ResponseEntity<Role> getRoleById(@PathVariable Long id) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Le role n'existe pas avec cet :" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Le role n'existe pas avec cet id : " + id));
         return ResponseEntity.ok(role);
     }
-
 
     @PostMapping("/roles")
     public Role createRole(@RequestBody Role role) {
@@ -42,10 +39,10 @@ public class RoleController {
     }
 
     // modifier role rest api
-   @PutMapping("/roles/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable Long id, @RequestBody Role roleDetails){
+    @PutMapping("/roles/{id}")
+    public ResponseEntity<Role> updateRole(@PathVariable Long id, @RequestBody Role roleDetails) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Le role n'existe pas avec cet:" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Le role n'existe pas avec cet id : " + id));
 
         role.setNom(roleDetails.getNom());
         role.setPermissions(roleDetails.getPermissions());
@@ -56,9 +53,10 @@ public class RoleController {
 
     // supprimer role rest api
     @DeleteMapping("/roles/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteRole(@PathVariable Long id){
+    public ResponseEntity<Map<String, Boolean>> deleteRole(@PathVariable Long id) {
         Role role = roleRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Le role n'existe pas avec cet :" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Le role n'existe pas avec cet id : " + id));
+
 
         roleRepository.delete(role);
         Map<String, Boolean> response = new HashMap<>();

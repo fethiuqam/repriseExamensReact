@@ -1,9 +1,11 @@
 package ca.uqam.repriseexamen.model;
 
 import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -12,12 +14,13 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Role {
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
-
+    private @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String nom;
-
     @ElementCollection(targetClass = Permission.class, fetch = FetchType.EAGER)
     private List<Permission> permissions;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.LAZY)
+    private Collection<Utilisateur> utilisateurs;
 
     public Role(String nom, List<Permission> permissions) {
         this.nom = nom;
@@ -31,6 +34,7 @@ public class Role {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getNom() {
         return nom;
     }
@@ -46,7 +50,4 @@ public class Role {
     public void setPermissions(List<Permission> permissions) {
         this.permissions = permissions;
     }
-
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.LAZY)
-    private Collection<Utilisateur> utilisateurs;
 }

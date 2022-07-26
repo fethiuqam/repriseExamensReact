@@ -16,14 +16,13 @@ const ModifierRole = () => {
         const [fetchError, setFetchError] = useState(null);
         //const [checkbox, setCheckbox] = useState(false);
 
-
         useEffect(() => {
             const fetchItems = async () => {
                 try {
                     const reponse = await fetch(`/roles/${id}`,
                         {
                             method: 'get',
-                            headers: { 'Authorization': 'Bearer ' + jwt }
+                            headers: {'Authorization': 'Bearer ' + jwt}
                         });
                     const rolesList = await reponse.json();
                     setNom(rolesList.nom);
@@ -39,7 +38,6 @@ const ModifierRole = () => {
         const handleUpdateClick = (event) => {
             event.preventDefault();
             let role = {nom, permissions};
-            console.log('role => ' + JSON.stringify(role));
 
             const updateRole = async () => {
                 try {
@@ -52,7 +50,7 @@ const ModifierRole = () => {
                             navigate(`/roles`);
                         }
                     );
-                    if (!reponse.ok) throw Error('Un problème est survenu lors de la modification du role.');
+                    if (!reponse.ok) throw Error('Un problème est survenu lors de la modification du rôle.');
                     setFetchError(null);
                 } catch (err) {
                     setFetchError(err.message);
@@ -61,7 +59,6 @@ const ModifierRole = () => {
             updateRole();
         }
 
-
         const updateNom = (event) => {
             setNom(event.target.value)
         }
@@ -69,7 +66,6 @@ const ModifierRole = () => {
         const permissionsHandler = (event) => {
             setPermissions(perm => [event.target.value, ...perm])
         }
-
 
         const routeChangeCancel = () => {
             let path = `/roles`;
@@ -151,5 +147,4 @@ const ModifierRole = () => {
         );
     }
 ;
-
 export default ModifierRole;

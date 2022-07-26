@@ -19,7 +19,7 @@ const VoirUnRole = props => {
                 const reponse = await fetch(`/roles/${id}`,
                     {
                         method: 'get',
-                        headers: { 'Authorization': 'Bearer ' + jwt }
+                        headers: {'Authorization': 'Bearer ' + jwt}
                     });
                 const rolesList = await reponse.json();
                 setNom(rolesList.nom);
@@ -52,7 +52,7 @@ const VoirUnRole = props => {
                                 <h3 style={{color: 'red'}}>{fetchError}</h3>
                             </Box>}
                             <div className="form-group">
-                                <label> Permissions: </label>
+                                <label> Permissions : </label>
                             </div>
                             {permissions.map(perm =>
                                 <FormGroup>
