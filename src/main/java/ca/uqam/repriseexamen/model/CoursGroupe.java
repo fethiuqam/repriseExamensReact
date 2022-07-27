@@ -36,5 +36,6 @@ public class CoursGroupe {
 
     private String groupe;
     private Session session;
+    private String annee;
 
 }

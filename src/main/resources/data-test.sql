@@ -39,12 +39,10 @@ insert into utilisateurs_roles (utilisateurs_id, roles_id)
 values
     (5, 1);
 
-
-insert into cours_groupe (groupe, session, cours_id, enseignant_id)
-values
-    ('030', 1, 1, 1),
-    ('020', 1, 2, 2),
-    ('040', 1, 3, 1);
+insert into cours_groupe (groupe, session, annee, cours_id, enseignant_id)
+values ('030', 1, '2022', 1, 1),
+       ('020', 1, '2022', 2, 2),
+       ('040', 2, '2022', 3, 1);
 
 insert into cours_groupe_etudiant (cours_groupe_id, etudiant_id)
 values
