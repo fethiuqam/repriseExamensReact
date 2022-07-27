@@ -207,7 +207,6 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-
     @Test
     public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()
             throws Exception {
@@ -234,7 +233,17 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(multipart("/api/demandes").file(dre).file(fichier))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
+    }
 
+    @Test
+    public void devraitRetournerStatutNoContentPourAnnulerDemandeEtudiant()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/annuler-etudiant")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.ANNULEE);
     }
 
     @Test

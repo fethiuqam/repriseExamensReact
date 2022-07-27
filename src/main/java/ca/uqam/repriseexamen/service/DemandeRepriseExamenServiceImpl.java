@@ -87,7 +87,6 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         return demande.orElse(null);
     }
 
-
     @Override
     public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {
         Statut statutSoumission = Statut.builder()
@@ -198,7 +197,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
                 .dateHeure(LocalDateTime.now())
                 .demandeRepriseExamen(demande)
                 .build();
-    
+
             demande.getListeMessage().add(message);
             demandeRepriseExamenRepository.save(demande);
 
@@ -207,5 +206,4 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
 }

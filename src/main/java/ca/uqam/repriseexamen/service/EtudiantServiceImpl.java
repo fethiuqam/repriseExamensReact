@@ -25,8 +25,8 @@ public class EtudiantServiceImpl implements EtudiantService {
 
     /**
      * Getter d'étudiant par le Repository
-     * @param idEtudiant
-     * @return
+     * @param idEtudiant id de l'etudiant
+     * @return Etudiant associe au id donné
      */
     public Optional<Etudiant> getEtudiant(Long idEtudiant) {
         return etudiantRepository.findById(idEtudiant);
