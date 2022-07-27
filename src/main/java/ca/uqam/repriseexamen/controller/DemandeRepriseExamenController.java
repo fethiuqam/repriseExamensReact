@@ -82,6 +82,7 @@ public class DemandeRepriseExamenController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"error\":\"" + e.getMessage() + "\"}");
         }
+
         if(demande != null)
             return new ResponseEntity<>(demande, HttpStatus.OK);
         else
@@ -110,6 +111,12 @@ public class DemandeRepriseExamenController {
             });
         }
         return dre;
+    }
+
+    @PatchMapping(path = "/{id}/annuler-etudiant")
+    public ResponseEntity<?> annulerDemandeParEtudiant(@PathVariable Long id) {
+        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.ANNULEE);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PatchMapping(path = "/{id}/accepter-commis")
