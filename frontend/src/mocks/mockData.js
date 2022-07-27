@@ -4,6 +4,7 @@ export const personnelItems = [
         coursGroupe: {
             session: "HIVER",
             groupe: "030",
+            annee: "2022",
             cours: {
                 sigle: "INF1120"
             }
@@ -27,6 +28,7 @@ export const personnelItems = [
         coursGroupe: {
             session: "AUTOMNE",
             groupe: "020",
+            annee: "2022",
             cours: {
                 sigle: "INF2120"
             }
@@ -50,6 +52,7 @@ export const personnelItems = [
         coursGroupe: {
             session: "HIVER",
             groupe: "040",
+            annee: "2022",
             cours: {
                 sigle: "INF1070"
             }

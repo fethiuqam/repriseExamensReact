@@ -12,26 +12,25 @@ export const STATUTS = [
 ];
 
 export const STATUT_AFFICHAGE = {
-    ENREGISTREE: "Enregistrée",
-    SOUMISE: "Soumise",
-    EN_TRAITEMENT: "En traitement",
-    ACCEPTEE: "Acceptée",
-    REJETEE: "Rejetée",
-    ANNULEE: "Annulée",
-    PLANIFIEE: "Planifiée",
-    ABSENCE: "Absence",
-    COMPLETEE: "Complétée"
-}
+    ENREGISTREE: ["Enregistrée", "#AED6F1", "#555"],
+    SOUMISE: ["Soumise", "#55B2FA", "#FFF"],
+    EN_TRAITEMENT: ["En traitement", "#B07FFC", "#FFF"],
+    ACCEPTEE: ["Acceptée", "#A5F8C4", "#666"],
+    REJETEE: ["Rejetée", "#F91A21", "#FFF"],
+    ANNULEE: ["Annulée", "#FBE90E", "#666"],
+    PLANIFIEE: ["Planifiée", "#0EEDFB", "#666"],
+    ABSENCE: ["Absence", "#FC6538", "#FFF"],
+    COMPLETEE: ["Complétée", "#06D515", "#FFF"]
+};
 
 export const DECISION_AFFICHAGE = {
-    ACCEPTEE_COMMIS: "Acceptée par le commis",
-    ACCEPTEE_DIRECTEUR: "Acceptée par le directeur",
-    ACCEPTEE_ENSEIGNANT: "Acceptée par l'enseignant",
-    REJETEE_COMMIS: "Rejetée par le commis",
-    REJETEE_DIRECTEUR: "Rejetée par le directeur",
-    REJETEE_ENSEIGNANT: "Rejetée par l'enseignant",
-
-}
+    ACCEPTEE_COMMIS: ["Acceptée par le commis", "success"],
+    ACCEPTEE_DIRECTEUR: ["Acceptée par le directeur", "success"],
+    ACCEPTEE_ENSEIGNANT: ["Acceptée par l'enseignant", "success"],
+    REJETEE_COMMIS: ["Rejetée par le commis", "error"],
+    REJETEE_DIRECTEUR: ["Rejetée par le directeur", "error"],
+    REJETEE_ENSEIGNANT: ["Rejetée par l'enseignant", "error"]
+};
 
 export const SESSION_AFFICHAGE = {
     HIVER: "Hiver",

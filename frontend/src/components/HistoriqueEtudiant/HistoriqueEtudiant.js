@@ -16,7 +16,9 @@ import {
     Typography
 } from '@mui/material';
 import {afficherDate} from "../../utils/utils";
-import {DECISION_AFFICHAGE, MOTIF_AFFICHAGE, STATUT_AFFICHAGE} from "../../utils/const";
+import {MOTIF_AFFICHAGE} from "../../utils/const";
+import Statut from "../Statut/Statut";
+import Decision from "../Decision/Decision";
 
 /* * * * * * * * Utilitaires * * * * * * * *
  *
@@ -95,7 +97,6 @@ export const useAPI = (url) => {
  **********************************/
 const HistoriqueEtudiant = ({idEtudiant}) => {
 
-    /* const API_URL = `/api/etudiants/${idEtudiant}/historique`; */
     const API_URL = `/api/etudiants/${idEtudiant}/historique`; /* pour visualiser le UI */
     const columns = {
         dateHeureSoumission: "Soumise le",
@@ -180,11 +181,8 @@ const HistoriqueEtudiant = ({idEtudiant}) => {
                                                 <TableCell>{afficherDate(d.dateHeureSoumission)}</TableCell>
                                                 <TableCell>{MOTIF_AFFICHAGE[d.motifAbsence]}</TableCell>
                                                 <TableCell>{d.coursGroupe.cours.sigle}</TableCell>
-                                                <TableCell>{STATUT_AFFICHAGE[d.statutCourant]}</TableCell>
-                                                <TableCell>{d.decisionCourante
-                                                    ? DECISION_AFFICHAGE[d.decisionCourante]
-                                                    : "Aucune"
-                                                }</TableCell>
+                                                <TableCell><Statut statut={d.statutCourant} /></TableCell>
+                                                <TableCell><Decision decision={d.decisionCourante}/></TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
