@@ -8,7 +8,7 @@ import java.util.List;
 public interface LigneDREPersonnelDTO extends LigneDREDTO {
 
     @Value("#{target.getDecisionCourante()}")
-    TypeDecision getDecisionCourante();
+    Decision getDecisionCourante();
 
     @Value("#{target.getAbsenceDetails()}")
     String getAbsenceDetails();

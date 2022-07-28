@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 
@@ -30,7 +31,7 @@ public interface DemandeRepriseExamenService {
 
     Optional<DemandeRepriseExamen> findDemandeRepriseExamen(Long id);
 
-    void ajouterDemandeDecision(Long id, JsonNode patch, TypeDecision typeDecisionCourant, TypeDecision typeDecisionAjoute);
+    void ajouterDemandeDecision(Long id, JsonNode patch, Set<TypeDecision> decisionsCourantes, TypeDecision typeDecisionAjoute);
 
     void supprimerDemandeDecision(Long id, TypeDecision typeDecisionCourante);
 

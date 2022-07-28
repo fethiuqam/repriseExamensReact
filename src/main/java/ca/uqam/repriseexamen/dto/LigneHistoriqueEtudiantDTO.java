@@ -1,9 +1,6 @@
 package ca.uqam.repriseexamen.dto;
 
-import ca.uqam.repriseexamen.model.CoursGroupe;
-import ca.uqam.repriseexamen.model.MotifAbsence;
-import ca.uqam.repriseexamen.model.TypeDecision;
-import ca.uqam.repriseexamen.model.TypeStatut;
+import ca.uqam.repriseexamen.model.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDateTime;
@@ -29,7 +26,7 @@ public interface LigneHistoriqueEtudiantDTO {
     TypeStatut getStatutCourant();
 
     @Value("#{target.getDecisionCourante()}")
-    TypeDecision getDecisionCourante();
+    Decision getDecisionCourante();
 
     
 }

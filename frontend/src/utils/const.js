@@ -24,12 +24,13 @@ export const STATUT_AFFICHAGE = {
 };
 
 export const DECISION_AFFICHAGE = {
-    ACCEPTEE_COMMIS: ["Acceptée par le commis", "success"],
+    ACCEPTATION_RECOMMANDEE: ["Acceptation recommandée", "success"],
     ACCEPTEE_DIRECTEUR: ["Acceptée par le directeur", "success"],
     ACCEPTEE_ENSEIGNANT: ["Acceptée par l'enseignant", "success"],
-    REJETEE_COMMIS: ["Rejetée par le commis", "error"],
+    REJET_RECOMMANDE: ["Rejet recommandé", "error"],
     REJETEE_DIRECTEUR: ["Rejetée par le directeur", "error"],
-    REJETEE_ENSEIGNANT: ["Rejetée par l'enseignant", "error"]
+    REJETEE_ENSEIGNANT: ["Rejetée par l'enseignant", "error"],
+    AUCUNE: ["Aucune", "default"]
 };
 
 export const SESSION_AFFICHAGE = {
