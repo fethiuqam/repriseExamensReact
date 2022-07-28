@@ -64,3 +64,40 @@ export const STYLE_MESSAGE_ENVOYE = {
     maxWidth: '80%',
     backgroundColor: '#0695FF'
 }
+
+export const Permission = {
+  ListerDRE: "ListerDRE",
+  AfficherDRE: "AfficherDRE",
+  AfficherJustificatifs: "AfficherJustificatifs",
+  JugerRecevabilite: "JugerRecevabilite",
+  PlanifierDates: "PlanifierDates",
+  GererUsagers: "GererUsagers",
+  GererRoles: "GererRoles",
+};
+
+export const TypeId = {
+  Etudiant: "etudiant",
+  Enseignant: "enseignant",
+  Personnel: "personnel",
+};
+
+export const types = {
+  [TypeId.Etudiant]: {
+    id: TypeId.Etudiant,
+    nom: "Étudiant",
+    endpoint: "etudiants",
+    nomIdentifiant: "codePermanent",
+  },
+  [TypeId.Enseignant]: {
+    id: TypeId.Enseignant,
+    nom: "Enseignant",
+    endpoint: "enseignants",
+    nomIdentifiant: "matricule",
+  },
+  [TypeId.Personnel]: {
+    id: TypeId.Personnel,
+    nom: "Personnel",
+    endpoint: "personnels",
+    nomIdentifiant: "matricule",
+  },
+};

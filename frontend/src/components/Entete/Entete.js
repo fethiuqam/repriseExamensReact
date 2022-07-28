@@ -13,7 +13,7 @@ import { Stack } from "@mui/material";
 import "../../styles/StyleEtudiant.css";
 import AuthContext from "../../context/AuthProvider";
 import {deconnecterUtilisateur} from "../../api/AuthentificationService";
-import { Permission } from "../../shared/constants";
+import { Permission } from "../../utils/const";
 
 const entete = "UQÀM | Demandes de reprises d'examens";
 const deconnexion = "Déconnexion";
