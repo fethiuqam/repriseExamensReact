@@ -123,7 +123,6 @@ values ('2022-01-15T10:34:09', 0, 1),
        ('2022-04-29T11:34:09', 3, 3),
        ('2022-02-04T14:36:02', 1, 4),
        ('2022-02-05T14:37:02', 3, 4),
-       ('2022-02-06T08:00:02', 5, 4),
        ('2022-02-22T11:01:10', 1, 5),
        ('2022-02-24T14:36:02', 3, 5),
        ('2022-03-22T10:02:07', 4, 5),
@@ -141,17 +140,16 @@ values ('2022-01-15T10:34:09', 0, 1),
        ('2021-03-29T10:02:07', 6, 8),
        ('2021-04-10T18:30:09', 7, 8),
        ('2020-03-01T12:05:08', 1, 9),
-       ('2020-03-05T11:02:06', 2, 9),
        ('2020-05-20T14:36:02', 1, 10),
        ('2020-05-29T15:36:05', 2, 10),
        ('2018-02-03T10:34:08', 1, 11),
-       ('2018-02-05T11:34:09', 3, 11),
-       ('2018-02-08T12:05:08', 5, 11);
+       ('2018-02-05T11:34:09', 3, 11);
+
 
 
 insert into decision (date_heure, type_decision, demande_reprise_examen_id)
 values ('2022-05-03T11:00:09', 0, 2),
-       ('2022-03-15T10:40:01', 0, 3),
+       ('2022-03-15T10:40:01', 2, 3),
        ('2022-03-25T10:40:01', 1, 4),
        ('2022-03-05T10:40:01', 0, 5),
        ('2022-03-08T10:40:01', 2, 5),
@@ -169,7 +167,4 @@ values ('2022-05-03T11:00:09', 0, 2),
 insert into message (type_message, contenu, date_heure, demande_reprise_examen_id)
 values (0, 'Veuillez fournir une preuve médicale', '2022-02-15T10:34:09', 1),
        (0, 'Veuillez fournir une preuve de votre absence', '2022-02-15T10:39:09', 2),
-       (1, 'Je vais soumettre un fichier PDF dans la demande', '2022-02-15T12:54:08', 2),
-       (0, 'Veuillez préciser la période de votre convocation', '2022-02-15T10:45:09', 3),
-       (1, 'De lundi à vendredi passé', '2022-02-15T12:54:08', 3),
-       (0, 'Pouvez-vous fournir une demande officielle prouvant que vous avez été convoqué?', '2022-02-15T13:22:05', 3);
+       (1, 'Je vais soumettre un fichier PDF dans la demande', '2022-02-15T12:54:08', 2);

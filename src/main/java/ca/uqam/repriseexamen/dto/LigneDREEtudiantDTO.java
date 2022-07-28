@@ -18,6 +18,9 @@ public interface LigneDREEtudiantDTO extends LigneDREDTO {
     @Value("#{target.getListeMessage()}")
     List<Message> getListeMessage();
 
+    @Value("#{ target.estRejetee() ? target.getDecisionCourante().getDetails() : null}")
+    String getDetailsRejet();
+
     @JsonIgnore
     @Value("#{target.getEtudiant().getId()}")
     long getIdEtudiant();

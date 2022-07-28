@@ -45,7 +45,6 @@ export default function FiltreListeDRE({statuts, filtrer}) {
                         <MenuItem key={index} value={statut}>
                             <Checkbox checked={filtre.statuts.indexOf(statut) > -1}/>
                             <Statut statut={statut}/>
-                            {/*<ListItemText primary={STATUT_AFFICHAGE[statut]}/>*/}
                         </MenuItem>
                     ))}
                 </Select>

@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import AuthContext from "../../context/AuthProvider";
 import {connectionUtilisateur} from "../../api/AuthentificationService";
 
@@ -24,9 +24,6 @@ export default function Connexion() {
     const [errConnectMessage, setErrConnectMessage] = useState('');
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
-
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -35,7 +32,7 @@ export default function Connexion() {
              setType(response.type);
              setId(response.id);
              setPermissions(response.permissions);
-             navigate(from, {replace: true});
+             navigate("/", {replace: true});
         }).catch(()=>{
             setErrConnectMessage("Échec, mauvaises informations d'identification");
         });

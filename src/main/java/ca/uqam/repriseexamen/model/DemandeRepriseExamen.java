@@ -1,16 +1,14 @@
 package ca.uqam.repriseexamen.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -53,6 +51,7 @@ public class DemandeRepriseExamen {
 
     @ManyToOne
     private CoursGroupe coursGroupe;
+
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> listeMessage;
 
@@ -76,11 +75,11 @@ public class DemandeRepriseExamen {
     }
 
     @JsonIgnore
-    public TypeDecision getDecisionCourante() {
+    public Decision getDecisionCourante() {
         Optional<Decision> decisionCourante = listeDecision.stream()
                 .max(Comparator.comparing(Decision::getDateHeure));
 
-        return decisionCourante.map(Decision::getTypeDecision).orElse(null);
+        return decisionCourante.orElse(Decision.builder().typeDecision(TypeDecision.AUCUNE).build());
     }
 
     @JsonIgnore
@@ -89,5 +88,10 @@ public class DemandeRepriseExamen {
                 .max(Comparator.comparing(Message::getDateHeure));
 
         return dernierMessage.map(Message::getTypeMessage).orElse(null);
+    }
+
+    @JsonIgnore
+    public boolean estRejetee(){
+        return this.getStatutCourant() == TypeStatut.REJETEE;
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/demandes")
@@ -73,14 +73,10 @@ public class DemandeRepriseExamenController {
                     demande = demandeRepriseExamenService.getDemandeRepriseExamenEtudiantById(id, authentifie.getId());
                     break;
                 default:
-                    return ResponseEntity
-                            .status(HttpStatus.UNAUTHORIZED)
-                            .body("{\"error\":\"acces non autorisé.\"}");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body("{\"error\":\"" + e.getMessage() + "\"}");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         if(demande != null)
@@ -119,73 +115,101 @@ public class DemandeRepriseExamenController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping(path = "/{id}/accepter-commis")
-    public ResponseEntity<?> accepterDemandeParCommis(@PathVariable Long id,
-                                                      @RequestBody JsonNode patch) {
-        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, null,
-                TypeDecision.ACCEPTEE_COMMIS);
-        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.EN_TRAITEMENT);
+    @PatchMapping(path = "/{id}/accepter")
+    public ResponseEntity<?> accepterDemande(@PathVariable Long id, @RequestBody JsonNode patch) throws Exception {
+        Utilisateur authentifie = authentifieService.GetAuthentifie();
+
+        // utilisateur est un commis logiciel
+        if (authentifie.getType().equals("personnel") && authentifie.getPermissions().contains(Permission.JugerCommis)) {
+            demandeRepriseExamenService.ajouterDemandeDecision(id, patch, Set.of(TypeDecision.AUCUNE),
+                    TypeDecision.ACCEPTATION_RECOMMANDEE);
+            demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.EN_TRAITEMENT);
+
+            // Utilisateur est un directeur
+        } else if (authentifie.getType().equals("personnel")
+                && authentifie.getPermissions().contains(Permission.JugerDirecteur)) {
+            demandeRepriseExamenService.ajouterDemandeDecision(id, patch,
+                    Set.of(TypeDecision.AUCUNE, TypeDecision.ACCEPTATION_RECOMMANDEE, TypeDecision.REJET_RECOMMANDE),
+                    TypeDecision.ACCEPTEE_DIRECTEUR);
+            demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.EN_TRAITEMENT);
+
+            // Utilisateur est un enseignant
+        } else if (authentifie.getType().equals("enseignant")) {
+            demandeRepriseExamenService.ajouterDemandeDecision(id, patch, Set.of(TypeDecision.ACCEPTEE_DIRECTEUR),
+                    TypeDecision.ACCEPTEE_ENSEIGNANT);
+            demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.ACCEPTEE);
+
+            // utilisateur non autorise
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PatchMapping(path = "/{id}/rejeter-commis")
-    public ResponseEntity<?> rejeterDemandeParCommis(@PathVariable Long id, @RequestBody JsonNode patch) throws InterruptedException {
-        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, null,
-                TypeDecision.REJETEE_COMMIS);
-        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.EN_TRAITEMENT);
-        TimeUnit.MILLISECONDS.sleep(10);
-        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.REJETEE);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    @PatchMapping(path = "/{id}/rejeter")
+    public ResponseEntity<?> rejeterDemande(@PathVariable Long id, @RequestBody JsonNode patch) throws Exception {
+
+        if (patch.has("details") && patch.get("details").asText().length() > 2) {
+
+            Utilisateur authentifie = authentifieService.GetAuthentifie();
+
+            // Utilisateur est un commis
+            if (authentifie.getType().equals("personnel") && authentifie.getPermissions().contains(Permission.JugerCommis)) {
+                demandeRepriseExamenService.ajouterDemandeDecision(id, patch, Set.of(TypeDecision.AUCUNE),
+                        TypeDecision.REJET_RECOMMANDE);
+                demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.EN_TRAITEMENT);
+
+                // Utilisateur est un directeur
+            } else if (authentifie.getType().equals("personnel")
+                    && authentifie.getPermissions().contains(Permission.JugerDirecteur)) {
+                demandeRepriseExamenService.ajouterDemandeDecision(id, patch,
+                        Set.of(TypeDecision.AUCUNE, TypeDecision.ACCEPTATION_RECOMMANDEE, TypeDecision.REJET_RECOMMANDE),
+                        TypeDecision.REJETEE_DIRECTEUR);
+                demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.REJETEE);
+
+                // Utilisateur est un enseignant
+            } else if (authentifie.getType().equals("enseignant")) {
+                demandeRepriseExamenService.ajouterDemandeDecision(id, patch, Set.of(TypeDecision.ACCEPTEE_DIRECTEUR),
+                        TypeDecision.REJETEE_ENSEIGNANT);
+                demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.REJETEE);
+
+                // Utilisateur non autorise
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        // le patch ne contient pas l attribut details ou le texte est de longueur < 3
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
     }
 
-    @PatchMapping(path = "/{id}/accepter-directeur")
-    public ResponseEntity<?> accepterDemandeParDirecteur(@PathVariable Long id, @RequestBody JsonNode patch) {
-        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, TypeDecision.ACCEPTEE_COMMIS,
-                TypeDecision.ACCEPTEE_DIRECTEUR);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    @PatchMapping(path = "/{id}/annuler-rejet")
+    public ResponseEntity<?> annulerRejetDemande(@PathVariable Long id, @RequestBody JsonNode patch) throws Exception {
 
-    @PatchMapping(path = "/{id}/rejeter-directeur")
-    public ResponseEntity<?> rejeterDemandeParDirecteur(@PathVariable Long id, @RequestBody JsonNode patch) {
-        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, TypeDecision.ACCEPTEE_COMMIS,
-                TypeDecision.REJETEE_DIRECTEUR);
-        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.REJETEE);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+        Utilisateur authentifie = authentifieService.GetAuthentifie();
 
-    @PatchMapping(path = "/{id}/accepter-enseignant")
-    public ResponseEntity<?> accepterDemandeParEnseignant(@PathVariable Long id, @RequestBody JsonNode patch) {
-        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, TypeDecision.ACCEPTEE_DIRECTEUR,
-                TypeDecision.ACCEPTEE_ENSEIGNANT);
-        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.ACCEPTEE);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+        // Utilisateur est un commis
+        if (authentifie.getType().equals("personnel") && authentifie.getPermissions().contains(Permission.JugerCommis)) {
+            demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJET_RECOMMANDE);
 
-    @PatchMapping(path = "/{id}/rejeter-enseignant")
-    public ResponseEntity<?> rejeterDemandeParEnseignant(@PathVariable Long id, @RequestBody JsonNode patch) {
-        demandeRepriseExamenService.ajouterDemandeDecision(id, patch, TypeDecision.ACCEPTEE_DIRECTEUR,
-                TypeDecision.REJETEE_ENSEIGNANT);
-        demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.REJETEE);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+            // Utilisateur est un directeur
+        } else if (authentifie.getType().equals("personnel")
+                && authentifie.getPermissions().contains(Permission.JugerDirecteur)) {
+            demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJETEE_DIRECTEUR);
 
-    @PatchMapping(path = "/{id}/annuler-rejet-commis")
-    public ResponseEntity<?> annulerRejetDemandeParCommis(@PathVariable Long id) {
-        demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJETEE_COMMIS);
-        demandeRepriseExamenService.annulerRejetStatut(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+            // Utilisateur est un enseignant
+        } else if (authentifie.getType().equals("enseignant")) {
+            demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJETEE_ENSEIGNANT);
 
-    @PatchMapping(path = "/{id}/annuler-rejet-directeur")
-    public ResponseEntity<?> annulerRejetDemandeParDirecteur(@PathVariable Long id) {
-        demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJETEE_DIRECTEUR);
-        demandeRepriseExamenService.annulerRejetStatut(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+            // Utilisateur non autorise
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-    @PatchMapping(path = "/{id}/annuler-rejet-enseignant")
-    public ResponseEntity<?> annulerRejetDemandeParEnseignant(@PathVariable Long id) {
-        demandeRepriseExamenService.supprimerDemandeDecision(id, TypeDecision.REJETEE_ENSEIGNANT);
         demandeRepriseExamenService.annulerRejetStatut(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -194,13 +218,10 @@ public class DemandeRepriseExamenController {
     public ResponseEntity<?> envoyerMessage(@PathVariable Long id, @RequestBody JsonNode json) throws Exception {
         Utilisateur authentifie = authentifieService.GetAuthentifie();
 
-        switch (authentifie.getType()){
-            case "personnel":
-                return demandeRepriseExamenService.envoyerMessage(id, TypeMessage.DEMANDE_COMMIS, json);
-            case "etudiant":
-                return demandeRepriseExamenService.envoyerMessage(id, TypeMessage.REPONSE_ETUDIANT, json);
-            default:
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+        return switch (authentifie.getType()) {
+            case "personnel" -> demandeRepriseExamenService.envoyerMessage(id, TypeMessage.DEMANDE_COMMIS, json);
+            case "etudiant" -> demandeRepriseExamenService.envoyerMessage(id, TypeMessage.REPONSE_ETUDIANT, json);
+            default -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        };
     }
 }

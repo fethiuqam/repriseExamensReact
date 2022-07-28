@@ -3,18 +3,18 @@ import JugerDRE from "./JugerDRE";
 
 const mockActualiserDRE = jest.fn();
 
-test("devrait retourner deux boutons actives pour decision null au commis", () => {
+test("devrait retourner deux boutons actives pour decision aucune au commis", () => {
     render(
         <JugerDRE
             idDRE={1}
             juge="commis"
-            decisionCourante={null}
+            decisionCourante="AUCUNE"
             actualiserDRE={mockActualiserDRE}
         />
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    expect(screen.getByRole("button", {name: "Accepter la demande"})).not.toBeDisabled();
-    expect(screen.getByRole("button", {name: "Rejeter la demande"})).not.toBeDisabled();
+    expect(screen.getByRole("button", {name: "Recommander l'acceptation"})).not.toBeDisabled();
+    expect(screen.getByRole("button", {name: "Recommander le rejet"})).not.toBeDisabled();
 });
 
 test("devrait retourner deux boutons dont un desactive pour decision rejetee commis au commis", () => {
@@ -22,35 +22,35 @@ test("devrait retourner deux boutons dont un desactive pour decision rejetee com
         <JugerDRE
             idDRE={1}
             juge="commis"
-            decisionCourante="REJETEE_COMMIS"
+            decisionCourante="REJET_RECOMMANDE"
             actualiserDRE={mockActualiserDRE}
         />
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    expect(screen.getByRole("button", {name: "Accepter la demande"})).toBeDisabled();
+    expect(screen.getByRole("button", {name: "Recommander l'acceptation"})).toBeDisabled();
     expect(screen.getByRole("button", {name: "Annuler le rejet"})).not.toBeDisabled();
 });
 
-test("devrait retourner deux boutons desactives pour decision acceptee commis au commis", () => {
+test("devrait retourner deux boutons desactives pour decision acceptation recommandee au commis", () => {
     render(
         <JugerDRE
             idDRE={1}
             juge="commis"
-            decisionCourante="ACCEPTEE_COMMIS"
+            decisionCourante="ACCEPTATION_RECOMMANDEE"
             actualiserDRE={mockActualiserDRE}
         />
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    expect(screen.getByRole("button", {name: "Accepter la demande"})).toBeDisabled();
-    expect(screen.getByRole("button", {name: "Rejeter la demande"})).toBeDisabled();
+    expect(screen.getByRole("button", {name: "Recommander l'acceptation"})).toBeDisabled();
+    expect(screen.getByRole("button", {name: "Recommander le rejet"})).toBeDisabled();
 });
 
-test("devrait retourner deux boutons actives pour decision acceptee commis au directeur", () => {
+test("devrait retourner deux boutons actives pour decision aucune au directeur", () => {
     render(
         <JugerDRE
             idDRE={1}
             juge="directeur"
-            decisionCourante="ACCEPTEE_COMMIS"
+            decisionCourante="AUCUNE"
             actualiserDRE={mockActualiserDRE}
         />
     );
@@ -59,32 +59,32 @@ test("devrait retourner deux boutons actives pour decision acceptee commis au di
     expect(screen.getByRole("button", {name: "Rejeter la demande"})).not.toBeDisabled();
 });
 
-test("devrait retourner deux boutons desactives pour decision null au directeur", () => {
+test("devrait retourner deux boutons actives pour decision acceptation recommandee au directeur", () => {
     render(
         <JugerDRE
             idDRE={1}
             juge="directeur"
-            decisionCourante={null}
+            decisionCourante="ACCEPTATION_RECOMMANDEE"
             actualiserDRE={mockActualiserDRE}
         />
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    expect(screen.getByRole("button", {name: "Accepter la demande"})).toBeDisabled();
-    expect(screen.getByRole("button", {name: "Rejeter la demande"})).toBeDisabled();
+    expect(screen.getByRole("button", {name: "Accepter la demande"})).not.toBeDisabled();
+    expect(screen.getByRole("button", {name: "Rejeter la demande"})).not.toBeDisabled();
 });
 
-test("devrait retourner deux boutons desactives pour decision rejetee commis au directeur", () => {
+test("devrait retourner deux boutons actives pour decision rejet recommande au directeur", () => {
     render(
         <JugerDRE
             idDRE={1}
             juge="directeur"
-            decisionCourante="REJETEE_COMMIS"
+            decisionCourante="REJET_RECOMMANDE"
             actualiserDRE={mockActualiserDRE}
         />
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
-    expect(screen.getByRole("button", {name: "Accepter la demande"})).toBeDisabled();
-    expect(screen.getByRole("button", {name: "Rejeter la demande"})).toBeDisabled();
+    expect(screen.getByRole("button", {name: "Accepter la demande"})).not.toBeDisabled();
+    expect(screen.getByRole("button", {name: "Rejeter la demande"})).not.toBeDisabled();
 });
 
 test("devrait retourner deux boutons actives pour decision acceptee directeur a enseignant", () => {
@@ -106,11 +106,11 @@ test("devrait retourner une fenetre dialog details apres click sur accepter dema
         <JugerDRE
             idDRE={1}
             juge="commis"
-            decisionCourante={null}
+            decisionCourante="AUCUNE"
             actualiserDRE={mockActualiserDRE}
         />
     );
-    const boutonAccepter = screen.getByRole("button", {name: "Accepter la demande"});
+    const boutonAccepter = screen.getByRole("button", {name: "Recommander l'acceptation"});
     expect(boutonAccepter).not.toBeDisabled();
     fireEvent.click(boutonAccepter);
     const dialog = screen.getByRole("dialog");
@@ -125,11 +125,11 @@ test("devrait retourner une fenetre dialog details apres click sur rejeter deman
         <JugerDRE
             idDRE={1}
             juge="commis"
-            decisionCourante={null}
+            decisionCourante="AUCUNE"
             actualiserDRE={mockActualiserDRE}
         />
     );
-    const boutonRejeter = screen.getByRole("button", {name: "Rejeter la demande"});
+    const boutonRejeter = screen.getByRole("button", {name: "Recommander le rejet"});
     expect(boutonRejeter).not.toBeDisabled();
     fireEvent.click(boutonRejeter);
     const dialog = screen.getByRole("dialog");
@@ -144,11 +144,11 @@ test("devrait retourner une fenetre dialog confirmation apres click sur accepter
         <JugerDRE
             idDRE={1}
             juge="commis"
-            decisionCourante={null}
+            decisionCourante="AUCUNE"
             actualiserDRE={mockActualiserDRE}
         />
     );
-    const boutonAccepter = screen.getByRole("button", {name: "Accepter la demande"});
+    const boutonAccepter = screen.getByRole("button", {name: "Recommander l'acceptation"});
     expect(boutonAccepter).not.toBeDisabled();
     fireEvent.click(boutonAccepter);
     const dialogDetails = screen.getByRole("dialog");

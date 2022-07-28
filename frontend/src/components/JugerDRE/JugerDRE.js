@@ -14,12 +14,10 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from '@mui/icons-material/Clear';
 import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
 
-const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
-
+const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE}) => {
 
     const [details, setDetails] = useState("");
     const [jugement, setJugement] = useState("");
-
 
     const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
     const [detailsDialogTitre, setDetailsDialogTitre] = useState("");
@@ -78,7 +76,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
 
     const jugerDemande = () => {
         setSnackBarOpen(true);
-        const API_URL = `/api/demandes/${idDRE}/${jugement}-${juge}`;
+        const API_URL = `/api/demandes/${idDRE}/${jugement}`;
         const patch = {details: details};
         const accepterDemandeCommis = async () => {
             try {
@@ -114,10 +112,14 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
     }
 
     const desactiverAccepterRejeterdemande = () => {
-        if (juge === "commis") {
-            return decisionCourante != null;
+        if (statutCourant === "ANNULEE" || statutCourant === "ENREGISTREE") {
+            return true;
+        } else if (juge === "commis") {
+            return decisionCourante !== "AUCUNE";
         } else if (juge === "directeur") {
-            return decisionCourante !== "ACCEPTEE_COMMIS";
+            return decisionCourante !== "AUCUNE"
+                && decisionCourante !== "ACCEPTATION_RECOMMANDEE"
+                && decisionCourante !== "REJET_RECOMMANDE";
         } else if (juge === "enseignant") {
             return decisionCourante !== "ACCEPTEE_DIRECTEUR";
         }
@@ -126,7 +128,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
 
     const afficherAnnulerRejet = () => {
         if (juge === "commis") {
-            return decisionCourante === "REJETEE_COMMIS";
+            return decisionCourante === "REJET_RECOMMANDE";
         } else if (juge === "directeur") {
             return decisionCourante === "REJETEE_DIRECTEUR";
         } else if (juge === "enseignant") {
@@ -137,7 +139,6 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
 
     return (
         <>
-
             <Button
                 onClick={handleAccepterDemande}
                 variant="contained"
@@ -145,7 +146,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
                 endIcon={<DoneIcon/>}
                 disabled={desactiverAccepterRejeterdemande()}
             >
-                Accepter la demande
+                {juge === "commis" ? "Recommander l'acceptation" : "Accepter la demande"}
             </Button>
             {afficherAnnulerRejet()
                 ? <Button
@@ -163,7 +164,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
                     endIcon={<ClearIcon/>}
                     disabled={desactiverAccepterRejeterdemande()}
                 >
-                    Rejeter la demande
+                    {juge === "commis" ? "Recommander le rejet" : "Rejeter la demande"}
                 </Button>
             }
 
@@ -174,7 +175,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
             >
                 <DialogTitle>{detailsDialogTitre}</DialogTitle>
                 {dialogContentDetailsVisible
-                    ?<DialogContent>
+                    ? <DialogContent>
                         <DialogContentText>{detailsDialogContenu}</DialogContentText>
                         <TextField
                             label="Détails"
@@ -188,15 +189,19 @@ const JugerDRE = ({idDRE, juge, decisionCourante, actualiserDRE}) => {
                             onChange={e => setDetails(e.target.value)}
                         />
                     </DialogContent>
-                    :null
+                    : null
                 }
 
                 <DialogActions>
                     <Button onClick={() => setDetailsDialogOpen(false)}>Annuler</Button>
-                    <Button onClick={() => {
-                        setDetailsDialogOpen(false);
-                        setConfirmationDialogOpen(true);
-                    }}>{detailsDialogTexteBouton}</Button>
+                    <Button
+                        onClick={() => {
+                            setDetailsDialogOpen(false);
+                            setConfirmationDialogOpen(true);
+                        }}
+                        disabled={ jugement === "rejeter" && details.trim().length < 3}
+                    >{detailsDialogTexteBouton}
+                    </Button>
                 </DialogActions>
             </Dialog>
 
