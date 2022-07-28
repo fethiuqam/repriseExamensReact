@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -20,7 +19,4 @@ public class Role {
 
     @ElementCollection(targetClass = Permission.class, fetch = FetchType.EAGER)
     private List<Permission> permissions;
-
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "roles", fetch = FetchType.LAZY)
-    private Collection<Utilisateur> utilisateurs;
 }

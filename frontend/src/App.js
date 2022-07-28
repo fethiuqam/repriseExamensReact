@@ -11,7 +11,7 @@ import AuthRequise from "./components/AuthRequise/AuthRequise";
 import NonAutorise from "./components/NonAutorise/NonAutorise";
 import NonTrouve from "./components/NonTrouve/NonTrouve";
 import Formulaire from "./components/Formulaire/Formulaire";
-import { Permission, TypeId } from "./shared/constants";
+import { Permission, TypeId } from "./utils/const";
 import ListeUtilisateurs from "./components/ListeUtilisateurs/ListeUtilisateurs"
 import DetailsDRE from "./components/DetailsDRE/DetailsDRE";
 import '@fontsource/roboto/300.css';
