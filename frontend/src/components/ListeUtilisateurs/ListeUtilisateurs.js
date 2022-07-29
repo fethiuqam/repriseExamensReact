@@ -1,58 +1,11 @@
-import { Box, Chip, FormControl, MenuItem, Select } from "@mui/material";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import { TypeId, types } from "../../utils/const";
 import ListeAdmin from "../ListeAdmin/ListeAdmin";
 import * as apiClient from "../../api/ApiClient";
-import { useGridApiContext } from "@mui/x-data-grid";
 import { Lock } from "@mui/icons-material";
-
-function renderRoles(roles) {
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: 0.5,
-      }}
-    >
-      {roles?.map((role) => (
-        <Chip key={role.id} label={role.nom} />
-      ))}
-    </Box>
-  );
-}
-
-function RolesSelect(props) {
-  const [rolesActifs, setRolesActifs] = useState(
-    props.roles.filter((r) => props?.value?.some((ri) => ri.id === r.id))
-  );
-
-  const gridApi = useGridApiContext();
-
-  return (
-    <FormControl sx={{ width: "100%" }}>
-      <Select
-        multiple
-        value={rolesActifs}
-        onChange={({ target: { value } }) => {
-          setRolesActifs(typeof value === "string" ? value.split(",") : value);
-          gridApi.current.setEditCellValue({
-            id: props.id,
-            field: props.field,
-            value,
-          });
-        }}
-        renderValue={renderRoles}
-      >
-        {props.roles.map((role) => (
-          <MenuItem key={role.id} value={role}>
-            {role.nom}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  );
-}
+import ChipBox from "../ChipBox/ChipBox";
+import GridMultiSelect from "../GridMultiSelect/GridMultiSelect";
 
 export default function ListeUtilisateurs() {
   const [roles, setRoles] = useState([]);
@@ -62,6 +15,10 @@ export default function ListeUtilisateurs() {
       .get("/api/roles")
       .then((reponse) => setRoles(reponse._embedded.roles));
   }, [setRoles]);
+
+  const renderRoles = (roles) => (
+    <ChipBox labels={roles.map(({ nom }) => nom)} />
+  );
 
   const colonnes = [
     {
@@ -140,7 +97,14 @@ export default function ListeUtilisateurs() {
       minWidth: 240,
       editable: true,
       default: [],
-      renderEditCell: (props) => <RolesSelect {...props} roles={roles} />,
+      renderEditCell: (props) => (
+        <GridMultiSelect
+          {...props}
+          items={roles}
+          label="nom"
+          renderValue={renderRoles}
+        />
+      ),
       renderCell: ({ value }) => value && renderRoles(value),
     },
   ];
