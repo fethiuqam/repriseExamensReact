@@ -82,7 +82,7 @@ export default function DetailsDRE() {
                     }
 
                     <SectionFormulaire title={'INFORMATIONS DEMANDE'}>
-                        <TableInfosDemande dre={dre}/>
+                        <TableInfosDemande dre={dre} />
                     </SectionFormulaire>
 
                     {type === "enseignant"
@@ -126,7 +126,8 @@ export default function DetailsDRE() {
                                         ? <JugerDRE
                                             idDRE={idDRE}
                                             juge={juge}
-                                            decisionCourante={dre.decisionCourante}
+                                            decisionCourante={dre.decisionCourante.typeDecision}
+                                            statutCourant={dre.statutCourant}
                                             actualiserDRE={checherDRE}
                                         />
                                         : null

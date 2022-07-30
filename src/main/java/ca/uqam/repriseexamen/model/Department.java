@@ -1,4 +1,4 @@
-package ca.uqam.repriseexamen.department;
+package ca.uqam.repriseexamen.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

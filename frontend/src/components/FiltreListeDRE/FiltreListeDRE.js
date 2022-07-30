@@ -1,17 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {
-    Button,
-    Checkbox, Chip,
-    FormControl,
-    InputLabel,
-    ListItemText,
-    MenuItem,
-    Select, Stack, TextField
-} from "@mui/material";
+import React, {useContext, useEffect, useState} from 'react';
+import {Button, Checkbox, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Box from "@mui/material/Box";
 import AuthContext from "../../context/AuthProvider";
-import {STATUT_AFFICHAGE} from "../../utils/const";
+import Statut from "../Statut/Statut";
 
 export default function FiltreListeDRE({statuts, filtrer}) {
 
@@ -44,7 +36,7 @@ export default function FiltreListeDRE({statuts, filtrer}) {
                     renderValue={(selected) => (
                         <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5}}>
                             {selected.map((value) => (
-                                <Chip key={value} label={STATUT_AFFICHAGE[value]}/>
+                                <Statut key={value} statut={value}/>
                             ))}
                         </Box>
                     )}
@@ -52,7 +44,7 @@ export default function FiltreListeDRE({statuts, filtrer}) {
                     {statuts.map((statut, index) => (
                         <MenuItem key={index} value={statut}>
                             <Checkbox checked={filtre.statuts.indexOf(statut) > -1}/>
-                            <ListItemText primary={STATUT_AFFICHAGE[statut]}/>
+                            <Statut statut={statut}/>
                         </MenuItem>
                     ))}
                 </Select>

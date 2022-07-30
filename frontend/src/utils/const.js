@@ -12,31 +12,31 @@ export const STATUTS = [
 ];
 
 export const STATUT_AFFICHAGE = {
-    ENREGISTREE: "Enregistrée",
-    SOUMISE: "Soumise",
-    EN_TRAITEMENT: "En traitement",
-    ACCEPTEE: "Acceptée",
-    REJETEE: "Rejetée",
-    ANNULEE: "Annulée",
-    PLANIFIEE: "Planifiée",
-    ABSENCE: "Absence",
-    COMPLETEE: "Complétée"
-}
+    ENREGISTREE: ["Enregistrée", "#AED6F1", "#555"],
+    SOUMISE: ["Soumise", "#55B2FA", "#FFF"],
+    EN_TRAITEMENT: ["En traitement", "#B07FFC", "#FFF"],
+    ACCEPTEE: ["Acceptée", "#A5F8C4", "#666"],
+    REJETEE: ["Rejetée", "#F91A21", "#FFF"],
+    ANNULEE: ["Annulée", "#FBE90E", "#666"],
+    PLANIFIEE: ["Planifiée", "#0EEDFB", "#666"],
+    ABSENCE: ["Absence", "#FC6538", "#FFF"],
+    COMPLETEE: ["Complétée", "#06D515", "#FFF"]
+};
 
 export const DECISION_AFFICHAGE = {
-    ACCEPTEE_COMMIS: "Acceptée par le commis",
-    ACCEPTEE_DIRECTEUR: "Acceptée par le directeur",
-    ACCEPTEE_ENSEIGNANT: "Acceptée par l'enseignant",
-    REJETEE_COMMIS: "Rejetée par le commis",
-    REJETEE_DIRECTEUR: "Rejetée par le directeur",
-    REJETEE_ENSEIGNANT: "Rejetée par l'enseignant",
-
-}
+    ACCEPTATION_RECOMMANDEE: ["Acceptation recommandée", "success"],
+    ACCEPTEE_DIRECTEUR: ["Acceptée par le directeur", "success"],
+    ACCEPTEE_ENSEIGNANT: ["Acceptée par l'enseignant", "success"],
+    REJET_RECOMMANDE: ["Rejet recommandé", "error"],
+    REJETEE_DIRECTEUR: ["Rejetée par le directeur", "error"],
+    REJETEE_ENSEIGNANT: ["Rejetée par l'enseignant", "error"],
+    AUCUNE: ["Aucune", "default"]
+};
 
 export const SESSION_AFFICHAGE = {
     HIVER: "Hiver",
     AUTOMNE: "Automne",
-    ETE: "été"
+    ETE: "Été"
 };
 
 export const MOTIF_AFFICHAGE = {
@@ -65,3 +65,40 @@ export const STYLE_MESSAGE_ENVOYE = {
     maxWidth: '80%',
     backgroundColor: '#0695FF'
 }
+
+export const Permission = {
+  ListerDRE: "ListerDRE",
+  AfficherDRE: "AfficherDRE",
+  AfficherJustificatifs: "AfficherJustificatifs",
+  JugerRecevabilite: "JugerRecevabilite",
+  PlanifierDates: "PlanifierDates",
+  GererUsagers: "GererUsagers",
+  GererRoles: "GererRoles",
+};
+
+export const TypeId = {
+  Etudiant: "etudiant",
+  Enseignant: "enseignant",
+  Personnel: "personnel",
+};
+
+export const types = {
+  [TypeId.Etudiant]: {
+    id: TypeId.Etudiant,
+    nom: "Étudiant",
+    endpoint: "etudiants",
+    nomIdentifiant: "codePermanent",
+  },
+  [TypeId.Enseignant]: {
+    id: TypeId.Enseignant,
+    nom: "Enseignant",
+    endpoint: "enseignants",
+    nomIdentifiant: "matricule",
+  },
+  [TypeId.Personnel]: {
+    id: TypeId.Personnel,
+    nom: "Personnel",
+    endpoint: "personnels",
+    nomIdentifiant: "matricule",
+  },
+};

@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +44,10 @@ public class EtudiantServiceImplTest {
     public void setUp() {
         when(ligneHistoriqueEtudiant1Enregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
         when(ligneHistoriqueEtudiant1Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneHistoriqueEtudiant1Soumise.getDateHeureSoumission()).thenReturn(LocalDateTime.of(2022,2,1,10,15));
         when(ligneHistoriqueEtudiant2Soumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
+        when(ligneHistoriqueEtudiant2Soumise.getDateHeureSoumission()).thenReturn(LocalDateTime.of(2021,2,1,10,15));
+
 
         when(demandeRepository.findLigneHistoriqueEtudiantDTOByEtudiantId(1L))
                 .thenReturn(Arrays.asList(ligneHistoriqueEtudiant1Enregistree, ligneHistoriqueEtudiant1Soumise));

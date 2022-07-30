@@ -11,8 +11,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +22,6 @@ public class Etudiant extends Utilisateur {
 
     // Attributs
 
-    @JsonManagedReference(value = "demandesEtudiant")
     @OneToMany(mappedBy = "etudiant")
     private List<DemandeRepriseExamen> demandes;
 
@@ -36,9 +33,7 @@ public class Etudiant extends Utilisateur {
 
     public static final String TYPE_NAME = "etudiant";
     private String codePermanent;
-    private String nom;
-    private String prenom;
-    private String email;
+
     private String telephone;
 
     public Etudiant(String nom, String prenom, String codeMs, String motDePasse, Set<Role> roles, String codePermanent, String telephone) {

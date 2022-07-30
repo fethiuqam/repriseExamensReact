@@ -1,13 +1,13 @@
 package ca.uqam.repriseexamen.model;
 
+import ca.uqam.repriseexamen.serialization.MotDePasseDeserializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,17 +24,18 @@ public abstract class Utilisateur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnore
+
     @Column(unique = true)
     protected String codeMs;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonDeserialize(using = MotDePasseDeserializer.class)
     protected String motDePasse;
 
     @Column(name = "dtype", insertable = false, updatable = false)
     protected String type;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "utilisateurs_roles", joinColumns = @JoinColumn(name = "utilisateurs_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     protected Set<Role> roles;
 

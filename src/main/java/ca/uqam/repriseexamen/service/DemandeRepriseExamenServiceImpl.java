@@ -20,6 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,9 +48,9 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
 
         return listeLigneDRE.stream()
                 .filter(dre -> dre.getDecisionCourante() != null
-                        && (dre.getDecisionCourante().equals(TypeDecision.ACCEPTEE_DIRECTEUR)
-                        || dre.getDecisionCourante().equals(TypeDecision.ACCEPTEE_ENSEIGNANT)
-                        || dre.getDecisionCourante().equals(TypeDecision.REJETEE_ENSEIGNANT))
+                        && (dre.getDecisionCourante().getTypeDecision().equals(TypeDecision.ACCEPTEE_DIRECTEUR)
+                        || dre.getDecisionCourante().getTypeDecision().equals(TypeDecision.ACCEPTEE_ENSEIGNANT)
+                        || dre.getDecisionCourante().getTypeDecision().equals(TypeDecision.REJETEE_ENSEIGNANT))
                 )
                 .collect(Collectors.toList());
     }
@@ -87,7 +88,6 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
         return demande.orElse(null);
     }
 
-
     @Override
     public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {
         Statut statutSoumission = Statut.builder()
@@ -113,10 +113,10 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public void ajouterDemandeDecision(Long id, JsonNode patch, TypeDecision typeDecisionCourant, TypeDecision typeDecisionAjoute) {
+    public void ajouterDemandeDecision(Long id, JsonNode patch, Set<TypeDecision> decisionsCourantes, TypeDecision typeDecisionAjoute) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        if (demande.getDecisionCourante() == typeDecisionCourant) {
+        if (decisionsCourantes.contains(demande.getDecisionCourante().getTypeDecision())) {
             Decision decision = creerDecision(typeDecisionAjoute, demande, patch);
             demande.getListeDecision().add(decision);
             demandeRepriseExamenRepository.save(demande);
@@ -129,7 +129,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     public void supprimerDemandeDecision(Long id, TypeDecision typeDecisionCourante) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-        if (demande.getDecisionCourante() == typeDecisionCourante) {
+        if (demande.getDecisionCourante().getTypeDecision() == typeDecisionCourante) {
             Optional<Decision> decision = demande.getListeDecision().stream()
                     .filter(s -> s.getTypeDecision() == typeDecisionCourante)
                     .findFirst();
@@ -198,7 +198,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
                 .dateHeure(LocalDateTime.now())
                 .demandeRepriseExamen(demande)
                 .build();
-    
+
             demande.getListeMessage().add(message);
             demandeRepriseExamenRepository.save(demande);
 
@@ -207,5 +207,4 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
 }

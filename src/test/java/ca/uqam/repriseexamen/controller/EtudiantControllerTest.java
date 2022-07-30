@@ -41,7 +41,7 @@ public class EtudiantControllerTest {
         this.mockMvc.perform(get("/api/etudiants/3/historique").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].statutCourant", is("SOUMISE")))
+                .andExpect(jsonPath("$[0].statutCourant", is("ANNULEE")))
                 .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF1120")))
                 .andExpect(jsonPath("$[0].motifAbsence", is("MEDICAL")))
                 .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
@@ -52,7 +52,7 @@ public class EtudiantControllerTest {
     @WithMockUser(username="commis")
     @Test
     public void devraitRetournerListeLigneHistoriqueEtudiantDTODeLongueurUneAvecStatutOk() throws Exception {
-        this.mockMvc.perform(get("/api/etudiants/4/historique").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/etudiants/20/historique").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
     }

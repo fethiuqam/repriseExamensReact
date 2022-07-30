@@ -1,16 +1,19 @@
 import React, {useContext} from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import {Badge, Button, Chip, ListItemText} from "@mui/material";
+import {Badge, Button, ListItemText} from "@mui/material";
 import LoupeRoundedIcon from '@mui/icons-material/LoupeRounded';
 import AuthContext from "../../context/AuthProvider";
 import {Link} from "react-router-dom";
 import {afficherDate} from "../../utils/utils";
-import {DECISION_AFFICHAGE, SESSION_AFFICHAGE, STATUT_AFFICHAGE} from "../../utils/const";
+import Statut from "../Statut/Statut";
+import Decision from "../Decision/Decision";
 
 function LigneDRE({item}) {
 
     const {type} = useContext(AuthContext);
+
+    const session = item.coursGroupe.session.substring(0,3) + "-" + item.coursGroupe.annee.substring(2);
 
     return (
         <TableRow key={item.id}>
@@ -30,14 +33,15 @@ function LigneDRE({item}) {
                         secondary={type === 'personnel' && item.enseignant.matricule}/>
                 </TableCell>
             }
-            <TableCell>{item.coursGroupe.cours.sigle} - {item.coursGroupe.groupe}</TableCell>
-            <TableCell>{SESSION_AFFICHAGE[item.coursGroupe.session]}</TableCell>
+            <TableCell>{item.coursGroupe.cours.sigle}-{item.coursGroupe.groupe}</TableCell>
+            <TableCell>{session}</TableCell>
+
             <TableCell>
-                <Chip label={STATUT_AFFICHAGE[item.statutCourant]}/>
+                <Statut statut={item.statutCourant} />
             </TableCell>
             {type === "personnel" &&
                 <TableCell>
-                    <Chip label={item.decisionCourante ? DECISION_AFFICHAGE[item.decisionCourante] : "Aucune"}/>
+                    <Decision decision={item.decisionCourante} />
                 </TableCell>
             }
             <TableCell>

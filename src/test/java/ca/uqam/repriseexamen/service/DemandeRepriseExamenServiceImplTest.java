@@ -5,6 +5,7 @@ import ca.uqam.repriseexamen.dto.LigneDREDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEnseignantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREEtudiantDTO;
 import ca.uqam.repriseexamen.dto.LigneDREPersonnelDTO;
+import ca.uqam.repriseexamen.model.Decision;
 import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
 import ca.uqam.repriseexamen.model.TypeDecision;
 import ca.uqam.repriseexamen.model.TypeStatut;
@@ -68,9 +69,11 @@ public class DemandeRepriseExamenServiceImplTest {
 
         when(ligneDREEnseignantEnregistree.getStatutCourant()).thenReturn(TypeStatut.ENREGISTREE);
         when(ligneDREEnseignantAcceptee.getStatutCourant()).thenReturn(TypeStatut.ACCEPTEE);
-        when(ligneDREEnseignantAcceptee.getDecisionCourante()).thenReturn(TypeDecision.ACCEPTEE_ENSEIGNANT);
+        when(ligneDREEnseignantAcceptee.getDecisionCourante())
+                .thenReturn(Decision.builder().typeDecision(TypeDecision.ACCEPTEE_ENSEIGNANT).build());
         when(ligneDREEnseignantSoumise.getStatutCourant()).thenReturn(TypeStatut.SOUMISE);
-
+        when(ligneDREEnseignantSoumise.getDecisionCourante())
+                .thenReturn(Decision.builder().typeDecision(TypeDecision.AUCUNE).build());
 
         when(demandeRepository.findLigneDREEnseignantDTOByCoursGroupeEnseignantId(1L))
                 .thenReturn(Arrays.asList(ligneDREEnseignantEnregistree, ligneDREEnseignantAcceptee));
