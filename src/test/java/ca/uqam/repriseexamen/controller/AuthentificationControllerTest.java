@@ -35,19 +35,18 @@ public class AuthentificationControllerTest {
     }
 
     // tests commis
-   // @Test
-//    public void testConnexionCommisRetourneLesInformationsAvecStatutOk() throws Exception {
-//        this.mockMvc
-//                .perform(post("/api/login").contentType(MediaType.APPLICATION_JSON)
-//                        .content("{\"codeMs\": \"commis\", \"motDePasse\": \"1\"}"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", aMapWithSize(3)))
-//                .andExpect(jsonPath("$.id", is(notNullValue())))
-//                .andExpect(jsonPath("$.type", is("personnel")))
-//                .andExpect(jsonPath("$.permissions", is(notNullValue())))
-//                .andExpect(cookie().value("token", is(notNullValue())));
-//    }
-
+    @Test
+    public void testConnexionCommisRetourneLesInformationsAvecStatutOk() throws Exception {
+        this.mockMvc
+                .perform(post("/api/login").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"codeMs\": \"commis\", \"motDePasse\": \"1\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", aMapWithSize(3)))
+                .andExpect(jsonPath("$.id", is(notNullValue())))
+                .andExpect(jsonPath("$.type", is("personnel")))
+                .andExpect(jsonPath("$.permissions", is(notNullValue())))
+                .andExpect(cookie().value("token", is(notNullValue())));
+    }
 
     @Test
     public void testConnexionCommisMotDePasseEronneAccesNonAutorise() throws Exception {
