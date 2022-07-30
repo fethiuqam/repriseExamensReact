@@ -1,5 +1,6 @@
 package ca.uqam.repriseexamen.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,14 +29,19 @@ public class CoursGroupe {
 
     @JsonIgnore
     @OneToMany(mappedBy = "coursGroupe")
-    private List<DemandeRepriseExamen> demandeRepriseExamenList;
+    private List<DemandeRepriseExamen> demandes;
 
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "coursGroupes")
     private List<Etudiant> etudiants;
 
+    @JsonManagedReference
+    @OneToOne
+    Reprise reprise;
+
     private String groupe;
     private Session session;
     private String annee;
+
 
 }

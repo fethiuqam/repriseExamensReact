@@ -35,7 +35,7 @@ public class DemandeRepriseExamen {
     private String descriptionExamen;
 
     @JsonManagedReference(value = "listeStatut")
-    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Statut> listeStatut;
 
     @OneToMany(mappedBy = "demandeRepriseExamen", cascade = CascadeType.ALL, orphanRemoval = true)

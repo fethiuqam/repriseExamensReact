@@ -37,7 +37,7 @@ public interface DemandeRepriseExamenService {
 
     void updateStatutDemande(Long id, TypeStatut typeStatut);
 
-    void annulerRejetStatut(Long id);
+    void deleteStatutDemande(Long id, TypeStatut typeStatut);
 
     ResponseEntity<?> envoyerMessage(Long demandeId, TypeMessage type, JsonNode json) throws Exception;
 }

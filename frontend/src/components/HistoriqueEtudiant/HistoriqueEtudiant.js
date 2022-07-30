@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SectionFormulaire from "../SectionFormulaire/SectionFormulaire";
-import MiseEnPage from "../MiseEnPage/MiseEnPage";
 
 import {
     Accordion,
@@ -116,8 +115,7 @@ const HistoriqueEtudiant = ({idEtudiant}) => {
     };
 
     return (
-        <MiseEnPage>
-            <SectionFormulaire title={'Historique'}>
+            <SectionFormulaire title={'HISTORIQUE'}>
 
                 <Typography
                     component="span"
@@ -193,7 +191,6 @@ const HistoriqueEtudiant = ({idEtudiant}) => {
                 </Accordion>
                 <br/>
             </SectionFormulaire>
-        </MiseEnPage>
     )
 }
 
