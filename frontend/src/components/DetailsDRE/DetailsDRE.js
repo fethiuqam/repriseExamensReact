@@ -6,16 +6,16 @@ import MiseEnPage from "../MiseEnPage/MiseEnPage";
 import SectionFormulaire from '../SectionFormulaire/SectionFormulaire';
 import Box from "@mui/material/Box";
 import {
-    Button, 
-    CircularProgress, 
-    Container, 
-    Stack, 
+    Button,
+    CircularProgress,
+    Container,
+    Stack,
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Snackbar, 
+    Snackbar,
     Alert } from "@mui/material";
 import JugerDRE from "../JugerDRE/JugerDRE";
 import TableInfosEnseignant from '../TableInfoEnseignant/TableInforEnseignant';
@@ -25,6 +25,7 @@ import TableInfosDemande from '../TableInfosDemande/TableInfosDemande';
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import MessagesDRE from "../MessagesDRE/MessagesDRE";
 import HistoriqueEtudiant from "../HistoriqueEtudiant/HistoriqueEtudiant";
+import PlanificationDetails from "../PlanificationDetails/PlanificationDetails";
 import * as apiClient from "../../api/ApiClient";
 
 export default function DetailsDRE() {
@@ -116,7 +117,7 @@ export default function DetailsDRE() {
     }, [idDRE]);
 
     return (
-        <MiseEnPage titre={"Détails d'une demande"}>
+        <MiseEnPage titre="Détails de la demande">
             {enChargement
                 ? <Box sx={{display: 'flex', justifyContent: 'center'}}>
                     <CircularProgress/>
@@ -144,6 +145,13 @@ export default function DetailsDRE() {
                         : <SectionFormulaire title={'DETAILS'}>
                             <TableDetailsAbsence dre={dre}/>
                         </SectionFormulaire>
+                    }
+
+                    {dre.statutCourant === "PLANIFIEE"
+                        ? <SectionFormulaire title={'PLANIFICATION DE LA REPRISE'}>
+                            <PlanificationDetails reprise={dre.coursGroupe.reprise}/>
+                        </SectionFormulaire>
+                        : null
                     }
 
                     {type === "personnel"
@@ -228,6 +236,7 @@ export default function DetailsDRE() {
                                         }
                                     </Stack>
                                 </Stack>
+
                             </Stack>
                         </div>
                     </Container>

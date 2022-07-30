@@ -83,9 +83,11 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].statutCourant", is("REJETEE")))
-                .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF2120")));
+                .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF2120")))
+                .andExpect(jsonPath("$[1].statutCourant", is("PLANIFIEE")))
+                .andExpect(jsonPath("$[1].coursGroupe.cours.sigle", is("INF2120")));
     }
 
     @WithMockUser(username = "etudiant1")

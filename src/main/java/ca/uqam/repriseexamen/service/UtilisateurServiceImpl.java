@@ -6,10 +6,14 @@ import ca.uqam.repriseexamen.model.Role;
 import ca.uqam.repriseexamen.model.Utilisateur;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service @AllArgsConstructor
+
+@Service
+@Transactional
+@AllArgsConstructor
 public class UtilisateurServiceImpl implements UtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;

@@ -77,7 +77,7 @@ const MessagesDRE = ({messages, typeUtilisateur, idDRE, actualiserDRE}) => {
 
     return (
         <>
-            <SectionFormulaire title={'Messages'}>
+            <SectionFormulaire title={'MESSAGES'}>
                 {messages.length
                     ? <List>
                         {messages.map(message => {

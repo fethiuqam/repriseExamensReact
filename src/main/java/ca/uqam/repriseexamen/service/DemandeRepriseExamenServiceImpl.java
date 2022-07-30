@@ -171,15 +171,16 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public void annulerRejetStatut(Long id) {
+    public void deleteStatutDemande(Long id, TypeStatut typeStatut) {
         DemandeRepriseExamen demande = findDemandeRepriseExamen(id)
                 .orElseThrow(ResourceNotFoundException::new);
-
-        Optional<Statut> statutRejet = demande.getListeStatut().stream()
-                .filter(s -> s.getTypeStatut() == TypeStatut.REJETEE)
+        Optional<Statut> statutASupprimer = demande.getListeStatut().stream()
+                .filter(s -> s.getTypeStatut() == typeStatut)
                 .findFirst();
-        demande.getListeStatut().remove(statutRejet.orElse(null));
-        demandeRepriseExamenRepository.save(demande);
+        if (statutASupprimer.isPresent()){
+            demande.getListeStatut().remove(statutASupprimer.get());
+            demandeRepriseExamenRepository.save(demande);
+        }
     }
 
     @Override

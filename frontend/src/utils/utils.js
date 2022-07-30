@@ -4,6 +4,7 @@ import locale from "date-fns/locale/fr-CA";
 
 const FORMAT_DATE = 'dd MMMM yyyy';
 const FORMAT_DATE_HEURE = 'dd MMMM yyyy hh:mm';
+const FORMAT_DATE_HEURE_ISO = "yyyy-MM-dd'T'HH:mm";
 
 export const afficherDate = (date) => {
     return format(new Date(date), FORMAT_DATE, {locale})
@@ -11,6 +12,10 @@ export const afficherDate = (date) => {
 
 export const afficherDateHeure = (dateHeure) => {
     return format(new Date(dateHeure), FORMAT_DATE_HEURE, {locale})
+}
+
+export const afficherDateHeureIso = (dateHeure) => {
+    return format(dateHeure, FORMAT_DATE_HEURE_ISO, {locale})
 }
 
 export const comparator = (prop, desc = true) => (a, b) => {

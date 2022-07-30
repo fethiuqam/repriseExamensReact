@@ -92,7 +92,7 @@ export default function ListeDRE() {
     };
 
     return (
-        <MiseEnPage>
+        <MiseEnPage titre="Liste des demandes de reprise d'examen">
             <SectionFormulaire
                 title={'FILTRE'}>
                 <FiltreListeDRE
