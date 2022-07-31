@@ -108,10 +108,7 @@ public class JWTTokenHelper {
 
     public String getToken(HttpServletRequest request) {
         String auth = getAuthFromCookies(request);
-        if (auth != null){
-            return auth;
-        }
-        return null;
+        return auth;
     }
 
     public String getAuthFromCookies(HttpServletRequest request) {
