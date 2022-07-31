@@ -118,6 +118,7 @@ const MessagesDRE = ({messages, typeUtilisateur, idDRE, actualiserDRE}) => {
                         color="secondary"
                         endIcon={<SendIcon/>}
                         style={{marginTop: '1rem'}}
+                        disabled={typeUtilisateur === "etudiant" && messages.length === 0}
                     >Envoyer un message</Button>
                 </Grid>
 

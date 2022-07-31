@@ -227,4 +227,31 @@ public class DemandeRepriseExamenController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @PatchMapping(path = "/{id}/retourner")
+    public ResponseEntity<?> retournerDemande(@PathVariable Long id, @RequestBody JsonNode patch) throws Exception {
+
+        if (patch.has("details") && patch.get("details").asText().length() > 2) {
+
+            Utilisateur authentifie = authentifieService.GetAuthentifie();
+
+                // utilisateur est du personnel avec la permission RetournerDemande
+            if (authentifie.getType().equals("personnel") && authentifie.getPermissions()
+                    .contains(Permission.RetournerDemande)) {
+                demandeRepriseExamenService.ajouterDemandeDecision(id, patch, Set.of(TypeDecision.AUCUNE),
+                        TypeDecision.RETOURNEE);
+                demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.RETOURNEE);
+
+                // utilisateur non autoirise
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        // le patch ne contient pas l attribut details ou le texte est de longueur < 3
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+    }
 }

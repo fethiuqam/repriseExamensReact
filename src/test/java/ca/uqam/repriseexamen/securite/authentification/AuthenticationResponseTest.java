@@ -32,7 +32,8 @@ public class AuthenticationResponseTest {
 
         Set<Permission> permissions =
                 Set.of(Permission.JugerCommis, Permission.AfficherDRE, Permission.ListerDRE,
-                        Permission.PlanifierDates, Permission.JugerEnseignant, Permission.AfficherJustificatifs);
+                        Permission.PlanifierDates, Permission.JugerEnseignant, Permission.AfficherJustificatifs,
+                        Permission.RetournerDemande);
 
         assertEquals(permissions, response.getPermissions());
     }

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {
     Alert,
     Button,
@@ -13,8 +13,13 @@ import {
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from '@mui/icons-material/Clear';
 import CancelScheduleSendIcon from '@mui/icons-material/CancelScheduleSend';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import AuthContext from "../../context/AuthProvider";
+import {DecisionId, JugementId, Permission, StatutId, TypeId} from "../../utils/const";
 
-const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE}) => {
+const JugerDRE = ({idDRE, decisionCourante, statutCourant, actualiserDRE}) => {
+
+    const {type, permissions} = useContext(AuthContext);
 
     const [details, setDetails] = useState("");
     const [jugement, setJugement] = useState("");
@@ -36,7 +41,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
     const [snackBarTexteError, setSnackBarTexteError] = useState("");
 
     const handleAccepterDemande = () => {
-        setJugement("accepter")
+        setJugement(JugementId.Accepter)
         setDetailsDialogTitre("Accepter la demande");
         setDetailsDialogContenu("Veuillez saisir les détails de l'acceptation.");
         setDetailsDialogTexteBouton("Accepter la demande");
@@ -49,7 +54,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
     }
 
     const handleRejeterDemande = () => {
-        setJugement("rejeter")
+        setJugement(JugementId.Rejeter)
         setDetailsDialogTitre("Rejeter la demande");
         setDetailsDialogContenu("Veuillez saisir les détails du rejet.");
         setDetailsDialogTexteBouton("Rejeter la demande");
@@ -62,7 +67,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
     }
 
     const handleAnnulerRejet = () => {
-        setJugement("annuler-rejet")
+        setJugement(JugementId.AnnulerRejet)
         setDetailsDialogTitre("Annuler le rejet");
         setDetailsDialogContenu("Veuillez saisir les détails de l'annulation du rejet.");
         setDetailsDialogTexteBouton("Annuler le rejet");
@@ -71,6 +76,19 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
         setConfirmationDialogContenu("Êtes vous sûr de vouloir annuler le rejet?");
         setSnackBarTexteSucces("Le rejet a été annulé avec succès.");
         setSnackBarTexteError("Un problème est survenu lors de l'annulation du rejet. Veuillez réessayer.")
+        setDetailsDialogOpen(true);
+    }
+
+    const handleRetournerDemande = () => {
+        setJugement(JugementId.Retourner)
+        setDetailsDialogTitre("Retourner la demande");
+        setDetailsDialogContenu("Veuillez saisir les détails du retour.");
+        setDetailsDialogTexteBouton("Retourner la demande");
+        setDialogContentDetailsVisible(true);
+        setConfirmationDialogTitre("Confirmer le retour de la demande");
+        setConfirmationDialogContenu("Êtes vous sûr de vouloir retourner la demande?");
+        setSnackBarTexteSucces("La demande a été retournée avec succès.");
+        setSnackBarTexteError("Un problème est survenu lors du retour de la demande. Veuillez réessayer.")
         setDetailsDialogOpen(true);
     }
 
@@ -111,43 +129,24 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
         setConfirmationDialogOpen(false);
     }
 
-    const desactiverAccepterRejeterdemande = () => {
-        if (statutCourant === "ANNULEE" || statutCourant === "ENREGISTREE") {
-            return true;
-        } else if (juge === "commis") {
-            return decisionCourante !== "AUCUNE";
-        } else if (juge === "directeur") {
-            return decisionCourante !== "AUCUNE"
-                && decisionCourante !== "ACCEPTATION_RECOMMANDEE"
-                && decisionCourante !== "REJET_RECOMMANDE";
-        } else if (juge === "enseignant") {
-            return decisionCourante !== "ACCEPTEE_DIRECTEUR";
-        }
-        return false;
+    const desactiverBoutonsJugement = () => {
+
+        return [StatutId.Annulee, StatutId.Enregistree, StatutId.Retournee].includes(statutCourant)
+        || (permissions.includes(Permission.JugerCommis) && decisionCourante !== DecisionId.Aucune)
+        || (permissions.includes(Permission.JugerDirecteur)
+                && ![DecisionId.Aucune, DecisionId.AcceptationRecommandee, DecisionId.RejetRecommande].includes(decisionCourante))
+        || (type === TypeId.Enseignant && decisionCourante !== DecisionId.AccepteeDirecteur);
     }
 
     const afficherAnnulerRejet = () => {
-        if (juge === "commis") {
-            return decisionCourante === "REJET_RECOMMANDE";
-        } else if (juge === "directeur") {
-            return decisionCourante === "REJETEE_DIRECTEUR";
-        } else if (juge === "enseignant") {
-            return decisionCourante === "REJETEE_ENSEIGNANT";
-        }
-        return false;
+
+        return (permissions.includes(Permission.JugerCommis) && decisionCourante === DecisionId.RejetRecommande)
+        || (permissions.includes(Permission.JugerDirecteur) && decisionCourante === DecisionId.RejeteeDirecteur)
+        || (type === TypeId.Enseignant && decisionCourante === DecisionId.RejeteeEnseignant);
     }
 
     return (
         <>
-            <Button
-                onClick={handleAccepterDemande}
-                variant="contained"
-                color="success"
-                endIcon={<DoneIcon/>}
-                disabled={desactiverAccepterRejeterdemande()}
-            >
-                {juge === "commis" ? "Recommander l'acceptation" : "Accepter la demande"}
-            </Button>
             {afficherAnnulerRejet()
                 ? <Button
                     onClick={handleAnnulerRejet}
@@ -157,15 +156,37 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
                 >
                     Annuler le rejet
                 </Button>
-                : <Button
-                    onClick={handleRejeterDemande}
-                    variant="contained"
-                    color="error"
-                    endIcon={<ClearIcon/>}
-                    disabled={desactiverAccepterRejeterdemande()}
-                >
-                    {juge === "commis" ? "Recommander le rejet" : "Rejeter la demande"}
-                </Button>
+                : <>
+                    <Button
+                        onClick={handleAccepterDemande}
+                        variant="contained"
+                        color="success"
+                        endIcon={<DoneIcon/>}
+                        disabled={desactiverBoutonsJugement()}
+                    >
+                        {permissions.includes(Permission.JugerCommis) ? "Recommander l'acceptation" : "Accepter la demande"}
+                    </Button>
+                    <Button
+                        onClick={handleRejeterDemande}
+                        variant="contained"
+                        color="error"
+                        endIcon={<ClearIcon/>}
+                        disabled={desactiverBoutonsJugement()}
+                    >
+                        {permissions.includes(Permission.JugerCommis) ? "Recommander le rejet" : "Rejeter la demande"}
+                    </Button>
+                    {permissions.includes(Permission.RetournerDemande)
+                        && <Button
+                            onClick={handleRetournerDemande}
+                            variant="contained"
+                            color="warning"
+                            endIcon={<AssignmentReturnIcon/>}
+                            disabled={desactiverBoutonsJugement()}
+                        >
+                            Retourner la demande
+                        </Button>
+                    }
+                </>
             }
 
             <Dialog
@@ -175,7 +196,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
             >
                 <DialogTitle>{detailsDialogTitre}</DialogTitle>
                 {dialogContentDetailsVisible
-                    ? <DialogContent>
+                    && <DialogContent>
                         <DialogContentText>{detailsDialogContenu}</DialogContentText>
                         <TextField
                             label="Détails"
@@ -189,7 +210,6 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
                             onChange={e => setDetails(e.target.value)}
                         />
                     </DialogContent>
-                    : null
                 }
 
                 <DialogActions>
@@ -199,7 +219,7 @@ const JugerDRE = ({idDRE, juge, decisionCourante, statutCourant, actualiserDRE})
                             setDetailsDialogOpen(false);
                             setConfirmationDialogOpen(true);
                         }}
-                        disabled={ jugement === "rejeter" && details.trim().length < 3}
+                        disabled={(jugement === JugementId.Rejeter || jugement === JugementId.Retourner) && details.trim().length < 3}
                     >{detailsDialogTexteBouton}
                     </Button>
                 </DialogActions>

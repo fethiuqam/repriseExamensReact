@@ -94,4 +94,10 @@ public class DemandeRepriseExamen {
     public boolean estRejetee(){
         return this.getStatutCourant() == TypeStatut.REJETEE;
     }
+
+    @JsonIgnore
+    public boolean estRetournee(){
+        return this.getStatutCourant() == TypeStatut.RETOURNEE;
+    }
+
 }

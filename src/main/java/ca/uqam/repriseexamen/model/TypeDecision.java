@@ -7,5 +7,6 @@ public enum TypeDecision {
     REJETEE_DIRECTEUR,
     ACCEPTEE_ENSEIGNANT,
     REJETEE_ENSEIGNANT,
-    AUCUNE
+    RETOURNEE,
+    AUCUNE,
 }

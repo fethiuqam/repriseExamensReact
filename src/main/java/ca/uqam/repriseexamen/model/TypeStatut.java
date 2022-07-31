@@ -10,5 +10,6 @@ public enum TypeStatut {
     PLANIFIEE,
     ABSENCE,
     COMPLETEE,
-    ARCHIVEE
+    ARCHIVEE,
+    RETOURNEE
 }

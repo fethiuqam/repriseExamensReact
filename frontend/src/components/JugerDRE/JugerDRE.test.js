@@ -1,58 +1,57 @@
-import {render, screen, fireEvent, within} from "@testing-library/react";
+import {fireEvent, render, screen, within} from "@testing-library/react";
 import JugerDRE from "./JugerDRE";
+import AuthContext from "../../context/AuthProvider";
+import {BrowserRouter} from "react-router-dom";
 
 const mockActualiserDRE = jest.fn();
 
-test("devrait retourner deux boutons actives pour decision aucune au commis", () => {
+test("devrait retourner trois boutons actives pour decision aucune au commis", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="commis"
-            decisionCourante="AUCUNE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="AUCUNE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
-    expect(screen.getAllByRole("button")).toHaveLength(2);
+    expect(screen.getAllByRole("button")).toHaveLength(3);
     expect(screen.getByRole("button", {name: "Recommander l'acceptation"})).not.toBeDisabled();
     expect(screen.getByRole("button", {name: "Recommander le rejet"})).not.toBeDisabled();
+    expect(screen.getByRole("button", {name: "Retourner la demande"})).not.toBeDisabled();
 });
 
-test("devrait retourner deux boutons dont un desactive pour decision rejetee commis au commis", () => {
+test("devrait retourner trois boutons desactives pour decision acceptation recommandee au commis", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="commis"
-            decisionCourante="REJET_RECOMMANDE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="ACCEPTATION_RECOMMANDEE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
-    expect(screen.getAllByRole("button")).toHaveLength(2);
-    expect(screen.getByRole("button", {name: "Recommander l'acceptation"})).toBeDisabled();
-    expect(screen.getByRole("button", {name: "Annuler le rejet"})).not.toBeDisabled();
-});
-
-test("devrait retourner deux boutons desactives pour decision acceptation recommandee au commis", () => {
-    render(
-        <JugerDRE
-            idDRE={1}
-            juge="commis"
-            decisionCourante="ACCEPTATION_RECOMMANDEE"
-            actualiserDRE={mockActualiserDRE}
-        />
-    );
-    expect(screen.getAllByRole("button")).toHaveLength(2);
+    expect(screen.getAllByRole("button")).toHaveLength(3);
     expect(screen.getByRole("button", {name: "Recommander l'acceptation"})).toBeDisabled();
     expect(screen.getByRole("button", {name: "Recommander le rejet"})).toBeDisabled();
+    expect(screen.getByRole("button", {name: "Retourner la demande"})).toBeDisabled();
 });
 
 test("devrait retourner deux boutons actives pour decision aucune au directeur", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="directeur"
-            decisionCourante="AUCUNE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerDirecteur"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="AUCUNE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(screen.getByRole("button", {name: "Accepter la demande"})).not.toBeDisabled();
@@ -61,12 +60,15 @@ test("devrait retourner deux boutons actives pour decision aucune au directeur",
 
 test("devrait retourner deux boutons actives pour decision acceptation recommandee au directeur", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="directeur"
-            decisionCourante="ACCEPTATION_RECOMMANDEE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerDirecteur"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="ACCEPTATION_RECOMMANDEE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(screen.getByRole("button", {name: "Accepter la demande"})).not.toBeDisabled();
@@ -75,12 +77,15 @@ test("devrait retourner deux boutons actives pour decision acceptation recommand
 
 test("devrait retourner deux boutons actives pour decision rejet recommande au directeur", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="directeur"
-            decisionCourante="REJET_RECOMMANDE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerDirecteur"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="REJET_RECOMMANDE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(screen.getByRole("button", {name: "Accepter la demande"})).not.toBeDisabled();
@@ -89,12 +94,15 @@ test("devrait retourner deux boutons actives pour decision rejet recommande au d
 
 test("devrait retourner deux boutons actives pour decision acceptee directeur a enseignant", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="enseignant"
-            decisionCourante="ACCEPTEE_DIRECTEUR"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "enseignant", permissions:[]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="ACCEPTEE_DIRECTEUR"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
     expect(screen.getAllByRole("button")).toHaveLength(2);
     expect(screen.getByRole("button", {name: "Accepter la demande"})).not.toBeDisabled();
@@ -103,12 +111,15 @@ test("devrait retourner deux boutons actives pour decision acceptee directeur a 
 
 test("devrait retourner une fenetre dialog details apres click sur accepter demande", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="commis"
-            decisionCourante="AUCUNE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="AUCUNE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
     const boutonAccepter = screen.getByRole("button", {name: "Recommander l'acceptation"});
     expect(boutonAccepter).not.toBeDisabled();
@@ -122,12 +133,15 @@ test("devrait retourner une fenetre dialog details apres click sur accepter dema
 
 test("devrait retourner une fenetre dialog details apres click sur rejeter demande", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="commis"
-            decisionCourante="AUCUNE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="AUCUNE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
     const boutonRejeter = screen.getByRole("button", {name: "Recommander le rejet"});
     expect(boutonRejeter).not.toBeDisabled();
@@ -141,12 +155,15 @@ test("devrait retourner une fenetre dialog details apres click sur rejeter deman
 
 test("devrait retourner une fenetre dialog confirmation apres click sur accepter demande", () => {
     render(
-        <JugerDRE
-            idDRE={1}
-            juge="commis"
-            decisionCourante="AUCUNE"
-            actualiserDRE={mockActualiserDRE}
-        />
+        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+            <BrowserRouter>
+                <JugerDRE
+                    idDRE={1}
+                    decisionCourante="AUCUNE"
+                    actualiserDRE={mockActualiserDRE}
+                />
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
     const boutonAccepter = screen.getByRole("button", {name: "Recommander l'acceptation"});
     expect(boutonAccepter).not.toBeDisabled();
