@@ -533,3 +533,58 @@ export const mockRoles = {
     totalPages: 1,
   },
 };
+
+export const mockCoursGroupes = [
+    {
+        id: 1,
+        session: "HIVER",
+        annee: "2022",
+        enseignant: {
+            id: 1,
+            codeMs: "enseignant1",
+            type: "enseignant",
+            roles: [],
+            nom: "lord",
+            prenom: "melanie",
+            email: "lord.melanie.courrier.uqam.ca",
+            matricule: "LORM45698732",
+            permissions: []
+        },
+        groupe: "030",
+        reprise: {
+            id: 4,
+            dateHeure: "2022-07-30T09:30:00",
+            dureeMinutes: 180,
+            local: "PK3111",
+            surveillant: "marc pelletier"
+        },
+        cours: {
+            id: 1,
+            sigle: "INF1120",
+            nom: "programmation 1"
+        }
+    },
+    {
+        id: 2,
+        session: "HIVER",
+        annee: "2022",
+        enseignant: {
+            id: 2,
+            codeMs: "enseignant2",
+            type: "enseignant",
+            roles: [],
+            nom: "jack",
+            prenom: "berger",
+            email: "berger.jack.courrier.uqam.ca",
+            matricule: "BERJ32695723",
+            permissions: []
+        },
+        groupe: "020",
+        reprise: null,
+        cours: {
+            id: 2,
+            sigle: "INF2120",
+            nom: "programmation 2"
+        }
+    }
+]

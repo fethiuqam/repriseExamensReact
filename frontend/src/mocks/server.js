@@ -1,6 +1,6 @@
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { personnelItems, mockUtilisateurs, mockRoles } from "./mockData";
+import {personnelItems, mockUtilisateurs, mockRoles, mockCoursGroupes} from "./mockData";
 
 const handlers = [
   rest.get("/api/demandes", (_, res, ctx) => {
@@ -11,6 +11,9 @@ const handlers = [
   }),
   rest.get("/api/roles", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockRoles));
+  }),
+  rest.get("/api/coursGroupes/planification", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockCoursGroupes));
   }),
 ];
 

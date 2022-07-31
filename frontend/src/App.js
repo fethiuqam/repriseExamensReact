@@ -19,6 +19,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import Planification from "./components/Planification/Planification";
 
 function App() {
 
@@ -37,6 +38,10 @@ function App() {
 
                     <Route element={<AuthRequise typesPermis={['etudiant']}/>}>
                         <Route exact path="/faire-demande" element={<Formulaire/>}/>
+                    </Route>
+
+                    <Route element={<AuthRequise typesPermis={['personnel']}/>}>
+                        <Route exact path="/planification" element={<Planification/>}/>
                     </Route>
 
                     <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']}/>}>

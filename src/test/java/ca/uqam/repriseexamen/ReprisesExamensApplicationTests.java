@@ -10,4 +10,9 @@ class ReprisesExamensApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	public void main() {
+		ReprisesExamensApplication.main(new String[] {});
+	}
+
 }

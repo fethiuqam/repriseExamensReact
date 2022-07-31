@@ -44,6 +44,7 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(() => ({
 }));
 
 const Entete = () => {
+
   const {
     setAuth,
     setType,
@@ -98,6 +99,13 @@ const Entete = () => {
                     to="/faire-demande"
                     component={Link}
                   />
+                )}
+                {type === "personnel" && (
+                    <StyledTab
+                        label="Planifier les reprises"
+                        to="/planification"
+                        component={Link}
+                    />
                 )}
                 {permissions.includes(Permission.GererUsagers) && (
                   <StyledTab

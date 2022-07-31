@@ -79,7 +79,7 @@ public class DemandeRepriseExamenController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        if(demande != null)
+        if (demande != null)
             return new ResponseEntity<>(demande, HttpStatus.OK);
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -210,7 +210,7 @@ public class DemandeRepriseExamenController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        demandeRepriseExamenService.annulerRejetStatut(id);
+        demandeRepriseExamenService.deleteStatutDemande(id, TypeStatut.REJETEE);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -218,10 +218,13 @@ public class DemandeRepriseExamenController {
     public ResponseEntity<?> envoyerMessage(@PathVariable Long id, @RequestBody JsonNode json) throws Exception {
         Utilisateur authentifie = authentifieService.GetAuthentifie();
 
-        return switch (authentifie.getType()) {
-            case "personnel" -> demandeRepriseExamenService.envoyerMessage(id, TypeMessage.DEMANDE_COMMIS, json);
-            case "etudiant" -> demandeRepriseExamenService.envoyerMessage(id, TypeMessage.REPONSE_ETUDIANT, json);
-            default -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        };
+        switch (authentifie.getType()){
+            case "personnel":
+                return demandeRepriseExamenService.envoyerMessage(id, TypeMessage.DEMANDE_COMMIS, json);
+            case "etudiant":
+                return demandeRepriseExamenService.envoyerMessage(id, TypeMessage.REPONSE_ETUDIANT, json);
+            default:
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
