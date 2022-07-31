@@ -116,7 +116,7 @@ const Entete = () => {
                 )}
                 {permissions.includes(Permission.GererRoles) && (
                     <StyledTab
-                        label="Roles"
+                        label="Rôles"
                         to="/roles"
                         component={Link}
                     />
