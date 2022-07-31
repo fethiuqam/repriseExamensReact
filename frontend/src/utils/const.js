@@ -1,4 +1,3 @@
-
 export const STATUTS = [
     'ENREGISTREE',
     'SOUMISE',
@@ -8,7 +7,8 @@ export const STATUTS = [
     'ANNULEE',
     'PLANIFIEE',
     'ABSENCE',
-    'COMPLETEE'
+    'COMPLETEE',
+    'RETOURNEE'
 ];
 
 export const STATUT_AFFICHAGE = {
@@ -16,11 +16,12 @@ export const STATUT_AFFICHAGE = {
     SOUMISE: ["Soumise", "#55B2FA", "#FFF"],
     EN_TRAITEMENT: ["En traitement", "#B07FFC", "#FFF"],
     ACCEPTEE: ["Acceptée", "#A5F8C4", "#666"],
-    REJETEE: ["Rejetée", "#F91A21", "#FFF"],
+    REJETEE: ["Rejetée", "#d32f2f", "#FFF"],
     ANNULEE: ["Annulée", "#FBE90E", "#666"],
     PLANIFIEE: ["Planifiée", "#0EEDFB", "#666"],
     ABSENCE: ["Absence", "#FC6538", "#FFF"],
-    COMPLETEE: ["Complétée", "#06D515", "#FFF"]
+    COMPLETEE: ["Complétée", "#06D515", "#FFF"],
+    RETOURNEE: ["Retournée", "#ed6c02", "#FFF"]
 };
 
 export const DECISION_AFFICHAGE = {
@@ -30,13 +31,8 @@ export const DECISION_AFFICHAGE = {
     REJET_RECOMMANDE: ["Rejet recommandé", "error"],
     REJETEE_DIRECTEUR: ["Rejetée par le directeur", "error"],
     REJETEE_ENSEIGNANT: ["Rejetée par l'enseignant", "error"],
+    RETOURNEE: ["Retournée à l'étudiant", "warning"],
     AUCUNE: ["Aucune", "default"]
-};
-
-export const SESSION_AFFICHAGE = {
-    HIVER: "Hiver",
-    AUTOMNE: "Automne",
-    ETE: "Été"
 };
 
 export const MOTIF_AFFICHAGE = {
@@ -67,38 +63,71 @@ export const STYLE_MESSAGE_ENVOYE = {
 }
 
 export const Permission = {
-  ListerDRE: "ListerDRE",
-  AfficherDRE: "AfficherDRE",
-  AfficherJustificatifs: "AfficherJustificatifs",
-  JugerRecevabilite: "JugerRecevabilite",
-  PlanifierDates: "PlanifierDates",
-  GererUsagers: "GererUsagers",
-  GererRoles: "GererRoles",
+    ListerDRE: "ListerDRE",
+    AfficherDRE: "AfficherDRE",
+    AfficherJustificatifs: "AfficherJustificatifs",
+    PlanifierDates: "PlanifierDates",
+    GererUsagers: "GererUsagers",
+    GererRoles: "GererRoles",
+    JugerCommis: "JugerCommis",
+    JugerDirecteur: "JugerDirecteur",
+    RetournerDemande: "RetournerDemande"
 };
 
 export const TypeId = {
-  Etudiant: "etudiant",
-  Enseignant: "enseignant",
-  Personnel: "personnel",
+    Etudiant: "etudiant",
+    Enseignant: "enseignant",
+    Personnel: "personnel",
 };
 
 export const types = {
-  [TypeId.Etudiant]: {
-    id: TypeId.Etudiant,
-    nom: "Étudiant",
-    endpoint: "etudiants",
-    nomIdentifiant: "codePermanent",
-  },
-  [TypeId.Enseignant]: {
-    id: TypeId.Enseignant,
-    nom: "Enseignant",
-    endpoint: "enseignants",
-    nomIdentifiant: "matricule",
-  },
-  [TypeId.Personnel]: {
-    id: TypeId.Personnel,
-    nom: "Personnel",
-    endpoint: "personnels",
-    nomIdentifiant: "matricule",
-  },
+    [TypeId.Etudiant]: {
+        id: TypeId.Etudiant,
+        nom: "Étudiant",
+        endpoint: "etudiants",
+        nomIdentifiant: "codePermanent",
+    },
+    [TypeId.Enseignant]: {
+        id: TypeId.Enseignant,
+        nom: "Enseignant",
+        endpoint: "enseignants",
+        nomIdentifiant: "matricule",
+    },
+    [TypeId.Personnel]: {
+        id: TypeId.Personnel,
+        nom: "Personnel",
+        endpoint: "personnels",
+        nomIdentifiant: "matricule",
+    },
 };
+
+export const StatutId = {
+    Enregistree: 'ENREGISTREE',
+    Soumise: 'SOUMISE',
+    EnTraitement: 'EN_TRAITEMENT',
+    Acceptee: 'ACCEPTEE',
+    Rejetee: 'REJETEE',
+    Annulee: 'ANNULEE',
+    Planifiee: 'PLANIFIEE',
+    Absence: 'ABSENCE',
+    Completee: 'COMPLETEE',
+    Retournee: 'RETOURNEE'
+}
+
+export const DecisionId = {
+    AcceptationRecommandee: 'ACCEPTATION_RECOMMANDEE',
+    AccepteeDirecteur: 'ACCEPTEE_DIRECTEUR',
+    AccepteeEnseignant: 'ACCEPTEE_ENSEIGNANT',
+    RejetRecommande: 'REJET_RECOMMANDE',
+    RejeteeDirecteur: 'REJETEE_DIRECTEUR',
+    RejeteeEnseignant: 'REJETEE_ENSEIGNANT',
+    Retournee: 'RETOURNEE',
+    Aucune: 'AUCUNE'
+}
+
+export const JugementId = {
+    Rejeter: 'rejeter',
+    Accepter: 'accepter',
+    Retourner: 'retourner',
+    AnnulerRejet: "annuler-rejet"
+}

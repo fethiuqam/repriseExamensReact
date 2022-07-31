@@ -16,7 +16,8 @@ import {
     DialogContentText,
     DialogTitle,
     Snackbar,
-    Alert } from "@mui/material";
+    Alert
+} from "@mui/material";
 import JugerDRE from "../JugerDRE/JugerDRE";
 import TableInfosEnseignant from '../TableInfoEnseignant/TableInforEnseignant';
 import TableDetailsAbsence from '../TableDetailsAbsence/TableDetailsAbsence';
@@ -27,14 +28,14 @@ import MessagesDRE from "../MessagesDRE/MessagesDRE";
 import HistoriqueEtudiant from "../HistoriqueEtudiant/HistoriqueEtudiant";
 import PlanificationDetails from "../PlanificationDetails/PlanificationDetails";
 import * as apiClient from "../../api/ApiClient";
+import {StatutId, TypeId} from "../../utils/const";
 
 export default function DetailsDRE() {
 
-    const {type, permissions} = useContext(AuthContext);
+    const {type} = useContext(AuthContext);
     const [enChargement, setEnChargement] = useState(true);
     const [dre, setDre] = useState(null);
     const {idDRE} = useParams();
-    let juge = null;
 
     const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
     const [confirmationDialogTitre, setConfirmationDialogTitre] = useState("");
@@ -76,19 +77,6 @@ export default function DetailsDRE() {
         }
         annulerDRE();
         setConfirmationDialogOpen(false);
-    }
-
-    switch (type) {
-        case "enseignant" :
-            juge = "enseignant";
-            break;
-        case "personnel" :
-            if (permissions.includes("JugerCommis"))
-                juge = "commis";
-            else if (permissions.includes("JugerDirecteur"))
-                juge = "directeur";
-            break;
-        default:
     }
 
     const API_URL = `/api/demandes/${idDRE}`;
@@ -137,36 +125,32 @@ export default function DetailsDRE() {
                     }
 
                     <SectionFormulaire title={'INFORMATIONS DEMANDE'}>
-                        <TableInfosDemande dre={dre} />
+                        <TableInfosDemande dre={dre}/>
                     </SectionFormulaire>
 
-                    {type === "enseignant"
-                        ? null
-                        : <SectionFormulaire title={'DETAILS'}>
+                    {type !== TypeId.Enseignant
+                        && <SectionFormulaire title={'DETAILS'}>
                             <TableDetailsAbsence dre={dre}/>
                         </SectionFormulaire>
                     }
 
-                    {dre.statutCourant === "PLANIFIEE"
-                        ? <SectionFormulaire title={'PLANIFICATION DE LA REPRISE'}>
+                    {dre.statutCourant === StatutId.Planifiee
+                        && <SectionFormulaire title={'PLANIFICATION DE LA REPRISE'}>
                             <PlanificationDetails reprise={dre.coursGroupe.reprise}/>
                         </SectionFormulaire>
-                        : null
                     }
 
-                    {type === "personnel"
-                        ? <HistoriqueEtudiant idEtudiant={dre.etudiant.id}/>
-                        : null
+                    {type === TypeId.Personnel
+                        && <HistoriqueEtudiant idEtudiant={dre.etudiant.id}/>
                     }
 
                     {dre.listeMessage
-                        ? <MessagesDRE
+                        && <MessagesDRE
                             messages={dre.listeMessage}
                             typeUtilisateur={type}
                             idDRE={idDRE}
                             actualiserDRE={checherDRE}
                         />
-                        : null
                     }
 
 
@@ -184,13 +168,15 @@ export default function DetailsDRE() {
                                 </Button>
 
                                 <Stack direction="row" spacing={1}>
-                                    <Button
-                                        onClick={handleAnnulerDRE}
-                                        variant="contained"
-                                        color="error"
-                                        disabled={dre.statutCourant === "ANNULEE"}
-                                    > Annuler la demande
-                                    </Button>
+                                    {type === TypeId.Etudiant
+                                        && <Button
+                                            onClick={handleAnnulerDRE}
+                                            variant="contained"
+                                            color="error"
+                                            disabled={dre.statutCourant === StatutId.Annulee}
+                                        > Annuler la demande
+                                        </Button>
+                                    }
 
                                     <Dialog
                                         open={confirmationDialogOpen}
@@ -225,10 +211,9 @@ export default function DetailsDRE() {
                                     </Snackbar>
 
                                     <Stack direction="row" spacing={1}>
-                                        {juge &&
-                                            <JugerDRE
+                                        {(type === TypeId.Enseignant || type === TypeId.Personnel)
+                                            && <JugerDRE
                                                 idDRE={idDRE}
-                                                juge={juge}
                                                 decisionCourante={dre.decisionCourante.typeDecision}
                                                 statutCourant={dre.statutCourant}
                                                 actualiserDRE={checherDRE}

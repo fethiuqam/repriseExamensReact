@@ -9,5 +9,6 @@ public enum Permission {
     JugerEnseignant,
     PlanifierDates,
     GererUsagers,
-    GererRoles
+    GererRoles,
+    RetournerDemande
 }
