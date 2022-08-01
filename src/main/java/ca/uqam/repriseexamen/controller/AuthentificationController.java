@@ -1,5 +1,6 @@
 package ca.uqam.repriseexamen.controller;
 
+import ca.uqam.repriseexamen.securite.InformationUtilisateurServiceImpl;
 import ca.uqam.repriseexamen.securite.UtilisateurAuthentifieService;
 import ca.uqam.repriseexamen.securite.authentification.AuthenticationRequest;
 import ca.uqam.repriseexamen.securite.authentification.AuthenticationResponse;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -26,6 +28,9 @@ public class AuthentificationController {
 
     @Autowired
     private UtilisateurAuthentifieService authentifieService;
+
+    @Autowired
+    InformationUtilisateurServiceImpl informationUtilisateurService;
 
     @Autowired
     JWTTokenHelper jWTTokenHelper;
@@ -56,6 +61,20 @@ public class AuthentificationController {
         return ResponseEntity.ok().body(response);
     }
 
+    @GetMapping("/validCookie")
+    public ResponseEntity<?> validCookie(HttpServletRequest request, HttpServletResponse res) throws Exception {
+        String token = jWTTokenHelper.getToken(request);
+        if(token != null)
+        {
+            String username = jWTTokenHelper.getUsernameDuToken(token);
+            UserDetails details = informationUtilisateurService.loadUserByUsername(username);
+            if(jWTTokenHelper.validerToken(token,details))
+            {
+                return ResponseEntity.ok().body("");
+            }
+        }
+        return ResponseEntity.badRequest().body("");
+    }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse res) throws Exception {

@@ -66,6 +66,7 @@ const Entete = () => {
     setType(null);
     setId(null);
     setPermissions([]);
+    sessionStorage.clear();
     deconnecterUtilisateur().then(()=>{
     }).catch(()=>{
       throw new Error("Une erreur s'est produite lors de la déconnexion");
@@ -130,7 +131,6 @@ const Entete = () => {
                 )}
               </StyledTabs>
             </Box>
-
             <Button color="inherit" onClick={deconnecter}>
               {deconnexion}
             </Button>

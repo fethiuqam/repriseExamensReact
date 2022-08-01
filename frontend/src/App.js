@@ -26,48 +26,48 @@ function App() {
 
     return (
         <BrowserRouter>
+
             <Grid style={{minHeight: "100vh"}} container direction='column' alignItems="stretch"
                   justifyContent="space-between">
                 <Entete/>
-                <Routes>
+                    <Routes>
+                        <Route exact path="/connexion" element={<Connexion/>}/>
 
-                    <Route exact path="/connexion" element={<Connexion/>}/>
+                        <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']}/>}>
+                            <Route exact path="/" element={<ListeDRE/>}/>
+                        </Route>
 
-                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']}/>}>
-                        <Route exact path="/" element={<ListeDRE/>}/>
-                    </Route>
+                        <Route element={<AuthRequise typesPermis={['etudiant']}/>}>
+                            <Route exact path="/faire-demande" element={<Formulaire/>}/>
+                        </Route>
 
-                    <Route element={<AuthRequise typesPermis={['etudiant']}/>}>
-                        <Route exact path="/faire-demande" element={<Formulaire/>}/>
-                    </Route>
+                        <Route element={<AuthRequise typesPermis={['personnel']}/>}>
+                            <Route exact path="/planification" element={<Planification/>}/>
+                        </Route>
 
-                    <Route element={<AuthRequise typesPermis={['personnel']}/>}>
-                        <Route exact path="/planification" element={<Planification/>}/>
-                    </Route>
+                        <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']}/>}>
+                            <Route exact path="/details/:idDRE" element={<DetailsDRE/>}/>
+                        </Route>
 
-                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']}/>}>
-                        <Route exact path="/details/:idDRE" element={<DetailsDRE/>}/>
-                    </Route>
+                        <Route path="/non-autorise" element={<NonAutorise/>}/>
 
-                    <Route path="/non-autorise" element={<NonAutorise/>}/>
+                        <Route path="*" element={<NonTrouve/>}/>
 
-                    <Route path="*" element={<NonTrouve/>}/>
+                        <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
+                                                    permissionsRequises={[Permission.GererUsagers]}/>}>
+                            <Route exact path="/utilisateurs" element={<ListeUtilisateurs/>}/>
+                        </Route>
 
-                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
-                                                 permissionsRequises={[Permission.GererUsagers]}/>}>
-                        <Route exact path="/utilisateurs" element={<ListeUtilisateurs/>}/>
-                    </Route>
+                        <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} 
+                                                    permissionsRequises={[Permission.GererCours]}/>}>
+                            <Route exact path="/cours" element={<Cours/>} />
+                        </Route>
 
-                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} permissionsRequises={[Permission.GererCours]}/>}>
-                        <Route exact path="/cours" element={<Cours/>} />
-                    </Route>
-
-                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
-                                                 permissionsRequises={[Permission.GererRoles]}/>}>
-                        <Route exact path="/roles" element={<ListeRoles/>}/>
-                    </Route>
-
-                </Routes>
+                        <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
+                                                    permissionsRequises={[Permission.GererRoles]}/>}>
+                            <Route exact path="/roles" element={<ListeRoles/>}/>
+                        </Route>
+                    </Routes>
                 <PiedPage/>
             </Grid>
         </BrowserRouter>

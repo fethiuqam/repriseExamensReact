@@ -27,13 +27,16 @@ export default function Connexion() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        connectionUtilisateur(valAuth).then((response) => {
-            setAuth(true);
-            setType(response.type);
-            setId(response.id);
-            setPermissions(response.permissions);
-            navigate("/", {replace: true});
-        }).catch(() => {
+        connectionUtilisateur(valAuth).then((response)=>{
+             setAuth(true);
+             setType(response.type);
+             setId(response.id);
+             setPermissions(response.permissions);
+             sessionStorage.setItem("Id", response.id);
+             sessionStorage.setItem("Type", response.type);
+             sessionStorage.setItem("Permissions",response.permissions);
+             navigate("/", {replace: true});
+        }).catch(()=>{
             setErrConnectMessage("Échec, mauvaises informations d'identification");
         });
     };
