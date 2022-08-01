@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -104,6 +105,15 @@ public class JustificationServiceImpl implements JustificationService{
             return resource;
         } else {
             throw new RuntimeException("Erreur lors de la lecture du fichier!");
+        }
+    }
+
+    @Override
+    public void supprimerJustification(Long id) {
+        if (justificationRepository.existsById(id)) {
+           justificationRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("La justification à supprimer n'existe pas.");
         }
     }
 

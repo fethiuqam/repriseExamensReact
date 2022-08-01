@@ -1,17 +1,18 @@
 package ca.uqam.repriseexamen.controller;
 
+import ca.uqam.repriseexamen.model.DemandeRepriseExamen;
+import ca.uqam.repriseexamen.service.DemandeRepriseExamenService;
 import ca.uqam.repriseexamen.service.JustificationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +23,9 @@ public class JustificationController {
 
     @Autowired
     private JustificationService justificationService;
+
+    @Autowired
+    private DemandeRepriseExamenService demandeRepriseExamenService;
 
     /**
      * Route pour faire le preview d'un fichier (justification) a partir du url
@@ -39,6 +43,43 @@ public class JustificationController {
                 .contentLength(fichier.contentLength())
                 .contentType(MediaType.parseMediaType(Files.probeContentType(fichier.getFile().toPath())))
                 .body(fichier);
+    }
+
+    /**
+     * Route pour ajouter une nouvelle piece justificative
+     * pour une DRE existante
+     *
+     * @param id identifiant de la DRE
+     * @return ResponseEntity reponse sans contenu de reussite
+     * @throws IOException
+     */
+    @PostMapping(value = "api/justifications", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<?> ajouterJustification(@RequestPart(value="id") Long id, @RequestPart(value = "file") MultipartFile fichier) {
+
+        DemandeRepriseExamen demande = demandeRepriseExamenService.findDemandeRepriseExamen(id).orElseThrow(ResourceNotFoundException::new);
+
+        if (fichier != null) {
+            try {
+                justificationService.ajouterJustification(demande, fichier);
+            } catch (IOException e) {
+                ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    /**
+     * Route pour supprimer une pièce justificative
+     * pour une DRE existante
+     *
+     * @param id identifiant de la justification
+     * @return ResponseEntity reponse sans contenu de reussite
+     * @throws IOException
+     */
+    @DeleteMapping(value = "api/justifications/{id}")
+    public ResponseEntity<?> supprimerJustification(@PathVariable Long id) {
+        justificationService.supprimerJustification(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
