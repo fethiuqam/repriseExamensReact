@@ -235,7 +235,7 @@ public class DemandeRepriseExamenController {
 
             Utilisateur authentifie = authentifieService.GetAuthentifie();
 
-                // utilisateur est du personnel avec la permission RetournerDemande
+            // utilisateur est du personnel avec la permission RetournerDemande
             if (authentifie.getType().equals("personnel") && authentifie.getPermissions()
                     .contains(Permission.RetournerDemande)) {
                 demandeRepriseExamenService.ajouterDemandeDecision(id, patch, Set.of(TypeDecision.AUCUNE),

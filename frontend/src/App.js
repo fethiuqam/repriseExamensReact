@@ -11,9 +11,10 @@ import AuthRequise from "./components/AuthRequise/AuthRequise";
 import NonAutorise from "./components/NonAutorise/NonAutorise";
 import NonTrouve from "./components/NonTrouve/NonTrouve";
 import Formulaire from "./components/Formulaire/Formulaire";
-import { Permission, TypeId } from "./utils/const";
+import {Permission, TypeId} from "./utils/const";
 import ListeUtilisateurs from "./components/ListeUtilisateurs/ListeUtilisateurs"
 import DetailsDRE from "./components/DetailsDRE/DetailsDRE";
+import ListeRoles from "./components/ListeRoles/ListeRoles"
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -29,30 +30,36 @@ function App() {
                 <Entete/>
                 <Routes>
 
-                    <Route exact path="/connexion" element={<Connexion/>} />
+                    <Route exact path="/connexion" element={<Connexion/>}/>
 
-                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']} />}>
-                        <Route exact path="/" element={<ListeDRE/>} />
+                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']}/>}>
+                        <Route exact path="/" element={<ListeDRE/>}/>
                     </Route>
 
-                    <Route element={<AuthRequise typesPermis={['etudiant']} />}>
-                        <Route exact path="/faire-demande" element={<Formulaire/>} />
+                    <Route element={<AuthRequise typesPermis={['etudiant']}/>}>
+                        <Route exact path="/faire-demande" element={<Formulaire/>}/>
                     </Route>
 
-                    <Route element={<AuthRequise typesPermis={['personnel']} />}>
-                        <Route exact path="/planification" element={<Planification/>} />
+                    <Route element={<AuthRequise typesPermis={['personnel']}/>}>
+                        <Route exact path="/planification" element={<Planification/>}/>
                     </Route>
 
-                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']} />}>
-                        <Route exact path="/details/:idDRE" element={<DetailsDRE/>} />
+                    <Route element={<AuthRequise typesPermis={['personnel', 'enseignant', 'etudiant']}/>}>
+                        <Route exact path="/details/:idDRE" element={<DetailsDRE/>}/>
                     </Route>
 
-                    <Route path="/non-autorise" element={<NonAutorise/>} />
+                    <Route path="/non-autorise" element={<NonAutorise/>}/>
 
-                    <Route path="*" element={<NonTrouve/>} />
+                    <Route path="*" element={<NonTrouve/>}/>
 
-                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} permissionsRequises={[Permission.GererUsagers]}/>}>
+                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
+                                                 permissionsRequises={[Permission.GererUsagers]}/>}>
                         <Route exact path="/utilisateurs" element={<ListeUtilisateurs/>}/>
+                    </Route>
+
+                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
+                                                 permissionsRequises={[Permission.GererRoles]}/>}>
+                        <Route exact path="/roles" element={<ListeRoles/>}/>
                     </Route>
 
                 </Routes>

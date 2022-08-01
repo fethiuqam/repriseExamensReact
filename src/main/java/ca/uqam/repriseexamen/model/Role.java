@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,7 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Role {
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+    private @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private String nom;
 
     @ElementCollection(targetClass = Permission.class, fetch = FetchType.EAGER)
