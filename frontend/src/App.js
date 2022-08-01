@@ -20,6 +20,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Planification from "./components/Planification/Planification";
+import Cours from "./components/ListeCours/ListeCours";
 
 function App() {
 
@@ -55,6 +56,10 @@ function App() {
                     <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
                                                  permissionsRequises={[Permission.GererUsagers]}/>}>
                         <Route exact path="/utilisateurs" element={<ListeUtilisateurs/>}/>
+                    </Route>
+
+                    <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} permissionsRequises={[Permission.GererCours]}/>}>
+                        <Route exact path="/cours" element={<Cours/>} />
                     </Route>
 
                     <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}

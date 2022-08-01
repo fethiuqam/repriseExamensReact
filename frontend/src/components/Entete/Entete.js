@@ -121,6 +121,13 @@ const Entete = () => {
                         component={Link}
                     />
                 )}
+                {permissions.includes(Permission.GererCours) && (
+                  <StyledTab
+                    label="Cours"
+                    to="/cours"
+                    component={Link}
+                  />
+                )}
               </StyledTabs>
             </Box>
 
