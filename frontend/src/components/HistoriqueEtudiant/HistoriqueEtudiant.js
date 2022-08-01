@@ -110,7 +110,6 @@ const HistoriqueEtudiant = ({idEtudiant}) => {
     const [expanded, setExpanded] = useState(false);
 
     const handleChange = (panel) => (event, isExpanded) => {
-        console.log("Inside handleChange");
         setExpanded(isExpanded ? panel : false);
     };
 

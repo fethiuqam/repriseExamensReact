@@ -97,7 +97,7 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].*", hasSize(14)))
+                .andExpect(jsonPath("$[0].*", hasSize(15)))
                 .andExpect(jsonPath("$[0].statutCourant", is("ANNULEE")))
                 .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF1120")))
                 .andExpect(jsonPath("$[1].statutCourant", is("EN_TRAITEMENT")))
@@ -111,7 +111,7 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(get("/api/demandes").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(4)))
-                .andExpect(jsonPath("$[0].*", hasSize(14)))
+                .andExpect(jsonPath("$[0].*", hasSize(15)))
                 .andExpect(jsonPath("$[0].statutCourant", is("EN_TRAITEMENT")))
                 .andExpect(jsonPath("$[0].coursGroupe.cours.sigle", is("INF3173")));
 
@@ -164,7 +164,7 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(14)))
+                .andExpect(jsonPath("$.*", hasSize(15)))
                 .andExpect(jsonPath("$.statutCourant", is("ANNULEE")))
                 .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF1120")));
     }
@@ -183,7 +183,7 @@ public class DemandeRepriseExamenControllerTest {
             throws Exception {
         this.mockMvc.perform(get("/api/demandes/3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*", hasSize(14)))
+                .andExpect(jsonPath("$.*", hasSize(15)))
                 .andExpect(jsonPath("$.statutCourant", is("EN_TRAITEMENT")))
                 .andExpect(jsonPath("$.coursGroupe.cours.sigle", is("INF3173")));
     }
@@ -317,7 +317,7 @@ public class DemandeRepriseExamenControllerTest {
 
     @WithMockUser(username = "commis")
     @Test
-    public void devraitRetournerStatutNoContentPourRejeterCommisBodyVide()
+    public void devraitRetournerStatutNoContentPourRejeterCommisBodyAvecDetails()
             throws Exception {
         this.mockMvc.perform(patch("/api/demandes/1/rejeter")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -750,10 +750,86 @@ public class DemandeRepriseExamenControllerTest {
 
     @Test
     @WithMockUser(username = "enseignant1")
-    public void envoyerMessageDevraitRetournerUnauthorizedSiEnseignant() throws Exception {
+    public void envoyerMessageDevraitRetournerStatutUnauthorizedPourEnseignant() throws Exception {
         this.mockMvc.perform(post("/api/demandes/1/messages")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"message\": \"test\"}"))
                 .andExpect(status().isUnauthorized());
     }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerStatutBadRequestPourRetournerBodyVide()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerStatutBadRequestPourRetournerDetailsLongueurDeux()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"xx\"}"))
+                .andExpect(status().isBadRequest());
+    }
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerStatutNoContentPourRetournerBodyAvecDetails()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"demande non conforme\"}"))
+                .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getDecisionCourante().getTypeDecision()).isNotNull().isEqualTo(TypeDecision.RETOURNEE);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.RETOURNEE);
+    }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerNotAcceptableStatutPourRetournerDejaAcceptationRecommandee()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"demande non conforme\"}"))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getDecisionCourante().getTypeDecision()).isNotNull()
+                .isEqualTo(TypeDecision.ACCEPTATION_RECOMMANDEE);
+    }
+
+    @WithMockUser(username = "directeur")
+    @Test
+    public void devraitRetournerStatutUnauthorizedPourPersonnelNayantPasPermissionRtournerDemande()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"demande non conforme\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(username = "enseignant1")
+    @Test
+    public void devraitRetournerStatutUnauthorizedPourEnseignant()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"demande non conforme\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(username = "etudiant1")
+    @Test
+    public void devraitRetournerStatutUnauthorizedPourEtudiant()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"demande non conforme\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
 }

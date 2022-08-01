@@ -86,7 +86,7 @@ test("devrait enlever puis ajouter une option au filtre statut en cliquant sur u
     fireEvent.click(within(screen.getByRole('listbox')).getByText(/Enregistrée/i));
     expect(filtreStatut).toHaveTextContent("SoumiseEn traitementAcceptéeRejetéeAnnuléePlanifiéeAbsenceComplétée");
     fireEvent.click(within(screen.getByRole('listbox')).getByText(/Enregistrée/i));
-    expect(filtreStatut).toHaveTextContent("SoumiseEn traitementAcceptéeRejetéeAnnuléePlanifiéeAbsenceComplétéeEnregistrée");
+    expect(filtreStatut).toHaveTextContent("SoumiseEn traitementAcceptéeRejetéeAnnuléePlanifiéeAbsenceComplétéeRetournéeEnregistrée");
 });
 
 test("devrait reinitialiser les champs avec le bouton reinitialiser", () => {
