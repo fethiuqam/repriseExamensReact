@@ -56,11 +56,12 @@ public class JustificationController {
     @PostMapping(value = "api/justifications", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> ajouterJustification(@RequestPart(value="id") Long id, @RequestPart(value = "file") MultipartFile fichier) {
 
-        DemandeRepriseExamen demande = demandeRepriseExamenService.findDemandeRepriseExamen(id).orElseThrow(ResourceNotFoundException::new);
-
+        DemandeRepriseExamen[] demandeTrouvee = new DemandeRepriseExamen[1];
+        demandeTrouvee[0] = demandeRepriseExamenService.findDemandeRepriseExamen(id).orElseThrow(ResourceNotFoundException::new);
+     
         if (fichier != null) {
             try {
-                justificationService.ajouterJustification(demande, fichier);
+                justificationService.ajouterJustification(demandeTrouvee, fichier);
             } catch (IOException e) {
                 ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
             }

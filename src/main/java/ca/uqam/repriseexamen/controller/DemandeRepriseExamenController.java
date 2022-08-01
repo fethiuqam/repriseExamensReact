@@ -93,20 +93,21 @@ public class DemandeRepriseExamenController {
      * @return DemandeRepriseExamen la demande soumise
      */
     @PostMapping(value = "", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public DemandeRepriseExamen soumettreDemandeRepriseExamen(@RequestPart DemandeRepriseExamen nouvelleDemande,
+    public DemandeRepriseExamen[] soumettreDemandeRepriseExamen(@RequestPart DemandeRepriseExamen[] nouvellesDemandes,
                                                               @RequestPart(value = "files", required = false) MultipartFile[] fichiers) {
 
-        DemandeRepriseExamen dre = demandeRepriseExamenService.soumettreDemandeRepriseExamen(nouvelleDemande);
+        DemandeRepriseExamen[] dres = demandeRepriseExamenService.soumettreDemandesRepriseExamen(nouvellesDemandes);
         if (fichiers != null) {
             Arrays.stream(fichiers).forEach(fichier -> {
                 try {
-                    justificationService.ajouterJustification(dre, fichier);
+                    justificationService.ajouterJustification(dres, fichier);
                 } catch (IOException e) {
                     ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
                 }
             });
         }
-        return dre;
+        
+        return dres;
     }
 
     @PatchMapping(path = "/{id}/annuler-etudiant")

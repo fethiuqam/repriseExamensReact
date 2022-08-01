@@ -89,22 +89,28 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre) {
-        Statut statutSoumission = Statut.builder()
-                .dateHeure(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-                .typeStatut(TypeStatut.SOUMISE)
-                .demandeRepriseExamen(dre)
-                .build();
+    public DemandeRepriseExamen[] soumettreDemandesRepriseExamen(DemandeRepriseExamen[] dres) {
+        List<DemandeRepriseExamen> demandesSoumises = new ArrayList<DemandeRepriseExamen>();
+        
+        for(DemandeRepriseExamen dre : dres) {
+            Statut statutSoumission = Statut.builder()
+            .dateHeure(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+            .typeStatut(TypeStatut.SOUMISE)
+            .demandeRepriseExamen(dre)
+            .build();
 
-        List<Justification> listeJustifications = new ArrayList<>();
-        dre.setListeJustification(listeJustifications);
+            List<Justification> listeJustifications = new ArrayList<>();
+            dre.setListeJustification(listeJustifications);
 
-        ArrayList<Statut> statuts = new ArrayList<>();
-        statuts.add(statutSoumission);
+            ArrayList<Statut> statuts = new ArrayList<>();
+            statuts.add(statutSoumission);
 
-        dre.setListeStatut(statuts);
-
-        return demandeRepriseExamenRepository.save(dre);
+            dre.setListeStatut(statuts);
+            demandesSoumises.add(demandeRepriseExamenRepository.save(dre));
+        }
+        
+        dres = demandesSoumises.toArray(dres);
+        return dres;
     }
 
     @Override

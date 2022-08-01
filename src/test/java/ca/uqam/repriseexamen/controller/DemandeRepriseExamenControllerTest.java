@@ -215,6 +215,7 @@ public class DemandeRepriseExamenControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
+
     @Test
     public void devraitRetournerNouvelleDemandeSoumiseAvecStatutOk()
             throws Exception {
@@ -226,12 +227,14 @@ public class DemandeRepriseExamenControllerTest {
                 .absenceDetails("Deces de ma grande tante")
                 .build();
 
+        DemandeRepriseExamen[] dres = {demande};
+
         ObjectMapper objectMapper =
                 new ObjectMapper().registerModule(new JavaTimeModule())
                         .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        MockMultipartFile dre = new MockMultipartFile("nouvelleDemande", null,
-                "application/json", objectMapper.writeValueAsBytes(demande));
+        MockMultipartFile dre = new MockMultipartFile("nouvellesDemandes", null,
+                "application/json", objectMapper.writeValueAsBytes(dres));
 
         MockMultipartFile fichier = new MockMultipartFile("files",
                 "filename.pdf",
@@ -240,7 +243,38 @@ public class DemandeRepriseExamenControllerTest {
 
         this.mockMvc.perform(multipart("/api/demandes").file(dre).file(fichier))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.listeStatut[0].typeStatut", is("SOUMISE")));
+                .andExpect(jsonPath("$[0].listeStatut[0].typeStatut", is("SOUMISE")));
+    }
+
+    @Test
+    public void devraitRetournerNouvellesDemandesSoumiseAvecStatutOk()
+            throws Exception {
+
+        DemandeRepriseExamen demande = DemandeRepriseExamen.builder()
+                .absenceDateDebut(LocalDate.of(2022, 6, 6))
+                .absenceDateFin(LocalDate.of(2022, 6, 8))
+                .motifAbsence(MotifAbsence.DECES)
+                .absenceDetails("Deces de ma grande tante")
+                .build();
+
+        DemandeRepriseExamen[] dres = {demande, demande};
+
+        ObjectMapper objectMapper =
+                new ObjectMapper().registerModule(new JavaTimeModule())
+                        .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
+        MockMultipartFile dre = new MockMultipartFile("nouvellesDemandes", null,
+                "application/json", objectMapper.writeValueAsBytes(dres));
+
+        MockMultipartFile fichier = new MockMultipartFile("files",
+                "filename.pdf",
+                "application/pdf",
+                "test".getBytes());
+
+        this.mockMvc.perform(multipart("/api/demandes").file(dre).file(fichier))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].listeStatut[0].typeStatut", is("SOUMISE")))
+                .andExpect(jsonPath("$[1].listeStatut[0].typeStatut", is("SOUMISE")));
     }
 
     @Test

@@ -15,7 +15,6 @@ import AttachmentIcon from '@mui/icons-material/Attachment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { FileUploader } from "react-drag-drop-files";
 
-
 const Formulaire = () => {
 
     const { id } = useContext(AuthContext);
@@ -30,6 +29,41 @@ const Formulaire = () => {
         coursGroupes: []
     });
 
+    // examen a ajouter dans le tableau des examens
+    const [ligneExamenAreprendreCourant, setLigneExamenAreprendreCourant] = useState({
+        descriptionExamen: "",
+        sigleCours: "",
+        groupeCours: "",
+        enseignant: ""
+    })
+    // la liste des examens a reprendre 
+    const [listeLigneExamenAreprendre, setListeLigneExamenAreprendre] = useState([]);
+
+    const ajouterNouvelleLigneExam = () => {
+        try {
+            setLigneExamenAreprendreCourant({
+                descriptionExamen: getValues("descriptionExamen"),
+                sigleCours: getValues("sigleCours"),
+                groupeCours: document.getElementById('groupeCours-input').value,
+                enseignant: document.getElementById('enseignant-input').value
+            })
+        } catch (e) {
+
+        }
+
+    }
+
+    useEffect(() => {
+        if (ligneExamenAreprendreCourant.groupeCours !== ""
+            && ligneExamenAreprendreCourant.enseignant !== ""
+            && ligneExamenAreprendreCourant.sigleCours !== ""
+            && ligneExamenAreprendreCourant.descriptionExamen !== "") {
+            setListeLigneExamenAreprendre([...listeLigneExamenAreprendre, ligneExamenAreprendreCourant]);
+        }
+
+    }, [ligneExamenAreprendreCourant]); // eslint-disable-line
+
+
     // Déclaration des variables qui seront utilisées dans le react hook form
     const {
         register,
@@ -38,6 +72,7 @@ const Formulaire = () => {
         getValues,
         control
     } = useForm();
+
 
     // Déclaration de la fonction pour récupérer un étudiant
     useEffect(() => {
@@ -98,6 +133,21 @@ const Formulaire = () => {
         }
     };
 
+    /**
+     * Fonction pour supprimer une colonne de formLigneExam donne 
+     * @param {*} nombre index du fichier a enlever
+     */
+    const supprimerFormLigneExam = (nombre) => {
+        try {
+            const nouvArray = [...listeLigneExamenAreprendre];
+            nouvArray.splice(nombre, 1);
+            setListeLigneExamenAreprendre(nouvArray);
+        } catch (e) {
+            console.error("Erreur dans la supression de formLigneExam")
+        }
+    };
+
+
     /***
      * Fonction pour faire un update des fichiers dans formdata
      * a partir des fichiers presents dans le state files
@@ -111,15 +161,27 @@ const Formulaire = () => {
         handleFormSubmit(data);
     };
 
+
     // Gère la soumission d'une DRE
     async function handleFormSubmit(data) {
         try {
             setIsSubmitting(true);
-            const coursGroupe = etudiant.coursGroupes.filter(e => e.id === data.sigleCours)[0];
             // On lie le formulaire, l'étudiant et son cours groupe avant d'envoyer le data
-            data = { ...data, etudiant, coursGroupe };
-            formData.append('nouvelleDemande',
-                new Blob([JSON.stringify(data)], { type: "application/json" }));
+            var donnees = []
+            listeLigneExamenAreprendre.forEach(examen => {
+                const coursGroupe = etudiant.coursGroupes.filter(e => e.id === examen.sigleCours)[0];
+                donnees.push({
+                    ...examen,
+                    absenceDateDebut: data.absenceDateDebut,
+                    absenceDateFin: data.absenceDateFin,
+                    motifAbsence: data.motifAbsence,
+                    absenceDetails: data.absenceDetails,
+                    etudiant,
+                    coursGroupe
+                })
+            })
+            formData.append('nouvellesDemandes',
+                new Blob([JSON.stringify(donnees)], { type: "application/json" }));
 
             var response = await fetch("/api/demandes", {
                 method: "POST",
@@ -164,7 +226,7 @@ const Formulaire = () => {
                         </tbody>
                     </table>
                 </SectionFormulaire>
-                <SectionFormulaire title={'INFORMATIONS SUR L\'ABSENCE'}>
+                <SectionFormulaire title={'EXAMENS À REPRENDRE'}>
                     <Controller control={control}
                         name="coursGroupeEnseignant"
                         render={({ field: { onChange } }) => {
@@ -172,10 +234,10 @@ const Formulaire = () => {
                                 <Grid container spacing={2} className="affichageInfosTable">
                                     <Grid item xs={3}>
                                         <Grid container className="sectionFormulaireDivContenuRangee">
-                                            <Grid item xs={4}>
+                                            <Grid item xs={5}>
                                                 <InputLabel id="etiquette-signelCours">Sigle du cours</InputLabel>
                                             </Grid>
-                                            <Grid item xs={8}>
+                                            <Grid item xs={6}>
                                                 <Select
                                                     data-testid="sigleCoursTestId"
                                                     defaultValue=""
@@ -192,78 +254,58 @@ const Formulaire = () => {
                                                 >
                                                     {Object.values(etudiant.coursGroupes).map(e => {
                                                         return (
-                                                            <MenuItem value={e.id}>{e.cours.sigle} — {e.cours.nom}</MenuItem>
+                                                            <MenuItem value={e.id} >{e.cours.sigle} — {e.cours.nom}</MenuItem>
                                                         );
                                                     })};
                                                 </Select>
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={2}>
+                                    <Grid item xs={3}>
                                         <Grid container className="sectionFormulaireDivContenuRangee">
-                                            <Grid item xs={6}>
+                                            <Grid item xs={3}>
                                                 <InputLabel id="etiquette-groupeCours">Groupe</InputLabel>
                                             </Grid>
                                             <Grid item xs={6}>
-                                                {etudiant.coursGroupes.filter(e => e.id === getValues("sigleCours")).map(coursFiltre => {
-                                                    return (
-                                                        <TextField
-                                                            data-testid="groupeCoursTestId"
-                                                            defaultValue=""
-                                                            value={coursFiltre.groupe}
-                                                            className="inputStandard"
-                                                            labelid="etiquette-groupeCours"
-                                                            id="groupeCours-input"
-                                                            name="groupeCours"
-                                                            style={{
-                                                                width: "90%"
-                                                            }}
-                                                            InputProps={{
-                                                                readOnly: true,
-                                                                disableUnderline: true
-                                                            }}
-                                                            {...register("groupeCours", { required: true, onChange: onChange })}
-                                                            error={Boolean(errors.groupeCours)}
-                                                        />
-                                                    )
-                                                })}
+                                                <TextField
+                                                    data-testid="groupeCoursTestId"
+                                                    placeholder='ex: 020'
+                                                    value={etudiant.coursGroupes.filter(e => e.id === getValues("sigleCours")).map(coursFiltre => coursFiltre.groupe)}
+                                                    labelid="etiquette-groupeCours"
+                                                    id="groupeCours-input"
+                                                    name="groupeCours"
+                                                    InputProps={{
+                                                        readOnly: true,
+                                                    }}
+                                                />
                                             </Grid>
+
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={3}>
                                         <Grid container className="sectionFormulaireDivContenuRangee">
-                                            <Grid item xs={6}>
+                                            <Grid item xs={4}>
                                                 <InputLabel id="etiquette-enseignant">Enseignant</InputLabel>
                                             </Grid>
                                             <Grid item xs={6}>
-                                                {etudiant.coursGroupes.filter(e => e.id === getValues("sigleCours")).map(coursFiltre => {
-                                                    return (
-                                                        <TextField
-                                                            data-testid="enseignantTestId"
-                                                            defaultValue="Enseignant"
-                                                            value={coursFiltre.enseignant.nom + ' ' + coursFiltre.enseignant.prenom}
-                                                            className="inputStandard"
-                                                            labelid="etiquette-enseignant"
-                                                            id="enseignant-input"
-                                                            name="enseignant"
-                                                            style={{
-                                                                width: "90%"
-                                                            }}
-                                                            InputProps={{
-                                                                readOnly: true,
-                                                                disableUnderline: true
-                                                            }}
-                                                            {...register("enseignant", { required: true })}
-                                                            error={Boolean(errors.enseignant)}
-                                                        />
-                                                    )
-                                                })}
+                                                <TextField
+                                                    data-testid="enseignantTestId"
+                                                    placeholder="ex: Melanie Lord"
+                                                    value={etudiant.coursGroupes.filter(e => e.id === getValues("sigleCours")).map(coursFiltre =>
+                                                        coursFiltre.enseignant.nom + ' ' + coursFiltre.enseignant.prenom)}
+                                                    labelid="etiquette-enseignant"
+                                                    id="enseignant-input"
+                                                    name="enseignant"
+                                                    InputProps={{
+                                                        readOnly: true,
+                                                    }}
+                                                />
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={3}>
                                         <Grid container className="sectionFormulaireDivContenuRangee">
-                                            <Grid item xs={6}>
+                                            <Grid item xs={5}>
                                                 <InputLabel id="etiquette-descriptionExamen">Type d'examen</InputLabel>
                                             </Grid>
                                             <Grid item xs={6}>
@@ -271,6 +313,7 @@ const Formulaire = () => {
                                                     defaultValue=""
                                                     className="inputStandard"
                                                     id="descriptionExamen-input"
+                                                    variant="outlined"
                                                     style={{
                                                         width: "90%"
                                                     }}
@@ -287,6 +330,71 @@ const Formulaire = () => {
                             );
                         }}
                     />
+                    <br />
+                    <Button
+                        variant="outlined"
+                        onClick={() => {
+                            ajouterNouvelleLigneExam()
+                        }}
+                    >
+                        ajouter
+                    </Button>
+                    <br></br>
+                    <br></br>
+                    <h4>Liste des examens à reprendre</h4>
+                    <div>
+                        <Grid container spacing={2}>
+                            <Grid item xs={2}>
+                                <InputLabel id="etiquette-descriptionExamen">Type d'examen</InputLabel>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <InputLabel id="etiquette-sigleCours">Sigle du cours</InputLabel>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <InputLabel id="etiquette-groupeCours">Groupe</InputLabel>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <InputLabel id="etiquette-enseignant">Enseignant</InputLabel>
+                            </Grid>
+                        </Grid>
+                        <ul className='noStyleList'>
+                            {listeLigneExamenAreprendre.map(function (item, idx) {
+                                return (
+                                    <li key={idx} >
+                                        <Grid container>
+                                            <Grid item xs={2}>
+                                                {item.descriptionExamen}
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                {etudiant.coursGroupes.filter(e => e.id === item.sigleCours).map(coursFiltre =>
+                                                    coursFiltre.cours.sigle + '—' + coursFiltre.cours.nom)}
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                {item.groupeCours}
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                {item.enseignant}
+                                            </Grid>
+                                            <Grid item xs={1}>
+                                                <Button
+                                                    className="buttonSupprimerFichier"
+                                                    startIcon={<DeleteIcon />}
+                                                    disableElevation
+                                                    color="error"
+                                                    size="small"
+                                                    onClick={() => {
+                                                        supprimerFormLigneExam(idx);
+                                                    }}
+                                                >
+                                                </Button>
+                                            </Grid>
+                                        </Grid>
+                                    </li>)
+                            })}
+                        </ul>
+                    </div>
+                </SectionFormulaire>
+                <SectionFormulaire title={'INFORMATIONS ET JUSTIFICATION DE L\'ABSENCE'}>
                     <Controller control={control}
                         name="dateDebutEtFinAbsence"
                         render={({ field: { onChange } }) => {
@@ -342,12 +450,9 @@ const Formulaire = () => {
                                 </Grid>
                             )
                         }} />
-                    <br />
-                </SectionFormulaire>
-                <SectionFormulaire title={'JUSTIFICATION DE L\'ABSENCE'}>
                     <div>
                         <div className="sectionFormulaireDivContenuRangee">
-                            <div style={{marginRight: 10}}>
+                            <div style={{ marginRight: 10 }}>
                                 <InputLabel id="etiquette-motif-absence">Motif</InputLabel>
                             </div>
                             <div>
@@ -458,7 +563,7 @@ const Formulaire = () => {
                             variant="contained"
                             disableElevation
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={listeLigneExamenAreprendre.length === 0? true: isSubmitting}
                         >
                             Soumettre
                         </Button>

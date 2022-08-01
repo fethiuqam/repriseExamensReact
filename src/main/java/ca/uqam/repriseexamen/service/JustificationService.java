@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 
 public interface JustificationService {
     String nettoyerNomFichier(MultipartFile fichier, DemandeRepriseExamen dre);
-    DemandeRepriseExamen ajouterJustification(DemandeRepriseExamen dre, MultipartFile file) throws IOException;
+    DemandeRepriseExamen[] ajouterJustification(DemandeRepriseExamen[] dres, MultipartFile file) throws IOException;
     Resource telecharger(String idJustification) throws MalformedURLException;
     void supprimerJustification(Long id);
 }

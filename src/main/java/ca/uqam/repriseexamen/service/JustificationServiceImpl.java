@@ -67,25 +67,29 @@ public class JustificationServiceImpl implements JustificationService{
      * @throws IOException
      */
     @Override
-    public DemandeRepriseExamen ajouterJustification(DemandeRepriseExamen dre, MultipartFile fichier) throws IOException {
+    public DemandeRepriseExamen[] ajouterJustification(DemandeRepriseExamen[] dres, MultipartFile fichier) throws IOException {
 
-        String nomFichier = nettoyerNomFichier(fichier, dre);
-        Path targetLocation = this.cheminStockageFichier.resolve(nomFichier);
-        Files.copy(fichier.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING );
+        for(DemandeRepriseExamen dre : dres) {
+            String nomFichier = nettoyerNomFichier(fichier, dre);
+            Path targetLocation = this.cheminStockageFichier.resolve(nomFichier);
+            Files.copy(fichier.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING );
 
-        Justification justification = justificationRepository.save(
-                Justification.builder().demandeRepriseExamen(dre).nomFichier(nomFichier).build());
+            Justification justification = justificationRepository.save(
+                    Justification.builder().demandeRepriseExamen(dre).nomFichier(nomFichier).build());
 
-        String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("api/justifications/")
-                .path(Long.toString(justification.getId()))
-                .path("/preview")
-                .toUriString();
-        justification.setUrl(url);
-        justificationRepository.save(justification);
+            dre.getListeJustification().add(justification);
+            demandeRepriseExamenRepository.save(dre);
 
-        dre.getListeJustification().add(justification);
-        return demandeRepriseExamenRepository.save(dre);
+            String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("api/justifications/")
+                    .path(Long.toString(justification.getId()))
+                    .path("/preview")
+                    .toUriString();
+            justification.setUrl(url);
+            justificationRepository.save(justification);
+        }
+        
+        return dres;
     }
 
 
