@@ -10,5 +10,6 @@ public enum Permission {
     PlanifierDates,
     GererUsagers,
     GererRoles,
-    RetournerDemande
+    RetournerDemande,
+    GererCours
 }

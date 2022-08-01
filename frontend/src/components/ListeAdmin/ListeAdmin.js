@@ -5,6 +5,7 @@ import {
   GridActionsCellItem,
   GridRowModes,
   GridToolbarContainer,
+  GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { Alert, Button, Container, Snackbar, Typography } from "@mui/material";
 import { Add, Cancel, Delete, Edit, Save } from "@mui/icons-material";
@@ -229,6 +230,7 @@ export default function ListeAdmin({
             rangees,
             setRangees,
             setModesRangees,
+            showQuickFilter: true,
           },
         }}
         experimentalFeatures={{ newEditingApi: true }}
@@ -279,10 +281,11 @@ function BarreActions({ colonnes, rangees, setRangees, setModesRangees }) {
   };
 
   return (
-    <GridToolbarContainer sx={{ justifyContent: "end" }}>
+    <GridToolbarContainer sx={{ justifyContent: "space-between" }}>
       <Button startIcon={<Add />} onClick={handleClick}>
         Ajouter
       </Button>
+      <GridToolbarQuickFilter />
     </GridToolbarContainer>
   );
 }

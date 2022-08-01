@@ -1,178 +1,178 @@
 export const personnelItems = [
-    {
-        id: 1,
-        coursGroupe: {
-            session: "HIVER",
-            groupe: "030",
-            annee: "2022",
-            cours: {
-                sigle: "INF1120"
-            }
-        },
-        etudiant: {
-            nom: "tremblay",
-            prenom: "marc",
-            codePermanent: "TREM23146985"
-        },
-        enseignant: {
-            nom: "lord",
-            prenom: "melanie",
-            matricule: "LORM45698732"
-        },
-        statutCourant: "SOUMISE",
-        decisionCourante: {
-            typeDecision: "AUCUNE"
-        },
-        dateHeureSoumission: "2022-01-15T10:40:01"
+  {
+    id: 1,
+    coursGroupe: {
+      session: "HIVER",
+      groupe: "030",
+      annee: "2022",
+      cours: {
+        sigle: "INF1120"
+      }
     },
-    {
-        id: 2,
-        coursGroupe: {
-            session: "AUTOMNE",
-            groupe: "020",
-            annee: "2022",
-            cours: {
-                sigle: "INF2120"
-            }
-        },
-        etudiant: {
-            nom: "marshal",
-            prenom: "jean",
-            codePermanent: "MARJ63985096"
-        },
-        enseignant: {
-            nom: "lord",
-            prenom: "melanie",
-            matricule: "LORM45698732"
-        },
-        statutCourant: "ACCEPTEE",
-        decisionCourante: {
-            typeDecision: "ACCEPTEE_ENSEIGNANT"
-        },
-        dateHeureSoumission: "2022-10-20T10:40:01"
+    etudiant: {
+      nom: "tremblay",
+      prenom: "marc",
+      codePermanent: "TREM23146985"
     },
-    {
-        id: 3,
-        coursGroupe: {
-            session: "HIVER",
-            groupe: "040",
-            annee: "2022",
-            cours: {
-                sigle: "INF1070"
-            }
-        },
-        etudiant: {
-            nom: "tremblay",
-            prenom: "marc",
-            codePermanent: "TREM23146985"
-        },
-        enseignant: {
-            nom: "tsheke shele",
-            prenom: "johnny",
-            matricule: "TSHJM63985213"
-        },
-        statutCourant: "EN_TRAITEMENT",
-        decisionCourante: {
-            typeDecision: "ACCEPTATION_RECOMMANDEE",
-            details: "Le motif et les dates sont corrects"
-        },
-        dateHeureSoumission: "2022-01-15T10:40:01",
-    }
+    enseignant: {
+      nom: "lord",
+      prenom: "melanie",
+      matricule: "LORM45698732"
+    },
+    statutCourant: "SOUMISE",
+    decisionCourante: {
+      typeDecision: "AUCUNE"
+    },
+    dateHeureSoumission: "2022-01-15T10:40:01"
+  },
+  {
+    id: 2,
+    coursGroupe: {
+      session: "AUTOMNE",
+      groupe: "020",
+      annee: "2022",
+      cours: {
+        sigle: "INF2120"
+      }
+    },
+    etudiant: {
+      nom: "marshal",
+      prenom: "jean",
+      codePermanent: "MARJ63985096"
+    },
+    enseignant: {
+      nom: "lord",
+      prenom: "melanie",
+      matricule: "LORM45698732"
+    },
+    statutCourant: "ACCEPTEE",
+    decisionCourante: {
+      typeDecision: "ACCEPTEE_ENSEIGNANT"
+    },
+    dateHeureSoumission: "2022-10-20T10:40:01"
+  },
+  {
+    id: 3,
+    coursGroupe: {
+      session: "HIVER",
+      groupe: "040",
+      annee: "2022",
+      cours: {
+        sigle: "INF1070"
+      }
+    },
+    etudiant: {
+      nom: "tremblay",
+      prenom: "marc",
+      codePermanent: "TREM23146985"
+    },
+    enseignant: {
+      nom: "tsheke shele",
+      prenom: "johnny",
+      matricule: "TSHJM63985213"
+    },
+    statutCourant: "EN_TRAITEMENT",
+    decisionCourante: {
+      typeDecision: "ACCEPTATION_RECOMMANDEE",
+      details: "Le motif et les dates sont corrects"
+    },
+    dateHeureSoumission: "2022-01-15T10:40:01",
+  }
 ];
 
 
 export const APIgetDemandesResponse = [
-    {
-        id: 1,
-        session: "HIVER",
-        groupe: "030",
-        statut: "SOUMISE",
-        decision: null,
-        dateHeureSoumission: "2000-01-15T10:40:01",
-        sigleCours: "INF1120",
-        nomEtudiant: "marc tremblay",
-        nomEnseignant: "melanie lord",
-        codePermanentEtudiant: "TREM23146985",
-        matriculeEnseignant: "LORM45698732"
-    },
-    {
-        id: 2,
-        session: "AUTOMNE",
-        groupe: "020",
-        statut: "ACCEPTEE",
-        decision: "ACCEPTEE_ENSEIGNANT",
-        dateHeureSoumission: "2021-10-20T10:40:01",
-        sigleCours: "INF2120",
-        nomEtudiant: "jean marshal",
-        nomEnseignant: "melanie lord",
-        codePermanentEtudiant: "MARJ63985096",
-        matriculeEnseignant: "LORM45698732"
-    },
-    {
-        id: 3,
-        session: "HIVER",
-        groupe: "040",
-        statut: "EN_TRAITEMENT",
-        decision: "ACCEPTEE_COMMIS",
-        dateHeureSoumission: "2016-01-15T11:40:01",
-        sigleCours: "INF1070",
-        nomEtudiant: "marc tremblay",
-        nomEnseignant: "johnny tsheke shele",
-        codePermanentEtudiant: "TREM23146985",
-        matriculeEnseignant: "LORM45698732"
-    },
-    {
-        id: 4,
-        session: "HIVER",
-        groupe: "040",
-        statut: "EN_TRAITEMENT",
-        decision: "ACCEPTEE_COMMIS",
-        dateHeureSoumission: "2016-01-15T11:40:01",
-        sigleCours: "INF1070",
-        nomEtudiant: "marc tremblay",
-        nomEnseignant: "johnny tsheke shele",
-        codePermanentEtudiant: "TREM23146985",
-        matriculeEnseignant: "LORM45698732"
-    },
-    {
-        id: 5,
-        session: "HIVER",
-        groupe: "040",
-        statut: "EN_TRAITEMENT",
-        decision: "ACCEPTEE_COMMIS",
-        dateHeureSoumission: "2018-01-15T11:40:01",
-        sigleCours: "INF1070",
-        nomEtudiant: "marc tremblay",
-        nomEnseignant: "johnny tsheke shele",
-        codePermanentEtudiant: "TREM23146985",
-        matriculeEnseignant: "LORM45698732"
-    },
-    {
-        id: 6,
-        session: "HIVER",
-        groupe: "040",
-        statut: "EN_TRAITEMENT",
-        decision: "ACCEPTEE_COMMIS",
-        dateHeureSoumission: "2019-11-15T11:40:01",
-        sigleCours: "INF1070",
-        nomEtudiant: "marc tremblay",
-        nomEnseignant: "johnny tsheke shele",
-        codePermanentEtudiant: "TREM23146985",
-        matriculeEnseignant: "LORM45698732"
-    },
-    {
-        id: 7,
-        session: "HIVER",
-        groupe: "040",
-        statut: "EN_TRAITEMENT",
-        decision: "ACCEPTEE_COMMIS",
-        dateHeureSoumission: "2019-06-15T11:40:01",
-        sigleCours: "INF1070",
-        nomEtudiant: "marc tremblay",
-        nomEnseignant: "johnny tsheke shele",
-        codePermanentEtudiant: "TREM23146985",
-        matriculeEnseignant: "LORM45698732"
-    },
+  {
+    id: 1,
+    session: "HIVER",
+    groupe: "030",
+    statut: "SOUMISE",
+    decision: null,
+    dateHeureSoumission: "2000-01-15T10:40:01",
+    sigleCours: "INF1120",
+    nomEtudiant: "marc tremblay",
+    nomEnseignant: "melanie lord",
+    codePermanentEtudiant: "TREM23146985",
+    matriculeEnseignant: "LORM45698732"
+  },
+  {
+    id: 2,
+    session: "AUTOMNE",
+    groupe: "020",
+    statut: "ACCEPTEE",
+    decision: "ACCEPTEE_ENSEIGNANT",
+    dateHeureSoumission: "2021-10-20T10:40:01",
+    sigleCours: "INF2120",
+    nomEtudiant: "jean marshal",
+    nomEnseignant: "melanie lord",
+    codePermanentEtudiant: "MARJ63985096",
+    matriculeEnseignant: "LORM45698732"
+  },
+  {
+    id: 3,
+    session: "HIVER",
+    groupe: "040",
+    statut: "EN_TRAITEMENT",
+    decision: "ACCEPTEE_COMMIS",
+    dateHeureSoumission: "2016-01-15T11:40:01",
+    sigleCours: "INF1070",
+    nomEtudiant: "marc tremblay",
+    nomEnseignant: "johnny tsheke shele",
+    codePermanentEtudiant: "TREM23146985",
+    matriculeEnseignant: "LORM45698732"
+  },
+  {
+    id: 4,
+    session: "HIVER",
+    groupe: "040",
+    statut: "EN_TRAITEMENT",
+    decision: "ACCEPTEE_COMMIS",
+    dateHeureSoumission: "2016-01-15T11:40:01",
+    sigleCours: "INF1070",
+    nomEtudiant: "marc tremblay",
+    nomEnseignant: "johnny tsheke shele",
+    codePermanentEtudiant: "TREM23146985",
+    matriculeEnseignant: "LORM45698732"
+  },
+  {
+    id: 5,
+    session: "HIVER",
+    groupe: "040",
+    statut: "EN_TRAITEMENT",
+    decision: "ACCEPTEE_COMMIS",
+    dateHeureSoumission: "2018-01-15T11:40:01",
+    sigleCours: "INF1070",
+    nomEtudiant: "marc tremblay",
+    nomEnseignant: "johnny tsheke shele",
+    codePermanentEtudiant: "TREM23146985",
+    matriculeEnseignant: "LORM45698732"
+  },
+  {
+    id: 6,
+    session: "HIVER",
+    groupe: "040",
+    statut: "EN_TRAITEMENT",
+    decision: "ACCEPTEE_COMMIS",
+    dateHeureSoumission: "2019-11-15T11:40:01",
+    sigleCours: "INF1070",
+    nomEtudiant: "marc tremblay",
+    nomEnseignant: "johnny tsheke shele",
+    codePermanentEtudiant: "TREM23146985",
+    matriculeEnseignant: "LORM45698732"
+  },
+  {
+    id: 7,
+    session: "HIVER",
+    groupe: "040",
+    statut: "EN_TRAITEMENT",
+    decision: "ACCEPTEE_COMMIS",
+    dateHeureSoumission: "2019-06-15T11:40:01",
+    sigleCours: "INF1070",
+    nomEtudiant: "marc tremblay",
+    nomEnseignant: "johnny tsheke shele",
+    codePermanentEtudiant: "TREM23146985",
+    matriculeEnseignant: "LORM45698732"
+  },
 ];
 
 export const mockUtilisateurs = {
@@ -535,56 +535,119 @@ export const mockRoles = {
 };
 
 export const mockCoursGroupes = [
-    {
-        id: 1,
-        session: "HIVER",
-        annee: "2022",
-        enseignant: {
-            id: 1,
-            codeMs: "enseignant1",
-            type: "enseignant",
-            roles: [],
-            nom: "lord",
-            prenom: "melanie",
-            email: "lord.melanie.courrier.uqam.ca",
-            matricule: "LORM45698732",
-            permissions: []
-        },
-        groupe: "030",
-        reprise: {
-            id: 4,
-            dateHeure: "2022-07-30T09:30:00",
-            dureeMinutes: 180,
-            local: "PK3111",
-            surveillant: "marc pelletier"
-        },
-        cours: {
-            id: 1,
-            sigle: "INF1120",
-            nom: "programmation 1"
-        }
+  {
+    id: 1,
+    session: "HIVER",
+    annee: "2022",
+    enseignant: {
+      id: 1,
+      codeMs: "enseignant1",
+      type: "enseignant",
+      roles: [],
+      nom: "lord",
+      prenom: "melanie",
+      email: "lord.melanie.courrier.uqam.ca",
+      matricule: "LORM45698732",
+      permissions: []
     },
-    {
-        id: 2,
-        session: "HIVER",
-        annee: "2022",
-        enseignant: {
-            id: 2,
-            codeMs: "enseignant2",
-            type: "enseignant",
-            roles: [],
-            nom: "jack",
-            prenom: "berger",
-            email: "berger.jack.courrier.uqam.ca",
-            matricule: "BERJ32695723",
-            permissions: []
-        },
-        groupe: "020",
-        reprise: null,
-        cours: {
-            id: 2,
-            sigle: "INF2120",
-            nom: "programmation 2"
-        }
+    groupe: "030",
+    reprise: {
+      id: 4,
+      dateHeure: "2022-07-30T09:30:00",
+      dureeMinutes: 180,
+      local: "PK3111",
+      surveillant: "marc pelletier"
+    },
+    cours: {
+      id: 1,
+      sigle: "INF1120",
+      nom: "programmation 1"
     }
+  },
+  {
+    id: 2,
+    session: "HIVER",
+    annee: "2022",
+    enseignant: {
+      id: 2,
+      codeMs: "enseignant2",
+      type: "enseignant",
+      roles: [],
+      nom: "jack",
+      prenom: "berger",
+      email: "berger.jack.courrier.uqam.ca",
+      matricule: "BERJ32695723",
+      permissions: []
+    },
+    groupe: "020",
+    reprise: null,
+    cours: {
+      id: 2,
+      sigle: "INF2120",
+      nom: "programmation 2"
+    }
+  }
 ]
+
+export const mockCours = {
+  _embedded: {
+    cours: [
+      {
+        _links: {
+          coursGroupeList: {
+            href: "http://localhost:8080/api/cours/1/coursGroupeList",
+          },
+          cours: {
+            href: "http://localhost:8080/api/cours/1",
+          },
+          self: {
+            href: "http://localhost:8080/api/cours/1",
+          },
+        },
+        sigle: "INF1120",
+        nom: "programmation 1",
+      },
+
+      {
+        _links: {
+          coursGroupeList: {
+            href: "http://localhost:8080/api/cours/2/coursGroupeList",
+          },
+          cours: {
+            href: "http://localhost:8080/api/cours/2",
+          },
+          self: {
+            href: "http://localhost:8080/api/cours/2",
+          },
+        },
+        sigle: "INF2120",
+        nom: "programmation 2",
+      },
+
+      {
+        _links: {
+          coursGroupeList: {
+            href: "http://localhost:8080/api/cours/3/coursGroupeList",
+          },
+          cours: {
+            href: "http://localhost:8080/api/cours/3",
+          },
+          self: {
+            href: "http://localhost:8080/api/cours/3",
+          },
+        },
+        sigle: "INF3173",
+        nom: "systeme d exploitation",
+      },
+
+    ],
+  },
+  _links: {
+    profile: {
+      href: "http://localhost:8080/api/profile/cours"
+    },
+    self: {
+      href: "http://localhost:8080/api/cours"
+    },
+  }
+};
