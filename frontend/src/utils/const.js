@@ -132,3 +132,9 @@ export const JugementId = {
   Retourner: "retourner",
   AnnulerRejet: "annuler-rejet",
 };
+
+export const TrimestreId = {
+  ETE: "ETE",
+  AUTOMNE: "AUTOMNE",
+  HIVER: "HIVER",
+};

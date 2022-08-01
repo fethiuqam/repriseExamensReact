@@ -14,7 +14,8 @@ import Formulaire from "./components/Formulaire/Formulaire";
 import {Permission, TypeId} from "./utils/const";
 import ListeUtilisateurs from "./components/ListeUtilisateurs/ListeUtilisateurs"
 import DetailsDRE from "./components/DetailsDRE/DetailsDRE";
-import ListeRoles from "./components/ListeRoles/ListeRoles"
+import ListeRoles from "./components/ListeRoles/ListeRoles";
+import ListeGroupesCours from "./components/ListeGroupesCours/ListeGroupesCours";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -58,15 +59,19 @@ function App() {
                             <Route exact path="/utilisateurs" element={<ListeUtilisateurs/>}/>
                         </Route>
 
-                        <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} 
-                                                    permissionsRequises={[Permission.GererCours]}/>}>
-                            <Route exact path="/cours" element={<Cours/>} />
-                        </Route>
-
                         <Route element={<AuthRequise typesPermis={[TypeId.Personnel]}
                                                     permissionsRequises={[Permission.GererRoles]}/>}>
                             <Route exact path="/roles" element={<ListeRoles/>}/>
                         </Route>
+
+                        <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} permissionsRequises={[Permission.GererCours]}/>}>
+                            <Route exact path="/cours" element={<Cours/>} />
+                        </Route>
+
+                        <Route element={<AuthRequise typesPermis={[TypeId.Personnel]} permissionsRequises={[Permission.GererCours]}/>}>
+                            <Route exact path="/groupes-cours" element={<ListeGroupesCours/>} />
+                        </Route>
+
                     </Routes>
                 <PiedPage/>
             </Grid>

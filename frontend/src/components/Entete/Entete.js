@@ -129,6 +129,13 @@ const Entete = () => {
                     component={Link}
                   />
                 )}
+                {permissions.includes(Permission.GererCours) && (
+                  <StyledTab
+                    label="Groupes-cours"
+                    to="/groupes-cours"
+                    component={Link}
+                  />
+                )}
               </StyledTabs>
             </Box>
             <Button color="inherit" onClick={deconnecter}>
