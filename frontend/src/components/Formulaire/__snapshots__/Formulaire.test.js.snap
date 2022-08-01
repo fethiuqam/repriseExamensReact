@@ -74,7 +74,7 @@ exports[`Formulaire affiché correctement 1`] = `
             <h3
               className="sectionFormulaireTitre"
             >
-              INFORMATIONS SUR L'ABSENCE
+              EXAMENS À REPRENDRE
             </h3>
           </div>
           <div
@@ -90,7 +90,7 @@ exports[`Formulaire affiché correctement 1`] = `
                   className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 css-gj1fbr-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
                   >
                     <label
                       className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
@@ -100,7 +100,7 @@ exports[`Formulaire affiché correctement 1`] = `
                     </label>
                   </div>
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-8 css-vok43g-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
                   >
                     <div
                       className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary inputStandard css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root"
@@ -168,13 +168,13 @@ exports[`Formulaire affiché correctement 1`] = `
                 </div>
               </div>
               <div
-                className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+                className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
               >
                 <div
                   className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-3 css-1equabv-MuiGrid-root"
                   >
                     <label
                       className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
@@ -185,7 +185,50 @@ exports[`Formulaire affiché correctement 1`] = `
                   </div>
                   <div
                     className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
-                  />
+                  >
+                    <div
+                      className="MuiFormControl-root MuiTextField-root css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
+                      data-testid="groupeCoursTestId"
+                      labelid="etiquette-groupeCours"
+                    >
+                      <div
+                        className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
+                        onClick={[Function]}
+                      >
+                        <input
+                          aria-invalid={false}
+                          autoFocus={false}
+                          className="MuiOutlinedInput-input MuiInputBase-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+                          disabled={false}
+                          id="groupeCours-input"
+                          name="groupeCours"
+                          onAnimationStart={[Function]}
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="ex: 020"
+                          readOnly={true}
+                          required={false}
+                          type="text"
+                          value={Array []}
+                        />
+                        <fieldset
+                          aria-hidden={true}
+                          className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                        >
+                          <legend
+                            className="css-hdw1oc"
+                          >
+                            <span
+                              className="notranslate"
+                            >
+                              ​
+                            </span>
+                          </legend>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -195,7 +238,7 @@ exports[`Formulaire affiché correctement 1`] = `
                   className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-4 css-gj1fbr-MuiGrid-root"
                   >
                     <label
                       className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
@@ -206,7 +249,50 @@ exports[`Formulaire affiché correctement 1`] = `
                   </div>
                   <div
                     className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
-                  />
+                  >
+                    <div
+                      className="MuiFormControl-root MuiTextField-root css-1u3bzj6-MuiFormControl-root-MuiTextField-root"
+                      data-testid="enseignantTestId"
+                      labelid="etiquette-enseignant"
+                    >
+                      <div
+                        className="MuiOutlinedInput-root MuiInputBase-root MuiInputBase-colorPrimary MuiInputBase-formControl css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root"
+                        onClick={[Function]}
+                      >
+                        <input
+                          aria-invalid={false}
+                          autoFocus={false}
+                          className="MuiOutlinedInput-input MuiInputBase-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+                          disabled={false}
+                          id="enseignant-input"
+                          name="enseignant"
+                          onAnimationStart={[Function]}
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="ex: Melanie Lord"
+                          readOnly={true}
+                          required={false}
+                          type="text"
+                          value={Array []}
+                        />
+                        <fieldset
+                          aria-hidden={true}
+                          className="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+                        >
+                          <legend
+                            className="css-hdw1oc"
+                          >
+                            <span
+                              className="notranslate"
+                            >
+                              ​
+                            </span>
+                          </legend>
+                        </fieldset>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -216,7 +302,7 @@ exports[`Formulaire affiché correctement 1`] = `
                   className="MuiGrid-root MuiGrid-container sectionFormulaireDivContenuRangee css-11lq3yg-MuiGrid-root"
                 >
                   <div
-                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6 css-1osj8n2-MuiGrid-root"
+                    className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-5 css-k3f0g4-MuiGrid-root"
                   >
                     <label
                       className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
@@ -295,6 +381,106 @@ exports[`Formulaire affiché correctement 1`] = `
                 </div>
               </div>
             </div>
+            <br />
+            <button
+              className="MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButtonBase-root css-1r7wqeh-MuiButtonBase-root-MuiButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onContextMenu={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              type="button"
+            >
+              ajouter
+              <span
+                className="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+              />
+            </button>
+            <br />
+            <br />
+            <h4>
+              Liste des examens à reprendre
+            </h4>
+            <div>
+              <div
+                className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 css-mhc70k-MuiGrid-root"
+              >
+                <div
+                  className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+                >
+                  <label
+                    className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
+                    id="etiquette-descriptionExamen"
+                  >
+                    Type d'examen
+                  </label>
+                </div>
+                <div
+                  className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+                >
+                  <label
+                    className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
+                    id="etiquette-sigleCours"
+                  >
+                    Sigle du cours
+                  </label>
+                </div>
+                <div
+                  className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+                >
+                  <label
+                    className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
+                    id="etiquette-groupeCours"
+                  >
+                    Groupe
+                  </label>
+                </div>
+                <div
+                  className="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-2 css-1o7apob-MuiGrid-root"
+                >
+                  <label
+                    className="MuiInputLabel-root MuiInputLabel-animated MuiFormLabel-root MuiFormLabel-colorPrimary css-9npbnl-MuiFormLabel-root-MuiInputLabel-root"
+                    id="etiquette-enseignant"
+                  >
+                    Enseignant
+                  </label>
+                </div>
+              </div>
+              <ul
+                className="noStyleList"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="MuiContainer-root css-ur2jdm-MuiContainer-root"
+      >
+        <div
+          className="MuiPaper-root MuiPaper-outlined sectionFormulaire css-mta8o9-MuiPaper-root"
+        >
+          <div
+            className="sectionFormulaireDivTitre"
+          >
+            <h3
+              className="sectionFormulaireTitre"
+            >
+              INFORMATIONS ET JUSTIFICATION DE L'ABSENCE
+            </h3>
+          </div>
+          <div
+            className="sectionFormulaireDivContenu"
+          >
             <div
               className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2 affichageInfosTable sectionFormulaireDivContenuRangee css-mhc70k-MuiGrid-root"
             >
@@ -396,28 +582,6 @@ exports[`Formulaire affiché correctement 1`] = `
                 </div>
               </div>
             </div>
-            <br />
-          </div>
-        </div>
-      </div>
-      <div
-        className="MuiContainer-root css-ur2jdm-MuiContainer-root"
-      >
-        <div
-          className="MuiPaper-root MuiPaper-outlined sectionFormulaire css-mta8o9-MuiPaper-root"
-        >
-          <div
-            className="sectionFormulaireDivTitre"
-          >
-            <h3
-              className="sectionFormulaireTitre"
-            >
-              JUSTIFICATION DE L'ABSENCE
-            </h3>
-          </div>
-          <div
-            className="sectionFormulaireDivContenu"
-          >
             <div>
               <div
                 className="sectionFormulaireDivContenuRangee"
@@ -647,8 +811,8 @@ exports[`Formulaire affiché correctement 1`] = `
             />
           </button>
           <button
-            className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButtonBase-root css-122gtp7-MuiButtonBase-root-MuiButton-root"
-            disabled={false}
+            className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-disableElevation MuiButtonBase-root Mui-disabled css-122gtp7-MuiButtonBase-root-MuiButton-root"
+            disabled={true}
             id="boutonSoumettre"
             onBlur={[Function]}
             onContextMenu={[Function]}
@@ -662,13 +826,10 @@ exports[`Formulaire affiché correctement 1`] = `
             onTouchEnd={[Function]}
             onTouchMove={[Function]}
             onTouchStart={[Function]}
-            tabIndex={0}
+            tabIndex={-1}
             type="submit"
           >
             Soumettre
-            <span
-              className="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-            />
           </button>
         </div>
       </div>

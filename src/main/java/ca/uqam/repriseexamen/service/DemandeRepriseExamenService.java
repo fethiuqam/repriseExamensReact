@@ -27,7 +27,7 @@ public interface DemandeRepriseExamenService {
 
     LigneDREDTO getDemandeRepriseExamenEtudiantById(long id, long idEtudiant);
 
-    DemandeRepriseExamen soumettreDemandeRepriseExamen(DemandeRepriseExamen dre);
+    DemandeRepriseExamen[] soumettreDemandesRepriseExamen(DemandeRepriseExamen[] dres);
 
     Optional<DemandeRepriseExamen> findDemandeRepriseExamen(Long id);
 

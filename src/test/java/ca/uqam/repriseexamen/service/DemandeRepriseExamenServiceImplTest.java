@@ -51,7 +51,6 @@ public class DemandeRepriseExamenServiceImplTest {
     private LigneDREEtudiantDTO ligneDREEtudiant1Soumise;
     @Mock
     private LigneDREEtudiantDTO ligneDREEtudiant2Soumise;
-
     @Mock
     private DemandeRepriseExamen nouvelleDemandeRepriseExamen;
 
@@ -140,10 +139,20 @@ public class DemandeRepriseExamenServiceImplTest {
 
     @Test
     public void devraitSoumettreNouvelleDRE() {
-        DemandeRepriseExamen demandeCreee = demandeService.soumettreDemandeRepriseExamen(nouvelleDemandeRepriseExamen);
-        assertThat(demandeCreee)
+        DemandeRepriseExamen[] dres = {nouvelleDemandeRepriseExamen};
+        DemandeRepriseExamen[] result = demandeService.soumettreDemandesRepriseExamen(dres);
+        assertThat(result[0])
                 .isNotNull()
                 .isEqualTo(nouvelleDemandeRepriseExamen);
+    }
 
+    @Test
+    public void devraitSoumettreNouvellesDRE() {
+        DemandeRepriseExamen[] dres = {nouvelleDemandeRepriseExamen, nouvelleDemandeRepriseExamen};
+        DemandeRepriseExamen[] result = demandeService.soumettreDemandesRepriseExamen(dres);
+        assertThat(result)
+                .isNotNull()
+                .isNotEmpty()
+                .hasSize(2);
     }
 }
