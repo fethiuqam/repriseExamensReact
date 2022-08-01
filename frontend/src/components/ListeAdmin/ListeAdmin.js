@@ -184,18 +184,17 @@ export default function ListeAdmin({
         ? [apiClient.post, "/api/" + endpoint]
         : [apiClient.patch, new URL(rangee._links.self.href).pathname];
 
-      const reponse = await method(url, encoderEntite(rangee));
+      await method(url, encoderEntite(rangee));
 
       const newRangee = {
-        id: rangee.id,
         isNew: false,
-        ...decoderEntite(reponse),
+        ...rangee,
       };
 
       setRangees(rangees.map((r) => (r.id === newRangee.id ? newRangee : r)));
       return newRangee;
     },
-    [decoderEntite, encoder, getEndpoint, postEndpoint, rangees]
+    [encoder, getEndpoint, postEndpoint, rangees]
   );
 
   return (

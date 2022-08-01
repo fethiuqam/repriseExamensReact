@@ -1,12 +1,12 @@
 package ca.uqam.repriseexamen.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.List;
 
 @Entity
@@ -35,9 +35,8 @@ public class CoursGroupe {
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "coursGroupes")
     private List<Etudiant> etudiants;
 
-    @JsonManagedReference
     @OneToOne
-    Reprise reprise;
+    private Reprise reprise;
 
     private String groupe;
     private Session session;
