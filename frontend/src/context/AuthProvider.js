@@ -6,6 +6,7 @@ export const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(false);
     const [type, setType] = useState(null);
     const [id, setId] = useState(null);
+
     const [permissions, setPermissions] = useState([]);
 
     return (
