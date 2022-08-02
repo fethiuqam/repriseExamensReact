@@ -282,5 +282,4 @@ public class DemandeRepriseExamenController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-
 }
