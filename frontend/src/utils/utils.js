@@ -52,5 +52,5 @@ export const afficherSession = (coursGroupe) => {
 }
 
 export const afficherCoursGroupe = (coursGroupe) => {
-    return coursGroupe.cours.sigle+"-"+coursGroupe.groupe;
+    return coursGroupe.cours.sigle + "-" + coursGroupe.groupe;
 }

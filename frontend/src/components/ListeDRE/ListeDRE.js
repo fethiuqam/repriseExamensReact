@@ -223,6 +223,7 @@ export default function ListeDRE() {
                     }
                 </SectionFormulaire>
             </MiseEnPage>
+
             <Dialog
                 open={confirmationDialogOpen}
                 onClose={() => setConfirmationDialogOpen(false)}
@@ -239,6 +240,7 @@ export default function ListeDRE() {
                     <Button onClick={archiverSelection}>Oui, je confirme</Button>
                 </DialogActions>
             </Dialog>
+
             <Snackbar
                 style={{width: "50%"}}
                 anchorOrigin={{vertical: "top", horizontal: "center"}}
