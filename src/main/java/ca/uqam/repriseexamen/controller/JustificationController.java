@@ -53,7 +53,7 @@ public class JustificationController {
      * @return ResponseEntity reponse sans contenu de reussite
      * @throws IOException
      */
-    @PostMapping(value = "api/justifications", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(value = "api/justifications", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<?> ajouterJustification(@RequestPart(value="id") Long id, @RequestPart(value = "file") MultipartFile fichier) {
 
         DemandeRepriseExamen[] demandeTrouvee = new DemandeRepriseExamen[1];

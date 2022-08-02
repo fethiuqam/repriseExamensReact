@@ -41,7 +41,7 @@ test("devrait retourner une boite de messages vide avec le bouton envoyer", () =
             actualiserDRE={mockActualiserDRE}
         />
     );
-    expect(screen.getByText(/Aucun Message à afficher./i)).toBeInTheDocument();
+    expect(screen.getByText(/Aucun message à afficher./i)).toBeInTheDocument();
     expect(screen.getByRole("button", {name: "Envoyer un message"})).not.toBeDisabled();
 });
 

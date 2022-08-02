@@ -27,7 +27,6 @@ import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import MessagesDRE from "../MessagesDRE/MessagesDRE";
 import HistoriqueEtudiant from "../HistoriqueEtudiant/HistoriqueEtudiant";
 import PlanificationDetails from "../PlanificationDetails/PlanificationDetails";
-import * as apiClient from "../../api/ApiClient";
 import {StatutId, TypeId} from "../../utils/const";
 
 export default function DetailsDRE() {
@@ -60,7 +59,20 @@ export default function DetailsDRE() {
         const patch = {idDRE};
         const annulerDRE = async () => {
             try {
-                await apiClient.patch(API_URL, patch);
+                const response = await fetch(API_URL,
+                    {
+                        method: 'PATCH',
+                        body: JSON.stringify(patch),
+                        headers: {
+                            'Content-type': 'application/json; charset=UTF-8'
+                        },
+                        credentials: 'include'
+                    });
+
+                if (!response.ok) {
+                    throw new Error("Erreur du PATCH");
+                }
+
                 setSnackBarSeverity("success");
                 setSnackBarTexte(snackBarTexteSucces);
                 setSnackBarOpen(true);
@@ -130,7 +142,7 @@ export default function DetailsDRE() {
 
                     {type !== TypeId.Enseignant
                         && <SectionFormulaire title={'DETAILS'}>
-                            <TableDetailsAbsence dre={dre}/>
+                            <TableDetailsAbsence dre={dre} typeUtilisateur={type}/>
                         </SectionFormulaire>
                     }
 
