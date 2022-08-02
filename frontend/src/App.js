@@ -42,7 +42,7 @@ function App() {
                             <Route exact path="/faire-demande" element={<Formulaire/>}/>
                         </Route>
 
-                        <Route element={<AuthRequise typesPermis={['personnel']}/>}>
+                        <Route element={<AuthRequise typesPermis={['personnel']} permissionsRequises={[Permission.PlanifierDates]}/>}>
                             <Route exact path="/planification" element={<Planification/>}/>
                         </Route>
 

@@ -101,7 +101,7 @@ const Entete = () => {
                     component={Link}
                   />
                 )}
-                {type === "personnel" && (
+                {permissions.includes(Permission.PlanifierDates) && (
                     <StyledTab
                         label="Planifier les reprises"
                         to="/planification"
