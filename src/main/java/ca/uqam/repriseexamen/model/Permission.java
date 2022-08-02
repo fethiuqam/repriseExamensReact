@@ -11,5 +11,6 @@ public enum Permission {
     GererUsagers,
     GererRoles,
     RetournerDemande,
-    GererCours
+    GererCours,
+    ArchiverDemande
 }

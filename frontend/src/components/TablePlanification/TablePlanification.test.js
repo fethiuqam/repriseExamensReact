@@ -2,7 +2,6 @@ import {render, screen} from "@testing-library/react";
 import TablePlanification from "./TablePlanification";
 import {mockCoursGroupes} from "../../mocks/mockData";
 
-
 const mockFonction = jest.fn();
 
 const colonnes = [

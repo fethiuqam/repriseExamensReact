@@ -2,6 +2,7 @@ import {render, screen, fireEvent, within} from "@testing-library/react";
 import MessagesDRE from "./MessagesDRE";
 import {format} from "date-fns";
 import locale from "date-fns/locale/fr-CA";
+import {TypeId} from "../../utils/const";
 
 const mockActualiserDRE = jest.fn();
 
@@ -35,7 +36,7 @@ test("devrait retourner une boite de messages vide avec le bouton envoyer", () =
     render(
         <MessagesDRE
             messages={messagesTestVide}
-            typeUtilisateur="personnel"
+            typeUtilisateur={TypeId.Personnel}
             idDRE={1}
             actualiserDRE={mockActualiserDRE}
         />
@@ -48,7 +49,7 @@ test("devrait retourner une boite de messages contenant 3 messages et leures dat
     render(
         <MessagesDRE
             messages={messagesTestL3}
-            typeUtilisateur="personnel"
+            typeUtilisateur={TypeId.Personnel}
             idDRE={1}
             actualiserDRE={mockActualiserDRE}
         />
@@ -65,7 +66,7 @@ test("devrait retourner une boite de dialogue d'envoi de message avec un textbox
     render(
         <MessagesDRE
             messages={messagesTestL3}
-            typeUtilisateur="personnel"
+            typeUtilisateur={TypeId.Personnel}
             idDRE={1}
             actualiserDRE={mockActualiserDRE}
         />
@@ -84,7 +85,7 @@ test("le bouton envoyer de la boite de dialogue devrait rester desactive si le t
     render(
         <MessagesDRE
             messages={messagesTestL3}
-            typeUtilisateur="personnel"
+            typeUtilisateur={TypeId.Personnel}
             idDRE={1}
             actualiserDRE={mockActualiserDRE}
         />

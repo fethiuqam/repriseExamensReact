@@ -43,34 +43,30 @@ export default function TableInfosDemande(props) {
                         <td>{dre.statutCourant ? <Statut statut={dre.statutCourant}/> : ""}</td>
                     </tr>
                     {dre.detailsRejet
-                        ? <tr>
+                        && <tr>
                             <th>Détails du rejet</th>
                             <td>{dre.detailsRejet}</td>
                         </tr>
-                        : null
                     }
                     {dre.detailsRetour
-                        ? <tr>
+                        && <tr>
                             <th>Détails du retour</th>
                             <td>{dre.detailsRetour}</td>
                         </tr>
-                        : null
                     }
                     {dre.decisionCourante
-                        ?
+                        &&
                         <tr>
                             <th>Décision</th>
                             <td><Decision decision={dre.decisionCourante}/></td>
                         </tr>
-                        : null
                     }
                     {dre.decisionCourante?.details
-                        ?
+                        &&
                         <tr>
                             <th>Détails de la décision</th>
                             <td>{dre.decisionCourante.details}</td>
                         </tr>
-                        : null
                     }
                     </tbody>
                 </table>

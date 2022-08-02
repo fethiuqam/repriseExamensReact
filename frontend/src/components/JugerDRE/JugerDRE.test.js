@@ -2,12 +2,14 @@ import {fireEvent, render, screen, within} from "@testing-library/react";
 import JugerDRE from "./JugerDRE";
 import AuthContext from "../../context/AuthProvider";
 import {BrowserRouter} from "react-router-dom";
+import {DecisionId, Permission, TypeId} from "../../utils/const";
 
 const mockActualiserDRE = jest.fn();
 
 test("devrait retourner trois boutons actives pour decision aucune au commis", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel,
+            permissions: [Permission.JugerCommis, Permission.RetournerDemande]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
@@ -25,11 +27,12 @@ test("devrait retourner trois boutons actives pour decision aucune au commis", (
 
 test("devrait retourner trois boutons desactives pour decision acceptation recommandee au commis", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel,
+            permissions: [Permission.JugerCommis, Permission.RetournerDemande]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="ACCEPTATION_RECOMMANDEE"
+                    decisionCourante={DecisionId.AcceptationRecommandee}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>
@@ -43,11 +46,11 @@ test("devrait retourner trois boutons desactives pour decision acceptation recom
 
 test("devrait retourner deux boutons actives pour decision aucune au directeur", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerDirecteur"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel, permissions: [Permission.JugerDirecteur]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="AUCUNE"
+                    decisionCourante={DecisionId.Aucune}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>
@@ -60,11 +63,11 @@ test("devrait retourner deux boutons actives pour decision aucune au directeur",
 
 test("devrait retourner deux boutons actives pour decision acceptation recommandee au directeur", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerDirecteur"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel, permissions: [Permission.JugerDirecteur]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="ACCEPTATION_RECOMMANDEE"
+                    decisionCourante={DecisionId.AcceptationRecommandee}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>
@@ -77,11 +80,11 @@ test("devrait retourner deux boutons actives pour decision acceptation recommand
 
 test("devrait retourner deux boutons actives pour decision rejet recommande au directeur", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerDirecteur"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel, permissions: [Permission.JugerDirecteur]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="REJET_RECOMMANDE"
+                    decisionCourante={DecisionId.RejetRecommande}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>
@@ -94,11 +97,11 @@ test("devrait retourner deux boutons actives pour decision rejet recommande au d
 
 test("devrait retourner deux boutons actives pour decision acceptee directeur a enseignant", () => {
     render(
-        <AuthContext.Provider value={{type: "enseignant", permissions:[]}}>
+        <AuthContext.Provider value={{type: TypeId.Enseignant, permissions:[]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="ACCEPTEE_DIRECTEUR"
+                    decisionCourante={DecisionId.AccepteeDirecteur}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>
@@ -111,11 +114,12 @@ test("devrait retourner deux boutons actives pour decision acceptee directeur a 
 
 test("devrait retourner une fenetre dialog details apres click sur accepter demande", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel,
+            permissions: [Permission.JugerCommis, Permission.RetournerDemande]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="AUCUNE"
+                    decisionCourante={DecisionId.Aucune}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>
@@ -133,11 +137,12 @@ test("devrait retourner une fenetre dialog details apres click sur accepter dema
 
 test("devrait retourner une fenetre dialog details apres click sur rejeter demande", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel,
+            permissions: [Permission.JugerCommis, Permission.RetournerDemande]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="AUCUNE"
+                    decisionCourante={DecisionId.Aucune}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>
@@ -155,11 +160,12 @@ test("devrait retourner une fenetre dialog details apres click sur rejeter deman
 
 test("devrait retourner une fenetre dialog confirmation apres click sur accepter demande", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", permissions: ["JugerCommis", "RetournerDemande"]}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel,
+            permissions: [Permission.JugerCommis, Permission.RetournerDemande]}}>
             <BrowserRouter>
                 <JugerDRE
                     idDRE={1}
-                    decisionCourante="AUCUNE"
+                    decisionCourante={DecisionId.Aucune}
                     actualiserDRE={mockActualiserDRE}
                 />
             </BrowserRouter>

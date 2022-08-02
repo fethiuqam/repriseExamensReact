@@ -8,8 +8,8 @@ const Decision = ({decision}) => {
 
     return (
         <Chip
-            color={decision ? DECISION_AFFICHAGE[decision.typeDecision][1] : "default"}
-            label={decision ? DECISION_AFFICHAGE[decision.typeDecision][0] : "Aucune"}
+            color={decision ? DECISION_AFFICHAGE[decision?.typeDecision][1] : "default"}
+            label={decision ? DECISION_AFFICHAGE[decision?.typeDecision][0] : "Aucune"}
         />
     );
 

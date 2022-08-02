@@ -5,17 +5,16 @@ import {Button, ListItemText} from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import {afficherSession} from "../../utils/utils";
 
 export default function LignePlanification({item, modifierPlanification, annulerPlanification}) {
-
-    const session = item.session.substring(0, 3) + "-" + item.annee.substring(2);
 
     return (
         <TableRow key={item.id}>
 
             <TableCell>{item.cours.sigle}-{item.groupe}</TableCell>
 
-            <TableCell>{session}</TableCell>
+            <TableCell>{afficherSession(item)}</TableCell>
 
             <TableCell>
                 <ListItemText
@@ -35,7 +34,7 @@ export default function LignePlanification({item, modifierPlanification, annuler
                     {item.reprise ? "Modifier" : "Planifier"}
                 </Button>
                 {item.reprise
-                    ? <Button
+                    && <Button
                         sx={{marginRight: "5px"}}
                         size="small"
                         variant="contained"
@@ -45,7 +44,6 @@ export default function LignePlanification({item, modifierPlanification, annuler
                     >
                         Annuler
                     </Button>
-                    : null
                 }
 
             </TableCell>
