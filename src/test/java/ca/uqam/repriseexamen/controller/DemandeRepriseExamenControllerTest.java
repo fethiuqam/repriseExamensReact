@@ -836,6 +836,16 @@ public class DemandeRepriseExamenControllerTest {
                 .isEqualTo(TypeDecision.ACCEPTATION_RECOMMANDEE);
     }
 
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerStatutNotFoundPourRetournerDemandeNonExistante()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/20/retourner")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"details\" : \"demande non conforme\"}"))
+                .andExpect(status().isNotFound());
+    }
+
     @WithMockUser(username = "directeur")
     @Test
     public void devraitRetournerStatutUnauthorizedPourPersonnelNayantPasPermissionRtournerDemande()
@@ -863,6 +873,86 @@ public class DemandeRepriseExamenControllerTest {
         this.mockMvc.perform(patch("/api/demandes/1/retourner")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"details\" : \"demande non conforme\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerStatutNoContentPourArchiverDemandeAnnuleeParCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(1L);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.ARCHIVEE);
+    }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerStatutNoContentPourArchiverDemandeCompleteeParCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/5/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(5L);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.ARCHIVEE);
+    }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerNotAcceptableStatutPourArchiverDemandeEnTraitementParCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/2/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(2L);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.EN_TRAITEMENT);
+    }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerNotAcceptableStatutPourArchiverDemandeAccepteeParCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/8/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotAcceptable());
+        Optional<DemandeRepriseExamen> demande = demandeRepository.findDemandeRepriseExamenById(8L);
+        assertThat(demande.get().getStatutCourant()).isNotNull().isEqualTo(TypeStatut.ACCEPTEE);
+    }
+
+    @WithMockUser(username = "commis")
+    @Test
+    public void devraitRetournerStatutNotFoundPourArchiverDemandeInexistanteParCommis()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/20/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(username = "directeur")
+    @Test
+    public void devraitRetournerStatutUnauthorizedPourPersonnelNayantPasPermissionArchiverDemande()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(username = "enseignant1")
+    @Test
+    public void devraitRetournerStatutUnauthorizedPourArchiverDemandeParEnseignant()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithMockUser(username = "etudiant1")
+    @Test
+    public void devraitRetournerStatutUnauthorizedPourArchiverDemandeParEtudiant()
+            throws Exception {
+        this.mockMvc.perform(patch("/api/demandes/1/archiver")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }
 

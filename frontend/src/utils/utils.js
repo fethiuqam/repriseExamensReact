@@ -1,5 +1,6 @@
 import {format} from "date-fns";
 import locale from "date-fns/locale/fr-CA";
+import {STATUTS_ENSEIGNANT, STATUTS_ETUDIANT, STATUTS_PERSONNEL} from "./const";
 
 
 const FORMAT_DATE = 'dd MMMM yyyy';
@@ -28,3 +29,28 @@ export const comparator = (prop, desc = true) => (a, b) => {
     }
     return 0;
 };
+
+export const estArchivable = (dre) => {
+    return ["ANNULEE", "REJETEE", "ABSENCE", "COMPLETEE", "RETOURNEE"].includes(dre.statutCourant);
+}
+
+export const statutsUtilisteurs = (type) => {
+    switch (type) {
+        case "personnel":
+            return STATUTS_PERSONNEL;
+        case "enseignant":
+            return STATUTS_ENSEIGNANT;
+        case "etudiant":
+            return STATUTS_ETUDIANT;
+        default:
+            return [];
+    }
+}
+
+export const afficherSession = (coursGroupe) => {
+    return coursGroupe.session.substring(0, 3) + "-" + coursGroupe.annee.substring(2);
+}
+
+export const afficherCoursGroupe = (coursGroupe) => {
+    return coursGroupe.cours.sigle+"-"+coursGroupe.groupe;
+}

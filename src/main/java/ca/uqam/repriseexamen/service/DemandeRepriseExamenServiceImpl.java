@@ -90,14 +90,14 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
 
     @Override
     public DemandeRepriseExamen[] soumettreDemandesRepriseExamen(DemandeRepriseExamen[] dres) {
-        List<DemandeRepriseExamen> demandesSoumises = new ArrayList<DemandeRepriseExamen>();
-        
+        List<DemandeRepriseExamen> demandesSoumises = new ArrayList<>();
+
         for(DemandeRepriseExamen dre : dres) {
             Statut statutSoumission = Statut.builder()
-            .dateHeure(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-            .typeStatut(TypeStatut.SOUMISE)
-            .demandeRepriseExamen(dre)
-            .build();
+                    .dateHeure(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
+                    .typeStatut(TypeStatut.SOUMISE)
+                    .demandeRepriseExamen(dre)
+                    .build();
 
             List<Justification> listeJustifications = new ArrayList<>();
             dre.setListeJustification(listeJustifications);
@@ -108,10 +108,11 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
             dre.setListeStatut(statuts);
             demandesSoumises.add(demandeRepriseExamenRepository.save(dre));
         }
-        
+
         dres = demandesSoumises.toArray(dres);
         return dres;
     }
+
 
     @Override
     public Optional<DemandeRepriseExamen> findDemandeRepriseExamen(Long id) {
@@ -190,7 +191,7 @@ public class DemandeRepriseExamenServiceImpl implements DemandeRepriseExamenServ
     }
 
     @Override
-    public ResponseEntity<?> envoyerMessage(Long demandeId, TypeMessage typeMessage, JsonNode json) throws Exception {
+    public ResponseEntity<?> envoyerMessage(Long demandeId, TypeMessage typeMessage, JsonNode json)  {
         if(json.has("message")) {
             DemandeRepriseExamen demande = findDemandeRepriseExamen(demandeId)
                     .orElseThrow(ResourceNotFoundException::new);

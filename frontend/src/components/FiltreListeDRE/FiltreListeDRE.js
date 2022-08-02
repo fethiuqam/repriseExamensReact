@@ -1,26 +1,23 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Button, Checkbox, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Box from "@mui/material/Box";
-import AuthContext from "../../context/AuthProvider";
 import Statut from "../Statut/Statut";
+import {statutsUtilisteurs} from "../../utils/utils";
+import AuthContext from "../../context/AuthProvider";
+import {TypeId} from "../../utils/const";
 
-export default function FiltreListeDRE({statuts, filtrer}) {
+
+export default function FiltreListeDRE({filtre, setFiltre}) {
 
     const {type} = useContext(AuthContext);
 
     const filtreInitial = {
-        statuts: statuts,
+        statuts: statutsUtilisteurs(type),
         etudiant: '',
         enseignant: '',
         cours: ''
     }
-
-    const [filtre, setFiltre] = useState(filtreInitial);
-
-    useEffect(() => {
-        filtrer(filtre);
-    }, [filtre, filtrer])
 
     return (
         <Stack direction="row" spacing={2} justifyContent="space-between">
@@ -41,7 +38,7 @@ export default function FiltreListeDRE({statuts, filtrer}) {
                         </Box>
                     )}
                 >
-                    {statuts.map((statut, index) => (
+                    {statutsUtilisteurs(type).map((statut, index) => (
                         <MenuItem key={index} value={statut}>
                             <Checkbox checked={filtre.statuts.indexOf(statut) > -1}/>
                             <Statut statut={statut}/>
@@ -51,20 +48,16 @@ export default function FiltreListeDRE({statuts, filtrer}) {
             </FormControl>
             <Stack spacing={2} justifyContent="space-between">
                 <Stack direction="row" spacing={2}>
-                    {type === "etudiant"
-                        ? null
-                        :
-                        <TextField
+                    {type !== TypeId.Etudiant
+                        && <TextField
                             label="Par étudiant"
                             variant="standard"
                             onChange={(e) => setFiltre({...filtre, etudiant: e.target.value})}
                             value={filtre.etudiant}
                         />
                     }
-                    {type === "enseignant"
-                        ? null
-                        :
-                        <TextField
+                    {type !== TypeId.Enseignant
+                        && <TextField
                             label="Par enseignant"
                             variant="standard"
                             onChange={(e) => setFiltre({...filtre, enseignant: e.target.value})}

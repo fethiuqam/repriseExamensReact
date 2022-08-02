@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -106,7 +107,7 @@ public class DemandeRepriseExamenController {
                 }
             });
         }
-        
+
         return dres;
     }
 
@@ -253,6 +254,33 @@ public class DemandeRepriseExamenController {
 
         // le patch ne contient pas l attribut details ou le texte est de longueur < 3
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
     }
+
+    @PatchMapping(path = "/{id}/archiver")
+    public ResponseEntity<?> archiverDemande(@PathVariable Long id) throws Exception {
+
+        Utilisateur authentifie = authentifieService.GetAuthentifie();
+
+        // utilisateur est du personnel avec la permission ArchiverDemande
+        if (authentifie.getType().equals("personnel") && authentifie.getPermissions()
+                .contains(Permission.ArchiverDemande)) {
+            Optional<DemandeRepriseExamen> optionalDemande = demandeRepriseExamenService.findDemandeRepriseExamen(id);
+            if(optionalDemande.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+            TypeStatut statutCourant = optionalDemande.get().getStatutCourant();
+            Set<TypeStatut> statutsArchivables = Set.of(TypeStatut.ANNULEE, TypeStatut.REJETEE, TypeStatut.ABSENCE,
+                    TypeStatut.COMPLETEE, TypeStatut.RETOURNEE);
+            if(statutsArchivables.contains(statutCourant)){
+                demandeRepriseExamenService.updateStatutDemande(id, TypeStatut.ARCHIVEE);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            }
+            // utilisateur non autoirise
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
 }

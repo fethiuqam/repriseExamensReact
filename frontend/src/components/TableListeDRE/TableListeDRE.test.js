@@ -2,7 +2,8 @@ import {render, screen} from "@testing-library/react";
 import TableListeDRE from "./TableListeDRE";
 import {personnelItems} from "../../mocks/mockData";
 import AuthContext from "../../context/AuthProvider";
-import { BrowserRouter } from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
+import {TypeId} from "../../utils/const";
 
 const enseignantItems = personnelItems.map(item => {
     const {nomEnseignant, matriculeEnseignant, ...enseignantItem} = item;
@@ -43,63 +44,67 @@ const mockTrier = jest.fn();
 
 test("devrait retourner pour une table 4 elements tr, 7 elements th et 21 elements td pour personnel", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", id: null}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel, permissions: []}}>
             <BrowserRouter>
                 <TableListeDRE
                     items={personnelItems}
                     colonnes={personnelColonnes}
                     trier={mockTrier}
+                    AArchiver={[]}
                 />
             </BrowserRouter>
         </AuthContext.Provider>
     );
     expect(screen.getAllByRole("row")).toHaveLength(4);
     expect(screen.getAllByRole("columnheader")).toHaveLength(7);
-    expect(screen.getAllByRole("cell")).toHaveLength(24);
+    expect(screen.getAllByRole("cell")).toHaveLength(21);
 });
 
 test("devrait retourner pour une table 4 elements tr, 6 elements th et 18 elements td pour enseignant", () => {
     render(
-        <AuthContext.Provider value={{type: "enseignant", id: 1}}>
+        <AuthContext.Provider value={{type: TypeId.Enseignant, id: 1, permissions: []}}>
             <BrowserRouter>
                 <TableListeDRE
                     items={enseignantItems}
                     colonnes={enseignantColonnes}
                     trier={mockTrier}
+                    AArchiver={[]}
                 />
             </BrowserRouter>
         </AuthContext.Provider>
     );
     expect(screen.getAllByRole("row")).toHaveLength(4);
     expect(screen.getAllByRole("columnheader")).toHaveLength(6);
-    expect(screen.getAllByRole("cell")).toHaveLength(18);
+    expect(screen.getAllByRole("cell")).toHaveLength(21);
 });
 
 test("devrait retourner pour une table 4 elements tr, 6 elements th et 18 elements td pour etudiant", () => {
     render(
-        <AuthContext.Provider value={{type: "etudiant", id: 1}}>
+        <AuthContext.Provider value={{type: TypeId.Etudiant, id: 1, permissions: []}}>
             <BrowserRouter>
                 <TableListeDRE
                     items={etudiantItems}
                     colonnes={etudiantColonnes}
                     trier={mockTrier}
+                    AArchiver={[]}
                 />
             </BrowserRouter>
         </AuthContext.Provider>
     );
     expect(screen.getAllByRole("row")).toHaveLength(4);
     expect(screen.getAllByRole("columnheader")).toHaveLength(6);
-    expect(screen.getAllByRole("cell")).toHaveLength(18);
+    expect(screen.getAllByRole("cell")).toHaveLength(15);
 });
 
 test("devrait contenir les valeurs des entetes a chaque element th", () => {
     render(
-        <AuthContext.Provider value={{type: "personnel", id: null}}>
+        <AuthContext.Provider value={{type: TypeId.Personnel, permissions: []}}>
             <BrowserRouter>
                 <TableListeDRE
                     items={personnelItems}
                     colonnes={personnelColonnes}
                     trier={mockTrier}
+                    AArchiver={[]}
                 />
             </BrowserRouter>
         </AuthContext.Provider>

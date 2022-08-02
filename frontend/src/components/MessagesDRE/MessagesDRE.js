@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import {afficherDateHeure} from "../../utils/utils";
-import {STYLE_MESSAGE_ENVOYE, STYLE_MESSAGE_RECU} from "../../utils/const";
+import {MessageId, STYLE_MESSAGE_ENVOYE, STYLE_MESSAGE_RECU, TypeId} from "../../utils/const";
 
 
 const MessagesDRE = ({messages, typeUtilisateur, idDRE, actualiserDRE}) => {
@@ -68,8 +68,8 @@ const MessagesDRE = ({messages, typeUtilisateur, idDRE, actualiserDRE}) => {
     }
 
     const alignement = (typeMessage) => {
-        if ((typeUtilisateur === "personnel" && typeMessage === "DEMANDE_COMMIS")
-            || (typeUtilisateur === "etudiant" && typeMessage === "REPONSE_ETUDIANT"))
+        if ((typeUtilisateur === TypeId.Personnel && typeMessage === MessageId.DemandeCommis)
+            || (typeUtilisateur === TypeId.Etudiant && typeMessage === MessageId.ReponseEtudiant))
             return "left";
         else
             return "right";
