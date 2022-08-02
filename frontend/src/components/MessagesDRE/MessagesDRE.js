@@ -106,7 +106,7 @@ const MessagesDRE = ({messages, typeUtilisateur, idDRE, actualiserDRE}) => {
                     </List>
                     :
                     <Grid item xs={12} align="center" style={{marginBottom: '2rem'}}>
-                        <h3>Aucun Message à afficher.</h3>
+                        <h3>Aucun message à afficher.</h3>
                     </Grid>
                 }
 
