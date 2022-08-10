@@ -10,7 +10,6 @@ export default function ListeGroupesCours() {
   const formatterCours = (cours) =>
     cours?.sigle && cours?.nom && `${cours.sigle} - ${cours.nom}`;
   const formatterEnseignant = (enseignant) => {
-    console.log(enseignant);
     return (
       enseignant?.prenom &&
       enseignant?.nom &&

@@ -164,7 +164,6 @@ export default function ListeAdmin({
 
   const traiterChangementRangee = useCallback(
     async (rangee) => {
-      console.log(rangee);
       const encoderEntite = (rangee) => {
         const entite = Object.fromEntries(
           Object.entries({ ...rangee, id: undefined }).map(([key, val]) => {
@@ -184,11 +183,12 @@ export default function ListeAdmin({
         ? [apiClient.post, "/api/" + endpoint]
         : [apiClient.patch, new URL(rangee._links.self.href).pathname];
 
-      await method(url, encoderEntite(rangee));
+      const reponse = await method(url, encoderEntite(rangee));
 
       const newRangee = {
         isNew: false,
         ...rangee,
+        ...reponse,
       };
 
       setRangees(rangees.map((r) => (r.id === newRangee.id ? newRangee : r)));
